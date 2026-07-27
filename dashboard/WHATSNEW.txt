@@ -1,252 +1,253 @@
 ===============================================================================
   XAMPP DASHBOARD v9.26.0 — RESTYLING
-  Base: XAMPP 8.2.4  ·  Luglio 2026
+  Base: XAMPP 8.2.4  ·  July 2026
   https://github.com/chirurgiadigitale/xampp
 ===============================================================================
 
-Restyling completo della radice web di XAMPP: dashboard, documentazione e tre
-nuovi strumenti, tutti con lo stesso design system scuro costruito attorno
-all'arancione ufficiale XAMPP.
+A complete restyling of the XAMPP web root: dashboard, documentation and three
+new tools, all sharing one dark design system built around the official XAMPP
+orange.
 
-Nessun framework grafico, nessuna dipendenza CSS o JavaScript, nessuna
-richiesta a servizi esterni durante l'uso. Le icone sono SVG in linea o
-maschere CSS.
+No design framework, no CSS or JavaScript dependency, no external request while
+you use it. Icons are inline SVG or CSS masks.
 
 
 -------------------------------------------------------------------------------
- 1. INDICE
+ 1. TABLE OF CONTENTS
 -------------------------------------------------------------------------------
 
-  1. Indice
-  2. Che cosa cambia
-  3. Nuove pagine
+  1. Table of contents
+  2. What changed
+  3. New pages
   4. Design system
-  5. Accessibilita'
-  6. Lingue
-  7. Prestazioni e dipendenze rimosse
-  8. Come scaricare e installare
-  9. Permessi su macOS
- 10. Windows e Linux
- 11. Tema per phpMyAdmin
- 12. phpMyAdmin dentro la dashboard
- 13. Privacy dell'ambiente locale
- 14. Struttura dei file
- 15. Licenza e crediti
+  5. Accessibility
+  6. Languages
+  7. Performance and removed dependencies
+  8. Download and install
+  9. Permissions on macOS
+ 10. Windows and Linux
+ 11. phpMyAdmin theme
+ 12. phpMyAdmin inside the dashboard
+ 13. Privacy of the local environment
+ 14. File layout
+ 15. Licence and credits
 
 
 -------------------------------------------------------------------------------
- 2. CHE COSA CAMBIA
+ 2. WHAT CHANGED
 -------------------------------------------------------------------------------
 
-INTERFACCIA
-  - Tema scuro predefinito, tema chiaro incluso, con interruttore nella barra
-    di navigazione e scelta ricordata dal browser.
-  - Palette costruita sull'arancione ufficiale XAMPP #FB7A24, letto dal file
-    del logo. Ogni accostamento di colori e' stato verificato secondo i
-    rapporti di contrasto WCAG.
-  - Tipografia Inter, con ripiego sui caratteri di sistema se non disponibile.
-  - Barra di navigazione a tutta larghezza, sempre visibile in alto, identica
-    su ogni pagina: Dashboard, Progetti, Database, Porte e IP, PHPInfo,
-    Domande frequenti, Guide HOW-TO.
-  - Pie' di pagina a tutta larghezza su cinque colonne, presente ovunque.
-  - Layout mobile-first verificato a 375, 768, 1024 e 1440 pixel.
+INTERFACE
+  - Dark theme by default, light theme included, switched from the navigation
+    bar and remembered by the browser.
+  - Palette built on the official XAMPP orange #FB7A24, read from the logo
+    artwork. Every colour pair was checked against WCAG contrast ratios.
+  - Inter typeface, falling back to system fonts when unavailable.
+  - Full width navigation bar, always visible at the top, identical on every
+    page: Dashboard, Projects, Database, Ports & IPs, PHPInfo, FAQs, HOW-TO
+    Guides.
+  - Full width footer on five columns, present everywhere.
+  - Mobile-first layout checked at 375, 768, 1024 and 1440 pixels.
 
-CONTENUTI
-  - Home ricostruita: stato dei servizi in tempo reale, accesso rapido,
-    riepilogo dello stack, avviso sull'uso in sviluppo.
-  - Guide HOW-TO trasformate in griglia di schede con icona per argomento.
-  - Pagina 404 ridisegnata e finalmente servita da Apache.
-  - Output di phpinfo() diviso in sezioni richiudibili con sommario e filtro.
+CONTENT
+  - Homepage rebuilt: live service status, quick access, stack summary and the
+    development-only warning.
+  - HOW-TO guides turned into a grid of cards with an icon per topic.
+  - 404 page redesigned and, at last, actually served by Apache.
+  - phpinfo() output split into collapsible sections with a table of contents
+    and a filter.
 
 
 -------------------------------------------------------------------------------
- 3. NUOVE PAGINE
+ 3. NEW PAGES
 -------------------------------------------------------------------------------
 
-PROGETTI                          http://localhost/progetti/
-  Elenca le cartelle presenti in htdocs/progetti e ne riconosce la tecnologia
-  (WordPress, Laravel, Node, Next/Nuxt, Composer, PHP, HTML) guardando anche
-  un livello piu' in basso, perche' molte cartelle sono contenitori.
-  Ricerca immediata, filtri per tecnologia, vista a griglia o a elenco,
-  ordinamento alfabetico, data di ultima modifica e collegamento diretto alla
-  porta del VirtualHost quando esiste.
-  Su una installazione nuova la cartella e' vuota e la pagina lo spiega.
+PROJECTS                          http://localhost/progetti/
+  Lists the folders under htdocs/progetti and detects the technology behind
+  each one (WordPress, Laravel, Node, Next/Nuxt, Composer, PHP, HTML), looking
+  one level deeper as well, since many folders are containers.
+  Instant search, filters by technology, grid or list view, alphabetical order,
+  last modification date, and a direct link to the VirtualHost port when one
+  exists.
+  On a fresh install the folder is empty and the page explains that.
 
-PORTE E IP                        http://localhost/dashboard/ports.php
-  Elenca le porte TCP in ascolto, il processo che le occupa e il progetto a
-  cui appartengono, ricavato dalla configurazione dei VirtualHost o dalla
-  cartella di lavoro del processo.
-  Mostra gli indirizzi della macchina, spiega la differenza fra localhost e
-  127.0.0.1, elenca i VirtualHost inclusi quelli disattivati, i progetti che
-  non hanno una porta dedicata, e documenta come aprirne una nuova.
+PORTS & IPS                       http://localhost/dashboard/ports.php
+  Lists the listening TCP ports, the process holding each one and the project
+  it belongs to, resolved from the VirtualHost configuration or from the
+  process working directory.
+  Shows the addresses of the machine, explains the difference between localhost
+  and 127.0.0.1, lists the virtual hosts including the disabled ones, shows the
+  projects that have no dedicated port, and documents how to open a new one.
 
 DATABASE                          http://localhost/dashboard/database.php
-  phpMyAdmin incorniciato dalla dashboard, con barra e footer sempre visibili.
-  phpMyAdmin resta l'applicazione originale, quindi continua ad aggiornarsi
-  normalmente. Vedi il punto 12.
+  phpMyAdmin framed by the dashboard, with the navigation bar and the footer
+  always visible. phpMyAdmin stays the original application, so it keeps
+  updating normally. See section 12.
 
 PHPINFO                           http://localhost/dashboard/phpinfo.php
-  L'output nativo di phpinfo() con riepilogo del runtime, elenco delle
-  estensioni caricate e le 58 sezioni richiudibili, con sommario e filtro.
+  The native phpinfo() output with a runtime summary, the list of loaded
+  extensions and 58 collapsible sections, with a table of contents and a
+  filter.
 
 
 -------------------------------------------------------------------------------
  4. DESIGN SYSTEM
 -------------------------------------------------------------------------------
 
-Tutto vive in un unico foglio di stile: dashboard/stylesheets/all.css
+Everything lives in one stylesheet: dashboard/stylesheets/all.css
 
-Colori, tema scuro, con il rapporto di contrasto sul fondo pagina:
+Colours, dark theme, with the contrast ratio against the page background:
 
-    --accent    #FB7A24    7.40:1  AAA   azioni, stato attivo
-    --accent-ink #1A0A00   7.28:1        testo sopra l'accento
-    --cyan      #FFB35C   11.09:1  AAA   dati e database
-    --violet    #FF6B3D    6.95:1  AA    codice e strumenti
-    --amber     #FFC15E   12.21:1  AAA   avvisi
-    --danger    #E5341C    4.53:1  AA    errori
+    --accent     #FB7A24    7.40:1  AAA   actions, active state
+    --accent-ink #1A0A00    7.28:1        text on top of the accent
+    --cyan       #FFB35C   11.09:1  AAA   data and databases
+    --violet     #FF6B3D    6.95:1  AA    code and tooling
+    --amber      #FFC15E   12.21:1  AAA   advisory blocks
+    --danger     #E5341C    4.53:1  AA    failures
 
-Tema chiaro: stesse tinte scurite (#A8480B, #8A4A08, #A8380F, #7A4E10,
-#A3200D), mai sotto 5.4:1.
+Light theme: the same hues darkened (#A8480B, #8A4A08, #A8380F, #7A4E10,
+#A3200D), never below 5.4:1.
 
-Altri elementi del sistema: scala di spaziature a 4 pixel, sei raggi di
-bordo, tre livelli di ombra, griglia a dodici colonne compatibile con il
-markup preesistente, transizioni di 220 ms con una sola curva di easing.
-
-
--------------------------------------------------------------------------------
- 5. ACCESSIBILITA'
--------------------------------------------------------------------------------
-
-  - Collegamento "vai al contenuto" e landmark <main> su ogni pagina.
-  - Anelli di focus sempre visibili, mai rimossi.
-  - Aree cliccabili di almeno 44 pixel.
-  - aria-current sulla voce di menu attiva, aria-expanded sui menu a comparsa.
-  - Fisarmonica delle domande frequenti e menu delle lingue usabili da
-    tastiera, con chiusura tramite Esc.
-  - prefers-reduced-motion rispettato: le animazioni si annullano.
-  - Le informazioni non sono mai affidate al solo colore.
+The rest of the system: a 4 pixel spacing scale, six corner radii, three
+shadow levels, a twelve column grid compatible with the existing markup, and
+220 ms transitions on a single easing curve.
 
 
 -------------------------------------------------------------------------------
- 6. LINGUE
+ 5. ACCESSIBILITY
 -------------------------------------------------------------------------------
 
-Quindici lingue: inglese, italiano, tedesco, spagnolo, francese, portoghese
-brasiliano, rumeno, ungherese, polacco, russo, turco, giapponese, cinese
-semplificato, cinese tradizionale e urdu, quest'ultimo da destra a sinistra.
-
-  - Selettore della lingua nella barra di navigazione di ogni pagina: mantiene
-    la pagina corrente quando ne esiste la traduzione.
-  - Mappa delle lingue cliccabile nella home.
-  - Home e indici delle guide generati da un unico modello piu' una tabella di
-    stringhe: correggere una traduzione significa toccare una riga sola.
-  - Le guide dentro dashboard/docs/ restano in inglese, come nell'originale;
-    ogni scheda lo dichiara con una targhetta EN.
+  - Skip link and <main> landmark on every page.
+  - Focus rings always visible, never removed.
+  - Interactive areas of at least 44 pixels.
+  - aria-current on the active menu entry, aria-expanded on the disclosure
+    menus.
+  - FAQ accordion and language menu operable from the keyboard, closing with
+    Esc.
+  - prefers-reduced-motion honoured: animations are cancelled.
+  - Information is never carried by colour alone.
 
 
 -------------------------------------------------------------------------------
- 7. PRESTAZIONI E DIPENDENZE RIMOSSE
+ 6. LANGUAGES
 -------------------------------------------------------------------------------
 
-Rimossi: jQuery 1.10 da CDN, Foundation 4, Modernizr, Font Awesome da CDN,
-l'SDK di Facebook e il logo Fastly.
+Fifteen languages: English, Italian, German, Spanish, French, Brazilian
+Portuguese, Romanian, Hungarian, Polish, Russian, Turkish, Japanese, Simplified
+Chinese, Traditional Chinese and Urdu, the last one right to left.
 
-  - javascripts/all.js e' passato da 5.523 righe a circa 400, in JavaScript
-    puro, senza dipendenze.
-  - Nessuna richiesta a domini di terze parti mentre si naviga: la dashboard
-    funziona anche senza connessione.
-  - Nessun cookie di tracciamento.
-
-Rimossi anche quindici file vuoti (howto_platform_links.html) e i residui
-index-old.html, applications.html e bitnami.css.
+  - Language switcher in the navigation bar of every page: it keeps the current
+    page whenever a translation exists.
+  - Clickable language map on the homepage.
+  - Homepages and guide indexes are generated from a single template plus a
+    string table: fixing a wording means touching one line.
+  - The guides under dashboard/docs/ remain in English, as upstream; every card
+    says so with an EN badge.
 
 
 -------------------------------------------------------------------------------
- 8. COME SCARICARE E INSTALLARE
+ 7. PERFORMANCE AND REMOVED DEPENDENCIES
 -------------------------------------------------------------------------------
 
-PRIMA DI TUTTO: fai una copia di sicurezza della cartella htdocs.
+Removed: jQuery 1.10 from a CDN, Foundation 4, Modernizr, Font Awesome from a
+CDN, the Facebook SDK and the Fastly logo.
+
+  - javascripts/all.js went from 5,523 lines to about 400, in plain JavaScript,
+    with no dependencies.
+  - No request to third party domains while browsing: the dashboard works
+    offline.
+  - No tracking cookies.
+
+Also removed: fifteen empty files (howto_platform_links.html) and the leftovers
+index-old.html, applications.html and bitnami.css.
+
+
+-------------------------------------------------------------------------------
+ 8. DOWNLOAD AND INSTALL
+-------------------------------------------------------------------------------
+
+FIRST OF ALL: back up your htdocs folder.
 
     cd /Applications/XAMPP/xamppfiles          # macOS
     sudo cp -R htdocs htdocs-backup
 
-Scaricamento con git:
+Download with git:
 
     cd /tmp
     git clone https://github.com/chirurgiadigitale/xampp.git xampp-restyling
 
-Oppure come archivio, dalla pagina del progetto su GitHub:
-"Code" > "Download ZIP", poi scompatta.
+Or as an archive, from the project page on GitHub:
+"Code" > "Download ZIP", then extract it.
 
-Copia dei file nella radice web, senza toccare i tuoi progetti:
+Copy the files into the web root, without touching your own projects:
 
     sudo cp -R /tmp/xampp-restyling/dashboard   /Applications/XAMPP/xamppfiles/htdocs/
     sudo cp -R /tmp/xampp-restyling/img         /Applications/XAMPP/xamppfiles/htdocs/
     sudo cp    /tmp/xampp-restyling/index.php   /Applications/XAMPP/xamppfiles/htdocs/
     sudo cp    /tmp/xampp-restyling/.htaccess   /Applications/XAMPP/xamppfiles/htdocs/
 
-    # pagina indice dei progetti: la cartella resta tua, si aggiunge solo l'indice
+    # projects index: the folder stays yours, only the index page is added
     sudo mkdir -p /Applications/XAMPP/xamppfiles/htdocs/progetti
     sudo cp /tmp/xampp-restyling/progetti/index.php /Applications/XAMPP/xamppfiles/htdocs/progetti/
     sudo cp /tmp/xampp-restyling/progetti/.htaccess /Applications/XAMPP/xamppfiles/htdocs/progetti/
 
-Sistema i permessi (vedi il punto 9), poi apri:
+Fix the permissions (see section 9), then open:
 
     http://localhost/dashboard/
 
-Non serve compilare niente: sono pagine servite cosi' come sono.
+Nothing needs building: these are pages served as they are.
 
-NOTA: la cartella progetti/ del progetto e' volutamente vuota. Chi scarica
-questa build parte senza progetti e senza dati nei database.
+NOTE: the progetti/ folder of the project is deliberately empty. Whoever
+downloads this build starts with no projects and no data in the databases.
 
 
 -------------------------------------------------------------------------------
- 9. PERMESSI SU macOS
+ 9. PERMISSIONS ON macOS
 -------------------------------------------------------------------------------
 
-Su macOS i file di XAMPP appartengono a root e Apache gira come "daemon".
-Dopo aver copiato i file, i permessi vanno sistemati o il server risponde 403.
+On macOS the XAMPP files belong to root and Apache runs as "daemon". After
+copying the files the permissions must be fixed, or the server answers 403.
 
     XR=/Applications/XAMPP/xamppfiles/htdocs
 
-    # proprietario: root, gruppo admin (l'impostazione usata da XAMPP)
+    # owner root, group admin: the arrangement XAMPP uses
     sudo chown -R root:admin $XR/dashboard $XR/progetti/index.php
 
-    # lettura per tutti, scrittura solo al proprietario
+    # readable by everyone, writable only by the owner
     sudo chmod -R a+rX $XR/dashboard
     sudo chmod 644 $XR/progetti/index.php $XR/.htaccess $XR/progetti/.htaccess
 
-    # se hai copiato lo script del tema di phpMyAdmin
+    # if you copied the phpMyAdmin theme script
     sudo chmod +x $XR/dashboard/phpmyadmin-theme/install.sh
 
-Verifica:
+Check:
 
     curl -o /dev/null -w "%{http_code}\n" http://localhost/dashboard/
 
-Deve rispondere 200. Se risponde 403 il problema e' quasi sempre nei permessi
-di lettura di una cartella superiore: controlla con
+It must answer 200. A 403 almost always means a parent folder is not readable:
+check with
 
     ls -la /Applications/XAMPP/xamppfiles/htdocs
 
-Le pagine PHP hanno bisogno che shell_exec sia consentito per leggere le porte
-in ascolto. Se e' disabilitato, la pagina Porte e IP lo dice apertamente e
-tutto il resto continua a funzionare.
+The PHP pages need shell_exec to be allowed in order to read the listening
+ports. If it is disabled, the Ports & IPs page says so openly and everything
+else keeps working.
 
 
 -------------------------------------------------------------------------------
- 10. WINDOWS E LINUX
+ 10. WINDOWS AND LINUX
 -------------------------------------------------------------------------------
 
-Il restyling e' scritto per funzionare su tutti i sistemi su cui gira XAMPP.
-I percorsi non sono scritti nel codice: vengono ricavati risalendo dalla
-posizione dei file, quindi la radice viene riconosciuta ovunque sia.
+The restyling is written to run on every system XAMPP supports. Paths are not
+written into the code: they are derived by walking up from the location of the
+files, so the install root is found wherever it is.
 
     macOS      /Applications/XAMPP/xamppfiles
     Linux      /opt/lampp
     Windows    C:\xampp
 
-I file di configurazione di Apache vengono cercati in etc/ su macOS e Linux,
-in apache\conf\ su Windows.
+Apache configuration files are looked up under etc/ on macOS and Linux, under
+apache\conf\ on Windows.
 
 LINUX (Debian, Ubuntu, Fedora...)
 
@@ -259,190 +260,185 @@ LINUX (Debian, Ubuntu, Fedora...)
 
 WINDOWS
 
-    Copia le cartelle dentro C:\xampp\htdocs\ con Esplora risorse.
-    I permessi non richiedono interventi.
-    Riavvia Apache dal Control Panel di XAMPP.
+    Copy the folders into C:\xampp\htdocs\ with File Explorer.
+    Permissions need no attention.
+    Restart Apache from the XAMPP Control Panel.
 
-    Il file .htaccess funziona solo se in httpd.conf, dentro il blocco
-    <Directory "C:/xampp/htdocs">, e' presente AllowOverride All.
+    The .htaccess file only works if httpd.conf contains AllowOverride All
+    inside the <Directory "C:/xampp/htdocs"> block.
 
-DIFFERENZE DA SAPERE
+DIFFERENCES WORTH KNOWING
 
-  - La pagina Porte e IP usa netstat, presente su tutti e tre i sistemi, e
-    riconosce sia il formato BSD/macOS sia quello di Windows. Il dettaglio del
-    processo usa lsof e ps, disponibili su macOS e Linux: su Windows le porte
-    si vedono lo stesso, senza il nome del processo.
-  - Il comando per riavviare Apache viene mostrato gia' adattato al sistema in
-    uso nella pagina Porte e IP.
-  - Il tema chiaro, le traduzioni e tutto il resto sono identici ovunque.
+  - The Ports & IPs page uses netstat, available on all three systems, and
+    reads both the BSD/macOS and the Windows column layout. Process details
+    come from lsof and ps, available on macOS and Linux: on Windows the ports
+    are still listed, without the process name.
+  - The command to restart Apache is shown already adapted to the system in
+    use, on the Ports & IPs page.
+  - The light theme, the translations and everything else are identical
+    everywhere.
 
-Il progetto e' stato sviluppato e verificato su macOS con XAMPP 8.2.4. Il
-supporto a Windows e Linux e' scritto seguendo le rispettive convenzioni ma
-non e' stato provato sul campo: le segnalazioni sono benvenute.
+The project was developed and verified on macOS with XAMPP 8.2.4. Windows and
+Linux support is written following the conventions of each system but has not
+been tested in the field: reports are welcome.
 
 
 -------------------------------------------------------------------------------
- 11. TEMA PER phpMyAdmin
+ 11. phpMyAdmin THEME
 -------------------------------------------------------------------------------
 
-Nel progetto trovi anche un tema che porta la stessa grafica dentro
-phpMyAdmin, in dashboard/phpmyadmin-theme/
+The project also carries a theme that brings the same look inside phpMyAdmin,
+in dashboard/phpmyadmin-theme/
 
-Il tema non riscrive phpMyAdmin: parte dal tema predefinito pmahomme e gli
-aggiunge in coda il foglio di stile della dashboard, cosi' l'applicazione
-resta aggiornabile.
+The theme does not rewrite phpMyAdmin: it starts from the stock pmahomme theme
+and appends the dashboard stylesheet to it, so the application stays
+upgradeable.
 
-Installazione:
+Install:
 
     cd /Applications/XAMPP/xamppfiles/htdocs/dashboard/phpmyadmin-theme
     sudo bash install.sh
 
-Su Linux:
+On Linux:
 
     sudo bash install.sh /opt/lampp/phpmyadmin
 
-Attivazione: dal selettore dei temi nella home di phpMyAdmin, oppure
-aggiungendo a phpmyadmin/config.inc.php la riga
+Activate it from the theme selector on the phpMyAdmin home page, or by adding
+this line to phpmyadmin/config.inc.php:
 
     $cfg['ThemeDefault'] = 'xampp-v2';
 
-Se un aggiornamento di phpMyAdmin sovrascrive la cartella dei temi, basta
-rieseguire lo script.
+If a phpMyAdmin update overwrites the themes folder, just run the script again.
 
-ANTEPRIMA PRIMA DI INSTALLARE
+PREVIEW BEFORE INSTALLING
 
     http://localhost/dashboard/phpmyadmin-theme/preview.html
 
-La pagina mostra i componenti reali di phpMyAdmin (schede, tabella dei
-risultati, editor SQL, messaggi, moduli, albero dei database, console) con il
-foglio di stile del tema applicato, cosi' si vede il risultato senza toccare
-l'installazione.
+The page shows the real phpMyAdmin components (tabs, result table, SQL editor,
+alerts, forms, database tree, console) with the theme stylesheet applied, so
+the result can be judged without touching the installation.
 
-CHE COSA COPRE, E CHE COSA NO
+WHAT IT COVERS, AND WHAT IT DOES NOT
 
-Il tema e' un foglio di sovrascrittura di 102 regole: ridefinisce colori,
-tipografia, bordi e raggi dei componenti che si incontrano usando phpMyAdmin.
-Il tema di partenza pmahomme dichiara oltre 2500 selettori: le parti meno
-frequentate dell'interfaccia mantengono l'aspetto originale, adattato ai nuovi
-colori solo dove le regole generali arrivano.
+The theme is an override stylesheet of 102 rules: it redefines colours,
+typography, borders and radii for the components met while using phpMyAdmin.
+The pmahomme base theme declares more than 2500 selectors: the less travelled
+parts of the interface keep their original look, adapted to the new colours
+only where the general rules reach.
 
-In pratica: le schermate di uso quotidiano (elenco database, struttura,
-risultati, SQL, importazione ed esportazione, messaggi) seguono la grafica
-della dashboard. Alcune pagine di configurazione avanzata possono mostrare
-elementi ancora nello stile originale. Non e' un difetto di installazione: e'
-il limite di un tema costruito per sovrapposizione invece che riscrivendo
-phpMyAdmin, scelta fatta per non impedirne gli aggiornamenti.
+In practice: the everyday screens (database list, structure, results, SQL,
+import and export, messages) follow the dashboard design. Some advanced
+configuration pages may still show elements in the original style. That is not
+an installation fault: it is the limit of a theme built by overlay instead of
+rewriting phpMyAdmin, a choice made so that its updates keep working.
 
-La cartella del tema non e' navigabile via browser (risponde 403): contiene
-sorgenti, non pagine. Si consulta l'anteprima oppure il file CSS:
+The theme folder is not browsable over the web (it answers 403): it holds
+sources, not pages. Use the preview, or read the stylesheet:
 
     http://localhost/dashboard/phpmyadmin-theme/xampp-v2/css/overrides.css
 
 
 -------------------------------------------------------------------------------
- 12. phpMyAdmin DENTRO LA DASHBOARD
+ 12. phpMyAdmin INSIDE THE DASHBOARD
 -------------------------------------------------------------------------------
 
-La pagina Database mostra phpMyAdmin dentro la cornice della dashboard, con
-la barra di navigazione e il pie' di pagina sempre visibili.
+The Database page shows phpMyAdmin inside the dashboard frame, with the
+navigation bar and the footer always visible.
 
-phpMyAdmin rifiuta di essere mostrato dentro un riquadro, rispondendo con
-l'intestazione X-Frame-Options: DENY. Per consentirlo dallo stesso host
-aggiungi a phpmyadmin/config.inc.php:
+phpMyAdmin refuses to be displayed inside a frame, answering with the header
+X-Frame-Options: DENY. To allow it from the same host, add this to
+phpmyadmin/config.inc.php:
 
     $cfg['AllowThirdPartyFraming'] = 'sameorigin';
 
-Comando pronto per macOS:
+Ready to paste, on macOS:
 
     sudo sh -c 'echo "\$cfg[\"AllowThirdPartyFraming\"] = \"sameorigin\";" \
       >> /Applications/XAMPP/xamppfiles/phpmyadmin/config.inc.php'
 
-Finche' non lo fai, la pagina spiega la situazione e offre il collegamento per
-aprire phpMyAdmin in una scheda separata: non si rompe nulla.
+Until you do, the page explains the situation and offers the link to open
+phpMyAdmin in a separate tab: nothing breaks.
 
-Nota: 'sameorigin' consente l'inclusione solo da questa stessa macchina.
+Note: 'sameorigin' allows embedding only from this same machine.
 
 
 -------------------------------------------------------------------------------
- 13. PRIVACY DELL'AMBIENTE LOCALE
+ 13. PRIVACY OF THE LOCAL ENVIRONMENT
 -------------------------------------------------------------------------------
 
-Questa build viaggia vuota: nessun progetto, nessun database, nessuna
-configurazione di porte.
+This build ships empty: no projects, no databases, no port configuration.
 
-Le pagine Porte e Progetti non contengono dati: leggono il sistema quando
-vengono aperte. Chi scarica il progetto ottiene soltanto lo scanner.
+The Ports and Projects pages hold no data: they read the system when opened.
+Whoever downloads the project gets the scanner only.
 
-Il file .gitignore usa una lista di ammissione: tutto e' escluso e rientrano
-solo i file che fanno parte della distribuzione. In piu' .githooks/pre-commit
-rifiuta un commit che contenga nomi di cartelle di progetto, indirizzi IP
-privati, direttive Listen, percorsi DocumentRoot reali, copie di database o
-credenziali.
+The .gitignore file uses an allow list: everything is excluded and only the
+files belonging to the distribution come back in. On top of that,
+.githooks/pre-commit refuses a commit carrying project folder names, private IP
+addresses, Listen directives, real DocumentRoot paths, database dumps or
+credentials.
 
-Per attivare il controllo dopo il clone:
+To enable the check after cloning:
 
     git config core.hooksPath .githooks
 
-Il file .htaccess incluso disattiva l'elenco automatico dei file nella radice,
-nega l'accesso a .env, dump, chiavi e file nascosti, e blocca le richieste
-alla cartella .git. Dentro progetti/ l'elenco resta attivo, perche' li' serve
-a lavorare.
+The bundled .htaccess turns off automatic directory listing in the web root,
+denies access to .env files, dumps, keys and dotfiles, and blocks any request
+to the .git folder. Inside progetti/ the listing stays on, because that is
+where it is useful for work.
 
 
 -------------------------------------------------------------------------------
- 14. STRUTTURA DEI FILE
+ 14. FILE LAYOUT
 -------------------------------------------------------------------------------
 
-    .htaccess                          404, elenco file, protezioni
-    README.md                          presentazione del progetto
-    .githooks/pre-commit               controllo di riservatezza
+    .htaccess                          404, directory listing, protections
+    README.md                          project presentation
+    .githooks/pre-commit               privacy check
 
     dashboard/
-      WHATSNEW.txt                     questo file
-      index.html                       home in inglese
-      <lingua>/index.html              home nelle altre quattordici lingue
-      <lingua>/faq.html                domande frequenti
-      <lingua>/howto.html              indice delle guide
-      docs/                            le guide, in inglese
-      404.html                         pagina di errore
-      phpinfo.php                      configurazione di PHP
-      ports.php                        porte in ascolto e indirizzi
-      database.php                     phpMyAdmin nella cornice
-      includes/layout.php              intestazione e pie' di pagina condivisi
-      stylesheets/all.css              il design system
-      stylesheets/all-rtl.css          variante da destra a sinistra
-      javascripts/all.js               tema, menu, lingue, fisarmonica
-      images/xampp-logo.svg            logo ufficiale
-      phpmyadmin-theme/                tema per phpMyAdmin
+      WHATSNEW.txt                     this file
+      index.html                       homepage in English
+      <language>/index.html            homepage in the other fourteen languages
+      <language>/faq.html              frequently asked questions
+      <language>/howto.html            guide index
+      docs/                            the guides, in English
+      404.html                         error page
+      phpinfo.php                      PHP configuration
+      ports.php                        listening ports and addresses
+      database.php                     phpMyAdmin in the frame
+      includes/layout.php              shared header and footer
+      stylesheets/all.css              the design system
+      stylesheets/all-rtl.css          right to left variant
+      javascripts/all.js               theme, menu, languages, accordion
+      images/xampp-logo.svg            official logo
+      phpmyadmin-theme/                theme for phpMyAdmin
 
     progetti/
-      index.php                        indice dei progetti
-      .htaccess                        elenco file consentito qui
+      index.php                        projects index
+      .htaccess                        directory listing allowed here
 
 
 -------------------------------------------------------------------------------
- 15. LICENZA E CREDITI
+ 15. LICENCE AND CREDITS
 -------------------------------------------------------------------------------
 
-XAMPP e la sua documentazione appartengono ad Apache Friends e mantengono la
-licenza originale, la GNU General Public License. Questo restyling segue le
-stesse condizioni.
+XAMPP and its documentation belong to Apache Friends and keep their original
+licence, the GNU General Public License. This restyling follows the same terms.
 
-Progetto originale
-    Apache Friends            https://www.apachefriends.org/
-    Codice sorgente           https://github.com/ApacheFriends/xampp-build
-    Organizzazione            https://github.com/ApacheFriends
-    Argomento su GitHub       https://github.com/topics/xampp
-    Apache HTTP Server        https://httpd.apache.org/
+Upstream project
+    Apache Friends             https://www.apachefriends.org/
+    Source code                https://github.com/ApacheFriends/xampp-build
+    Organisation               https://github.com/ApacheFriends
+    Topic on GitHub            https://github.com/topics/xampp
+    Apache HTTP Server         https://httpd.apache.org/
     Apache Software Foundation https://www.apache.org/
-    Forum della comunita'     https://community.apachefriends.org
+    Community forum            https://community.apachefriends.org
 
 Restyling
-    Questa versione di XAMPP e' stata risviluppata e rielaborata
-    stilisticamente e strutturalmente dallo staff di Chirurgia Digitale nel
-    luglio 2026. Sperando di dare un contributo significativo a questo
-    bellissimo progetto open source.
+    This version of XAMPP was redeveloped and reworked, both visually and
+    structurally, by the Chirurgia Digitale team in July 2026. In the hope of
+    making a meaningful contribution to this beautiful open source project.
 
-    Chirurgia Digitale        https://www.chirurgiadigitale.it
+    Chirurgia Digitale         https://www.chirurgiadigitale.it
 
 ===============================================================================
