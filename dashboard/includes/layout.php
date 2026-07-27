@@ -193,7 +193,7 @@ function xampp_header(string $title, string $active = '', bool $full = false): v
 
 /** Versione di XAMPP e del restyling, mostrate nel footer. */
 const XAMPP_VERSION = '8.2.4';
-const DASHBOARD_VERSION = '8.19.9';
+const DASHBOARD_VERSION = '9.26.0';
 
 /** Chiusura di <main> e pie' di pagina identico a quello delle pagine statiche. */
 function xampp_footer(): void
@@ -227,15 +227,6 @@ function xampp_footer(): void
           </ul>
         </div>
 
-        <div class="large-3 columns footer-about">
-          <h4 class="footer-title"><?php echo $isIt ? "Cos'è XAMPP" : 'What XAMPP is'; ?></h4>
-          <p class="muted"><?php echo h($about); ?></p>
-          <p class="footer-version">
-            <span>XAMPP <?php echo XAMPP_VERSION; ?></span> ·
-            <strong>v<?php echo DASHBOARD_VERSION; ?></strong>
-            <span><?php echo $isIt ? 'restyling' : 'restyling'; ?></span>
-          </p>
-        </div>
 
         <div class="large-2 columns">
           <h4 class="footer-title"><?php echo h(t('nav')); ?></h4>
@@ -253,11 +244,24 @@ function xampp_footer(): void
           <h4 class="footer-title"><?php echo h(t('project')); ?></h4>
           <ul class="footer_links footer_links--stack">
             <li><a href="https://www.apachefriends.org/" target="_blank" rel="noopener">Apache Friends</a></li>
+            <li><a href="https://github.com/ApacheFriends/xampp-build" target="_blank" rel="noopener">GitHub · xampp-build</a></li>
+            <li><a href="https://github.com/ApacheFriends" target="_blank" rel="noopener">GitHub · Apache Friends</a></li>
+            <li><a href="https://github.com/topics/xampp" target="_blank" rel="noopener">GitHub · topic xampp</a></li>
             <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
             <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
             <li><a href="https://community.apachefriends.org" target="_blank" rel="noopener">Community forum</a></li>
             <li><a href="https://www.apachefriends.org/blog.html" target="_blank" rel="noopener">Blog</a></li>
           </ul>
+        </div>
+
+        <div class="large-3 columns footer-about">
+          <h4 class="footer-title"><?php echo $isIt ? "Cos'è XAMPP" : 'What XAMPP is'; ?></h4>
+          <p class="muted"><?php echo h($about); ?></p>
+          <p class="footer-version">
+            <span>XAMPP <?php echo XAMPP_VERSION; ?></span> ·
+            <strong>v<?php echo DASHBOARD_VERSION; ?></strong>
+            <span><?php echo $isIt ? 'restyling' : 'restyling'; ?></span>
+          </p>
         </div>
 
         <div class="large-2 columns footer-credits">
