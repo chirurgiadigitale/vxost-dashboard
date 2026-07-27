@@ -75,6 +75,125 @@
   }
 
   /* ---------------------------------------------------------------------
+     1b. Selettore lingua (presente su tutte le pagine)
+     --------------------------------------------------------------------- */
+  var LANGS = [
+    { code: 'en',    short: 'EN', name: 'English' },
+    { code: 'it',    short: 'IT', name: 'Italiano' },
+    { code: 'de',    short: 'DE', name: 'Deutsch' },
+    { code: 'es',    short: 'ES', name: 'Español' },
+    { code: 'fr',    short: 'FR', name: 'Français' },
+    { code: 'pt_br', short: 'PT', name: 'Português (BR)' },
+    { code: 'ro',    short: 'RO', name: 'Română' },
+    { code: 'hu',    short: 'HU', name: 'Magyar' },
+    { code: 'pl',    short: 'PL', name: 'Polski' },
+    { code: 'ru',    short: 'RU', name: 'Русский' },
+    { code: 'tr',    short: 'TR', name: 'Türkçe' },
+    { code: 'jp',    short: 'JP', name: '日本語' },
+    { code: 'zh_cn', short: 'CN', name: '简体中文' },
+    { code: 'zh_tw', short: 'TW', name: '繁體中文' },
+    { code: 'ur',    short: 'UR', name: 'اردو' }
+  ];
+
+  // Pagine effettivamente tradotte: per le altre si torna alla home della lingua
+  var TRANSLATED = ['index.html', 'faq.html', 'howto.html',
+                    'howto_platform_links.html', 'howto_shared_links.html'];
+
+  function currentLang() {
+    var m = window.location.pathname.match(/^\/dashboard\/([a-z_]{2,5})\//);
+    if (m) {
+      for (var i = 0; i < LANGS.length; i++) {
+        if (LANGS[i].code === m[1]) return m[1];
+      }
+    }
+    return 'en';
+  }
+
+  function urlForLang(code) {
+    var path = window.location.pathname;
+    var file = path.split('/').pop() || 'index.html';
+    if (TRANSLATED.indexOf(file) === -1) file = 'index.html';
+    return code === 'en' ? '/dashboard/' + file : '/dashboard/' + code + '/' + file;
+  }
+
+  function buildLangSwitch() {
+    var bar = document.querySelector('.top-bar');
+    if (!bar || bar.querySelector('.lang-switch')) return;
+
+    var actions = bar.querySelector('.nav-actions');
+    if (!actions) {
+      actions = document.createElement('div');
+      actions.className = 'nav-actions';
+      bar.appendChild(actions);
+    }
+
+    var active = currentLang();
+    var current = LANGS[0];
+    LANGS.forEach(function (l) { if (l.code === active) current = l; });
+
+    var wrap = document.createElement('div');
+    wrap.className = 'lang-switch';
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'lang-toggle';
+    btn.setAttribute('aria-haspopup', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', 'Lingua: ' + current.name);
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="9"/><path d="M3.5 9h17M3.5 15h17M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></svg>' +
+      '<span class="lang-code">' + current.short + '</span>' +
+      '<svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" ' +
+      'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+
+    var list = document.createElement('ul');
+    list.className = 'lang-menu';
+    list.setAttribute('role', 'menu');
+    list.hidden = true;
+
+    LANGS.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = urlForLang(l.code);
+      a.setAttribute('role', 'menuitem');
+      a.setAttribute('lang', l.code.replace('_', '-'));
+      a.innerHTML = '<span class="lang-code">' + l.short + '</span><span>' + l.name + '</span>';
+      if (l.code === active) {
+        a.setAttribute('aria-current', 'true');
+        li.className = 'is-current';
+      }
+      a.addEventListener('click', function () {
+        try { localStorage.setItem('xampp-dashboard-lang', l.code); } catch (e) { /* noop */ }
+      });
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+
+    function setOpen(open) {
+      list.hidden = !open;
+      wrap.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(list.hidden);
+    });
+    document.addEventListener('click', function (e) {
+      if (!wrap.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !list.hidden) { setOpen(false); btn.focus(); }
+    });
+
+    wrap.appendChild(btn);
+    wrap.appendChild(list);
+    actions.appendChild(wrap);
+  }
+
+  /* ---------------------------------------------------------------------
      2. Menu mobile
      --------------------------------------------------------------------- */
   function initNav() {
@@ -239,6 +358,16 @@
   }
 
   /* ---------------------------------------------------------------------
+     5b. Anno corrente nel footer
+     --------------------------------------------------------------------- */
+  function initYear() {
+    var year = String(new Date().getFullYear());
+    Array.prototype.forEach.call(document.querySelectorAll('[data-year]'), function (el) {
+      el.textContent = year;
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      6. Compatibilita' legacy
      --------------------------------------------------------------------- */
   function initLegacy() {
@@ -269,11 +398,13 @@
 
   /* --------------------------------------------------------------------- */
   function boot() {
+    buildLangSwitch();
     buildThemeToggle();
     initNav();
     decorateNav();
     initAccordion();
     initReveal();
+    initYear();
     initLegacy();
   }
 

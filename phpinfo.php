@@ -167,17 +167,51 @@ $e = function ($value) {
     </main>
 
     <footer class="footer">
-      <div class="row">
-        <div class="large-6 columns">
-          <p class="footer_copyright">XAMPP Dashboard · PHP <?php echo $e(PHP_VERSION); ?> · <?php echo $e(date('d/m/Y H:i')); ?></p>
+      <div class="row footer-main">
+        <div class="large-4 columns footer-brand">
+          <p class="footer-logo">
+            <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
+              <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#fgPhp)" fill-opacity=".18" stroke="url(#fgPhp)" stroke-width="1.4"/>
+              <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#fgPhp)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs><linearGradient id="fgPhp" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#22C55E"/><stop offset=".55" stop-color="#38BDF8"/><stop offset="1" stop-color="#A78BFA"/>
+              </linearGradient></defs>
+            </svg>
+            <span>XAMPP</span>
+          </p>
+          <p class="muted">Apache · MariaDB · PHP · Perl</p>
+          <ul class="social">
+            <li class="twitter"><a href="https://twitter.com/apachefriends" aria-label="Twitter">Twitter</a></li>
+            <li class="facebook"><a href="https://www.facebook.com/we.are.xampp" aria-label="Facebook">Facebook</a></li>
+          </ul>
         </div>
-        <div class="large-6 columns">
-          <ul class="footer_links">
+
+        <div class="large-4 columns">
+          <h4 class="footer-title">Navigazione</h4>
+          <ul class="footer_links footer_links--stack">
             <li><a href="/dashboard/it/index.html">Dashboard</a></li>
+            <li><a href="/dashboard/it/faq.html">Domande frequenti</a></li>
+            <li><a href="/dashboard/it/howto.html">Guide HOW-TO</a></li>
             <li><a href="/phpmyadmin/">phpMyAdmin</a></li>
             <li><a href="/progetti/">Progetti</a></li>
           </ul>
         </div>
+
+        <div class="large-4 columns">
+          <h4 class="footer-title">Progetto</h4>
+          <ul class="footer_links footer_links--stack">
+            <li><a href="https://www.apachefriends.org/" target="_blank" rel="noopener">Apache Friends</a></li>
+            <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
+            <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
+            <li><a href="https://community.apachefriends.org" target="_blank" rel="noopener">Community forum</a></li>
+            <li><a href="https://www.php.net/" target="_blank" rel="noopener">php.net</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row footer-bottom">
+        <p class="footer_copyright">© <?php echo $e(date('Y')); ?> Apache Friends — XAMPP is released under the GNU General Public License.</p>
+        <a class="footer-top" href="#main">Torna su ↑</a>
       </div>
     </footer>
 
