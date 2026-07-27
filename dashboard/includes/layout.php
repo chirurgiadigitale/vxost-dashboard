@@ -126,14 +126,15 @@ function xampp_header(string $title, string $active = '', bool $full = false): v
     $base = xampp_base();
     $uid  = 'lay' . substr(md5($title), 0, 6);
 
+    // Stesso ordine delle pagine statiche: la navigazione non cambia mai posizione
     $items = [
-        'dashboard' => [$base . 'index.html', t('dash'),     'home'],
-        'projects'  => ['/progetti/',          t('projects'), 'folder'],
+        'dashboard' => [$base . 'index.html',      t('dash'),     'home'],
+        'projects'  => ['/progetti/',              t('projects'), 'folder'],
         'database'  => ['/dashboard/database.php', t('database'), 'database'],
         'ports'     => ['/dashboard/ports.php',    t('ports'),    'ports'],
         'phpinfo'   => ['/dashboard/phpinfo.php',  'PHPInfo',     'info'],
-        'faq'       => [$base . 'faq.html',   t('faq'),      'faq'],
-        'howto'     => [$base . 'howto.html', t('howto'),    'guide'],
+        'faq'       => [$base . 'faq.html',        t('faq'),      'faq'],
+        'howto'     => [$base . 'howto.html',      t('howto'),    'guide'],
     ];
     ?>
 <!doctype html>
@@ -163,13 +164,7 @@ function xampp_header(string $title, string $active = '', bool $full = false): v
         <ul class="title-area">
           <li class="name">
             <h1><a class="has-mark" href="<?php echo h($base); ?>index.html">
-              <svg class="brand-mark" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
-                <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#<?php echo $uid; ?>)" fill-opacity=".18" stroke="url(#<?php echo $uid; ?>)" stroke-width="1.4"/>
-                <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#<?php echo $uid; ?>)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <defs><linearGradient id="<?php echo $uid; ?>" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#22C55E"/><stop offset=".55" stop-color="#38BDF8"/><stop offset="1" stop-color="#A78BFA"/>
-                </linearGradient></defs>
-              </svg>
+              <img class="brand-mark" src="/dashboard/images/xampp-logo.svg" width="30" height="30" alt="XAMPP" />
               <span class="brand-text">XAMPP <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
             </a></h1>
           </li>
@@ -208,13 +203,7 @@ function xampp_footer(): void
       <div class="row footer-main">
         <div class="large-4 columns footer-brand">
           <p class="footer-logo">
-            <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
-              <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#<?php echo $uid; ?>)" fill-opacity=".18" stroke="url(#<?php echo $uid; ?>)" stroke-width="1.4"/>
-              <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#<?php echo $uid; ?>)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <defs><linearGradient id="<?php echo $uid; ?>" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#22C55E"/><stop offset=".55" stop-color="#38BDF8"/><stop offset="1" stop-color="#A78BFA"/>
-              </linearGradient></defs>
-            </svg>
+            <img src="/dashboard/images/xampp-logo.svg" width="26" height="26" alt="" />
             <span>XAMPP</span>
           </p>
           <p class="muted">Apache · MariaDB · PHP · Perl</p>

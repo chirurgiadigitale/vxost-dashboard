@@ -30,6 +30,13 @@ function p_t(string $key): string
             'hint' => 'Ports serving HTTP are clickable. The project name is derived from the process working directory.',
             'loopback' => 'Loopback', 'lan' => 'Local network', 'count' => 'listening ports',
             'auto' => 'Auto refresh every 30s',
+            'howto_t' => 'How to open a new port',
+            'howto_p' => 'A port is opened in two steps: Apache must listen on it, and a VirtualHost must say which folder to serve. Both files live in the XAMPP configuration folder.',
+            'step1' => 'Add the port to httpd.conf',
+            'step2' => 'Add the VirtualHost in extra/httpd-vhosts.conf',
+            'step3' => 'Restart Apache and open the address',
+            'aliases' => 'localhost and 127.0.0.1 are the same machine: localhost is the name, 127.0.0.1 the loopback address it resolves to. Both reach the ports below. Use the LAN address to open the site from another device on the same network.',
+            'modified' => 'Modified', 'never' => 'unknown', 'conf' => 'Configuration files',
         ],
         'it' => [
             'title' => 'Porte e IP', 'eyebrow' => 'Panoramica di rete',
@@ -43,6 +50,13 @@ function p_t(string $key): string
             'hint' => 'Le porte che servono HTTP sono cliccabili. Il nome del progetto è dedotto dalla cartella di lavoro del processo.',
             'loopback' => 'Loopback', 'lan' => 'Rete locale', 'count' => 'porte in ascolto',
             'auto' => 'Aggiornamento automatico ogni 30s',
+            'howto_t' => 'Come si apre una nuova porta',
+            'howto_p' => 'Aprire una porta richiede due passaggi: Apache deve mettersi in ascolto su quella porta e un VirtualHost deve indicare quale cartella servire. Entrambi i file stanno nella cartella di configurazione di XAMPP.',
+            'step1' => 'Aggiungi la porta in httpd.conf',
+            'step2' => 'Aggiungi il VirtualHost in extra/httpd-vhosts.conf',
+            'step3' => 'Riavvia Apache e apri l\'indirizzo',
+            'aliases' => 'localhost e 127.0.0.1 sono la stessa macchina: localhost è il nome, 127.0.0.1 l\'indirizzo di loopback a cui viene risolto. Entrambi raggiungono le porte qui sotto. Usa invece l\'indirizzo di rete locale per aprire il sito da un altro dispositivo collegato alla stessa rete.',
+            'modified' => 'Modificato', 'never' => 'sconosciuto', 'conf' => 'File di configurazione',
         ],
     ];
     $lang = xampp_lang();
@@ -217,16 +231,17 @@ function listening_ports(): ?array
         }
 
         $ports[$key] = [
-            'port'    => $port,
-            'address' => $address,
-            'command' => $cols[0],
-            'pid'     => $pid,
-            'user'    => $cols[2],
-            'proto'   => $cols[4] === 'IPv6' ? 'IPv6' : 'IPv4',
-            'cwd'     => $path,
-            'full'    => $info['command'],
-            'project' => $project,
-            'service' => well_known($port),
+            'port'     => $port,
+            'address'  => $address,
+            'command'  => $cols[0],
+            'pid'      => $pid,
+            'user'     => $cols[2],
+            'proto'    => $cols[4] === 'IPv6' ? 'IPv6' : 'IPv4',
+            'cwd'      => $path,
+            'full'     => $info['command'],
+            'project'  => $project,
+            'service'  => well_known($port),
+            'modified' => $path !== '' && is_dir($path) ? (int) @filemtime($path) : 0,
         ];
     }
 
@@ -370,10 +385,11 @@ function vhosts(): array
 
             $docroot = trim($root[1] ?? '');
             $out[$port] = [
-                'port'    => $port,
-                'name'    => $name[1] ?? 'localhost',
-                'root'    => $docroot,
-                'project' => guess_project($docroot, ''),
+                'port'     => $port,
+                'name'     => $name[1] ?? 'localhost',
+                'root'     => $docroot,
+                'project'  => guess_project($docroot, ''),
+                'modified' => is_dir($docroot) ? (int) @filemtime($docroot) : 0,
             ];
         }
     }
@@ -437,6 +453,7 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
                 <h2><?php echo h(p_t('address')); ?></h2>
               </div>
             </div>
+            <p class="muted" style="max-width:80ch"><?php echo h(p_t('aliases')); ?></p>
             <div class="status-grid">
               <?php foreach ($ips['loopback'] as $ip): ?>
               <div class="stat">
@@ -494,7 +511,12 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
                 <span class="port-number mono"><?php echo (int) $p['port']; ?></span>
                 <div class="port-body">
                   <h3><?php echo h($p['project'] !== '' ? $p['project'] : ($p['service'] !== '' ? $p['service'] : $p['command'])); ?></h3>
-                  <p class="mono" dir="ltr"><?php echo h($p['command']); ?> · PID <?php echo (int) $p['pid']; ?></p>
+                  <p class="mono" dir="ltr">
+                    <?php echo h($p['command']); ?> · PID <?php echo (int) $p['pid']; ?>
+                    <?php if ($p['modified']): ?>
+                    · <?php echo h(p_t('modified')); ?> <?php echo date('d/m/Y H:i', $p['modified']); ?>
+                    <?php endif; ?>
+                  </p>
                   <?php if ($p['cwd'] !== ''): ?>
                   <p class="mono port-path" dir="ltr" title="<?php echo h($p['cwd']); ?>"><?php echo h($p['cwd']); ?></p>
                   <?php endif; ?>
@@ -567,11 +589,81 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
                 <h3><?php echo h($v['project'] !== '' ? $v['project'] : $v['name']); ?></h3>
                 <p class="mono" dir="ltr"><?php echo h($v['name']); ?>:<?php echo (int) $v['port']; ?></p>
                 <p class="mono port-path" dir="ltr" title="<?php echo h($v['root']); ?>"><?php echo h($v['root']); ?></p>
+                <?php if ($v['modified']): ?>
+                <p class="muted" style="font-size:.78rem"><?php echo h(p_t('modified')); ?> <?php echo date('d/m/Y H:i', $v['modified']); ?></p>
+                <?php endif; ?>
                 <span class="card-link"><?php echo h(p_t('open')); ?> <?php echo xampp_icon('external', 16); ?></span>
               </a>
               <?php endforeach; ?>
             </div>
             <?php endif; ?>
+          </div>
+        </div>
+      </section>
+
+      <!-- COME SI APRE UNA PORTA -->
+      <section class="section">
+        <div class="row">
+          <div class="large-8 columns" data-reveal>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow"><?php echo h(p_t('conf')); ?></p>
+                <h2><?php echo h(p_t('howto_t')); ?></h2>
+              </div>
+            </div>
+            <p><?php echo h(p_t('howto_p')); ?></p>
+
+            <ol class="steps">
+              <li>
+                <strong><?php echo h(p_t('step1')); ?></strong>
+                <p class="mono muted" dir="ltr">/Applications/XAMPP/xamppfiles/etc/httpd.conf</p>
+                <pre dir="ltr">Listen 4010</pre>
+              </li>
+              <li>
+                <strong><?php echo h(p_t('step2')); ?></strong>
+                <p class="mono muted" dir="ltr">/Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf</p>
+                <pre dir="ltr">&lt;VirtualHost *:4010&gt;
+    DocumentRoot "/Applications/XAMPP/xamppfiles/htdocs/progetti/nome-progetto"
+    ServerName localhost
+    &lt;Directory "/Applications/XAMPP/xamppfiles/htdocs/progetti/nome-progetto"&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+              </li>
+              <li>
+                <strong><?php echo h(p_t('step3')); ?></strong>
+                <pre dir="ltr">sudo /Applications/XAMPP/xamppfiles/xampp restartapache
+
+http://localhost:4010   →   http://127.0.0.1:4010<?php
+                foreach (array_keys($ips['lan']) as $lanIp) {
+                    echo "\n" . str_pad('', 24) . '→   http://' . h($lanIp) . ':4010';
+                    break;
+                }
+?></pre>
+              </li>
+            </ol>
+          </div>
+
+          <div class="large-4 columns" data-reveal data-reveal-delay="100">
+            <div class="card">
+              <span class="card-icon card-icon--cyan"><?php echo xampp_icon('ports', 22); ?></span>
+              <h3><?php echo h(p_t('conf')); ?></h3>
+              <?php
+              $files = [
+                  '/Applications/XAMPP/xamppfiles/etc/httpd.conf',
+                  '/Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf',
+              ];
+              foreach ($files as $file):
+                  $time = is_readable($file) ? (int) @filemtime($file) : 0;
+              ?>
+              <p class="mono" style="font-size:.78rem;margin:0" dir="ltr"><?php echo h(basename($file)); ?></p>
+              <p class="muted" style="font-size:.75rem;margin:0 0 var(--s-2)">
+                <?php echo $time ? h(p_t('modified')) . ' ' . date('d/m/Y H:i', $time) : h(p_t('never')); ?>
+              </p>
+              <?php endforeach; ?>
+            </div>
           </div>
         </div>
       </section>

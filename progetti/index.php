@@ -31,6 +31,9 @@ function pr_t(string $key): string
             'empty_p' => 'Drop a folder into htdocs/progetti and it will show up here automatically. Each subfolder becomes an entry with its detected technology.',
             'files' => 'files', 'modified' => 'updated', 'vhost' => 'Dedicated port',
             'nomatch' => 'No project matches this filter.', 'all' => 'All',
+            'view_grid' => 'Grid view', 'view_list' => 'List view',
+            'name' => 'Name', 'stack' => 'Stack', 'port' => 'Port', 'date' => 'Last change',
+            'sort_az' => 'A → Z', 'sort_date' => 'Most recent',
         ],
         'it' => [
             'title' => 'Progetti', 'eyebrow' => 'Area di lavoro locale',
@@ -40,6 +43,9 @@ function pr_t(string $key): string
             'empty_p' => 'Aggiungi una cartella dentro htdocs/progetti e comparirà qui automaticamente, con il rilevamento della tecnologia usata.',
             'files' => 'file', 'modified' => 'aggiornato', 'vhost' => 'Porta dedicata',
             'nomatch' => 'Nessun progetto corrisponde al filtro.', 'all' => 'Tutti',
+            'view_grid' => 'Vista a griglia', 'view_list' => 'Vista a elenco',
+            'name' => 'Nome', 'stack' => 'Tecnologia', 'port' => 'Porta', 'date' => 'Ultima modifica',
+            'sort_az' => 'A → Z', 'sort_date' => 'Più recenti',
         ],
     ];
     $lang = xampp_lang();
@@ -240,6 +246,25 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
                 <button type="button" class="chip chip--filter" data-filter="<?php echo h($stack); ?>"><?php echo h($stack); ?></button>
                 <?php endforeach; ?>
               </div>
+
+              <div class="view-switch" role="group" aria-label="<?php echo h(pr_t('view_grid')); ?> / <?php echo h(pr_t('view_list')); ?>">
+                <button type="button" class="view-btn is-active" data-view="grid"
+                        title="<?php echo h(pr_t('view_grid')); ?>" aria-pressed="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/>
+                    <rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>
+                  </svg>
+                  <span class="visually-hidden"><?php echo h(pr_t('view_grid')); ?></span>
+                </button>
+                <button type="button" class="view-btn" data-view="list"
+                        title="<?php echo h(pr_t('view_list')); ?>" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 6.5h16M4 12h16M4 17.5h16"/>
+                  </svg>
+                  <span class="visually-hidden"><?php echo h(pr_t('view_list')); ?></span>
+                </button>
+              </div>
+
               <span class="badge" id="project-count"><?php echo count($projects); ?> <?php echo h(pr_t('count')); ?></span>
             </div>
           </div>
@@ -250,7 +275,7 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
       <section class="section section--tight">
         <div class="row">
           <div class="large-12 columns">
-            <div class="bento" id="project-grid">
+            <div class="bento project-view" id="project-grid" data-view="grid">
               <?php foreach ($projects as $p): ?>
               <a class="card project-card"
                  href="<?php echo $p['port'] ? 'http://localhost:' . (int) $p['port'] . '/' : '/progetti/' . $p['slug'] . '/'; ?>"
@@ -260,19 +285,22 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
                 <span class="card-icon<?php echo $p['color'] ? ' card-icon--' . h($p['color']) : ''; ?>">
                   <?php echo xampp_icon($p['icon'], 22); ?>
                 </span>
-                <h3><?php echo h($p['name']); ?></h3>
-                <p class="project-meta">
-                  <span class="badge"><?php echo h($p['stack']); ?></span>
-                  <?php if ($p['port']): ?>
-                  <span class="badge badge--ok" title="<?php echo h(pr_t('vhost')); ?>">:<?php echo (int) $p['port']; ?></span>
-                  <?php endif; ?>
-                </p>
-                <p class="muted" style="font-size:.8rem">
-                  <?php echo (int) $p['files']; ?> <?php echo h(pr_t('files')); ?>
+                <span class="project-main">
+                  <h3><?php echo h($p['name']); ?></h3>
+                  <span class="project-meta">
+                    <span class="badge"><?php echo h($p['stack']); ?></span>
+                    <?php if ($p['port']): ?>
+                    <span class="badge badge--ok" title="<?php echo h(pr_t('vhost')); ?>">:<?php echo (int) $p['port']; ?></span>
+                    <?php endif; ?>
+                  </span>
+                </span>
+                <span class="project-date muted">
                   <?php if ($p['modified']): ?>
-                  · <?php echo h(pr_t('modified')); ?> <?php echo date('d/m/Y', $p['modified']); ?>
+                  <span class="project-date__label"><?php echo h(pr_t('date')); ?></span>
+                  <time datetime="<?php echo date('c', $p['modified']); ?>"><?php echo date('d/m/Y H:i', $p['modified']); ?></time>
                   <?php endif; ?>
-                </p>
+                  <span class="project-files"><?php echo (int) $p['files']; ?> <?php echo h(pr_t('files')); ?></span>
+                </span>
                 <span class="card-link"><?php echo h(pr_t('open')); ?> <?php echo xampp_icon('arrow', 16); ?></span>
               </a>
               <?php endforeach; ?>
@@ -318,6 +346,32 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
               apply();
             });
           });
+
+          /* Vista a griglia o a elenco, ricordata tra una visita e l'altra */
+          var VIEW_KEY = 'xampp-projects-view';
+          var grid = document.getElementById('project-grid');
+          var viewButtons = Array.prototype.slice.call(document.querySelectorAll('.view-btn'));
+
+          function setView(view) {
+            grid.setAttribute('data-view', view);
+            grid.classList.toggle('bento', view === 'grid');
+            grid.classList.toggle('project-list', view === 'list');
+            viewButtons.forEach(function (btn) {
+              var on = btn.getAttribute('data-view') === view;
+              btn.classList.toggle('is-active', on);
+              btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+            try { localStorage.setItem(VIEW_KEY, view); } catch (e) { /* noop */ }
+          }
+
+          viewButtons.forEach(function (btn) {
+            btn.addEventListener('click', function () { setView(btn.getAttribute('data-view')); });
+          });
+
+          try {
+            var saved = localStorage.getItem(VIEW_KEY);
+            if (saved === 'list') setView('list');
+          } catch (e) { /* noop */ }
 
           // "/" mette a fuoco il campo di ricerca
           document.addEventListener('keydown', function (e) {

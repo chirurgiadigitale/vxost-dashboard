@@ -99,19 +99,46 @@
   var TRANSLATED = ['index.html', 'faq.html', 'howto.html',
                     'howto_platform_links.html', 'howto_shared_links.html'];
 
+  /**
+   * Lingua della pagina: fa fede l'attributo lang del documento (le pagine PHP
+   * scelgono la lingua lato server), con il percorso come ripiego.
+   */
   function currentLang() {
+    var declared = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+    if (declared) {
+      var normalized = declared.replace('-', '_');
+      for (var i = 0; i < LANGS.length; i++) {
+        if (LANGS[i].code === normalized) return LANGS[i].code;
+      }
+      // "ja" -> jp, "pt-br" -> pt_br, "zh-cn" -> zh_cn
+      var alias = { ja: 'jp', pt_br: 'pt_br', zh_cn: 'zh_cn', zh_tw: 'zh_tw' };
+      if (alias[normalized]) return alias[normalized];
+      var short = normalized.split('_')[0];
+      for (var j = 0; j < LANGS.length; j++) {
+        if (LANGS[j].code === short) return LANGS[j].code;
+      }
+    }
+
     var m = window.location.pathname.match(/^\/dashboard\/([a-z_]{2,5})\//);
     if (m) {
-      for (var i = 0; i < LANGS.length; i++) {
-        if (LANGS[i].code === m[1]) return m[1];
+      for (var k = 0; k < LANGS.length; k++) {
+        if (LANGS[k].code === m[1]) return m[1];
       }
     }
     return 'en';
   }
 
+  /**
+   * Destinazione del cambio lingua. Le pagine PHP restano dove sono e
+   * ricevono ?lang=; le pagine statiche saltano alla cartella della lingua.
+   */
   function urlForLang(code) {
     var path = window.location.pathname;
     var file = path.split('/').pop() || 'index.html';
+
+    if (/\.php$/.test(file) || path === '/progetti/' || /\/progetti\/$/.test(path)) {
+      return path + '?lang=' + (code === 'it' ? 'it' : 'en');
+    }
     if (TRANSLATED.indexOf(file) === -1) file = 'index.html';
     return code === 'en' ? '/dashboard/' + file : '/dashboard/' + code + '/' + file;
   }

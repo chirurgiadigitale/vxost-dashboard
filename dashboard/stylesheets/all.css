@@ -1385,14 +1385,128 @@ ul.social li.facebook a::before {
   border-color: transparent;
 }
 
-/* Card progetto */
+/* Selettore vista griglia / elenco */
+.view-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--bg-elev);
+}
+.view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 32px;
+  border: 0;
+  border-radius: calc(var(--r-sm) - 2px);
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.view-btn:hover { color: var(--text); background: var(--surface-2); }
+.view-btn.is-active { color: var(--accent-ink); background: var(--accent); }
+
+/* Card progetto — vista a griglia */
 .project-card .project-meta {
   display: flex;
   flex-wrap: wrap;
   gap: var(--s-2);
   margin: 0;
 }
-.project-card h3 { word-break: break-word; }
+.project-card h3 { word-break: break-word; margin: 0 0 var(--s-2); }
+.project-main { display: block; }
+.project-date {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
+  font-size: .78rem;
+  font-variant-numeric: tabular-nums;
+}
+.project-date__label { display: none; }
+
+/* Vista a elenco: una riga per progetto, a piena larghezza del container */
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.project-list .project-card {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--s-4);
+  width: 100%;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+}
+.project-list .project-card:hover { transform: none; }
+.project-list .card-icon { width: 36px; height: 36px; border-radius: var(--r-sm); }
+.project-list .card-icon svg { width: 18px; height: 18px; }
+.project-list .project-main {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--s-3);
+  min-width: 0;
+}
+.project-list .project-card h3 {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: .95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.project-list .project-meta { flex: none; }
+.project-list .project-date { flex: none; justify-content: flex-end; min-width: 170px; }
+.project-list .project-date__label { display: none; }
+.project-list .project-files { display: none; }
+.project-list .card-link { margin: 0; padding: 0; flex: none; }
+.project-list .card-link svg { width: 16px; height: 16px; }
+
+@media (max-width: 767px) {
+  .project-list .project-main { flex-wrap: wrap; }
+  .project-list .project-date { min-width: 0; font-size: .72rem; }
+  .project-list .card-link span { display: none; }
+}
+
+/* Passi numerati (configurazione porte) */
+.steps { counter-reset: step; list-style: none; padding: 0; margin: var(--s-5) 0 0; }
+.steps > li {
+  position: relative;
+  counter-increment: step;
+  padding-left: var(--s-7);
+  margin-bottom: var(--s-5);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  font-weight: 700;
+}
+.steps > li > strong { display: block; margin-bottom: var(--s-2); color: var(--text); }
+.steps p { margin: 0 0 var(--s-2); font-size: .8rem; }
+.steps pre { margin: 0; }
+
+/* Marchio ufficiale XAMPP */
+.brand-mark { display: block; width: 30px; height: 30px; flex: none; }
+.footer-logo img { display: block; }
 
 .empty-state { align-items: flex-start; max-width: 60ch; }
 
