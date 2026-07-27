@@ -32,9 +32,16 @@ if [ -d "$ROOT/progetti" ]; then
         case "$name" in
             ?|??|???|????|public|src|app|web|test|v4|Theme) continue ;;
         esac
-        hits=$(git diff --cached -U0 | grep -i -- "$name" | grep -v '^-' || true)
+        # Gli URL verso domini pubblici non sono percorsi locali: un nome di
+        # progetto che coincide con un dominio (es. i credits di un'agenzia)
+        # non deve bloccare il commit. Conta il nome come percorso o stringa.
+        hits=$(git diff --cached -U0 \
+            | grep '^+' | grep -v '^+++' \
+            | sed -E 's#https?://[^"'"'"' )]+##g' \
+            | grep -i -- "$name" || true)
         if [ -n "$hits" ]; then
-            red "✗ Il nome del progetto '$name' compare nelle modifiche in stage."
+            red "✗ Il nome del progetto '$name' compare nelle modifiche in stage:"
+            printf '%s\n' "$hits" | head -2 | cut -c1-100 | sed 's/^/    /'
             FAIL=1
         fi
     done

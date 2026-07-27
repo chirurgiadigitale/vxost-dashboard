@@ -37,6 +37,8 @@ function p_t(string $key): string
             'step3' => 'Restart Apache and open the address',
             'aliases' => 'localhost and 127.0.0.1 are the same machine: localhost is the name, 127.0.0.1 the loopback address it resolves to. Both reach the ports below. Use the LAN address to open the site from another device on the same network.',
             'modified' => 'Modified', 'never' => 'unknown', 'conf' => 'Configuration files',
+            'disabled' => 'not active', 'nodedicated' => 'Projects without a dedicated port',
+            'nodedicated_p' => 'These are served by Apache on port 80, as a subfolder of the web root. They do not need a VirtualHost: the address is enough.',
         ],
         'it' => [
             'title' => 'Porte e IP', 'eyebrow' => 'Panoramica di rete',
@@ -57,6 +59,8 @@ function p_t(string $key): string
             'step3' => 'Riavvia Apache e apri l\'indirizzo',
             'aliases' => 'localhost e 127.0.0.1 sono la stessa macchina: localhost è il nome, 127.0.0.1 l\'indirizzo di loopback a cui viene risolto. Entrambi raggiungono le porte qui sotto. Usa invece l\'indirizzo di rete locale per aprire il sito da un altro dispositivo collegato alla stessa rete.',
             'modified' => 'Modificato', 'never' => 'sconosciuto', 'conf' => 'File di configurazione',
+            'disabled' => 'non attivo', 'nodedicated' => 'Progetti senza porta dedicata',
+            'nodedicated_p' => 'Sono serviti da Apache sulla porta 80, come sottocartella della radice web: non hanno bisogno di un VirtualHost, basta l\'indirizzo.',
         ],
     ];
     $lang = xampp_lang();
@@ -152,7 +156,7 @@ function guess_project(string $cwd, string $command): string
     // Fallback: ultima cartella significativa del percorso di lavoro
     if ($cwd !== '' && $cwd !== '/') {
         $name = basename($cwd);
-        if ($name !== '' && !in_array($name, ['/', 'root', 'bin', 'usr', 'tmp', 'var'], true)) {
+        if ($name !== '' && !in_array($name, ['/', 'root', 'bin', 'usr', 'tmp', 'var', 'htdocs'], true)) {
             return $name;
         }
     }
@@ -172,12 +176,48 @@ function well_known(int $port): string
     return $map[$port] ?? '';
 }
 
-/** Elenco delle porte TCP in ascolto. */
+/**
+ * Elenco delle porte TCP in ascolto.
+ *
+ * La fonte primaria e' netstat: lsof mostra soltanto i processi dell'utente
+ * che esegue PHP, quindi da solo nasconde tutto cio' che gira come root —
+ * Apache compreso. lsof resta utile per arricchire le righe con il processo,
+ * dove i permessi lo consentono.
+ */
 function listening_ports(): ?array
 {
+    $netstat = run('netstat -an -p tcp');
     $raw = run('lsof -nP -iTCP -sTCP:LISTEN');
-    if ($raw === null) {
+
+    if ($netstat === null && $raw === null) {
         return null;
+    }
+
+    // Porte viste da netstat: elenco completo, senza dettaglio di processo
+    $fromNetstat = [];
+    foreach (explode("\n", (string) $netstat) as $line) {
+        if (!str_contains($line, 'LISTEN')) {
+            continue;
+        }
+        $cols = preg_split('/\s+/', trim($line));
+        if (count($cols) < 4) {
+            continue;
+        }
+        // "127.0.0.1.4001" oppure "*.80" oppure "::1.3306"
+        if (!preg_match('/^(.*)[.:](\d+)$/', $cols[3], $m)) {
+            continue;
+        }
+        $port = (int) $m[2];
+        $address = $m[1] === '*' ? '0.0.0.0' : $m[1];
+        $fromNetstat[$port] = [
+            'port'    => $port,
+            'address' => $address,
+            'proto'   => str_contains($cols[0], '6') ? 'IPv6' : 'IPv4',
+        ];
+    }
+
+    if ($raw === null) {
+        $raw = '';
     }
 
     // Prima passata: raccoglie i PID, cosi' le cartelle di lavoro si leggono
@@ -245,8 +285,79 @@ function listening_ports(): ?array
         ];
     }
 
+    // Completa con le porte che solo netstat riesce a vedere (servizi di root,
+    // Apache incluso): senza dettaglio di processo, ma con il progetto ricavato
+    // dai VirtualHost.
+    $known = [];
+    foreach ($ports as $p) {
+        $known[$p['port']] = true;
+    }
+
+    $vh = vhosts();
+    foreach ($fromNetstat as $port => $info) {
+        if (isset($known[$port])) {
+            continue;
+        }
+        $root = $vh[$port]['root'] ?? '';
+        $ports['n' . $port] = [
+            'port'     => $port,
+            'address'  => $info['address'],
+            'command'  => isset($vh[$port]) ? 'httpd' : '',
+            'pid'      => 0,
+            'user'     => '',
+            'proto'    => $info['proto'],
+            'cwd'      => $root,
+            'full'     => '',
+            'project'  => $vh[$port]['project'] ?? '',
+            'service'  => well_known($port),
+            'modified' => $root !== '' && is_dir($root) ? (int) @filemtime($root) : 0,
+        ];
+    }
+
     uasort($ports, static fn(array $a, array $b): int => $a['port'] <=> $b['port']);
     return $ports;
+}
+
+/**
+ * Progetti raggiungibili senza una porta dedicata, cioe' serviti da Apache
+ * sulla porta 80 come sottocartella di htdocs/progetti.
+ *
+ * @param array<int, array{project: string}> $vh virtual host gia' letti
+ * @return array<int, array{name: string, url: string, modified: int}>
+ */
+function path_served_projects(array $vh): array
+{
+    $base = '/Applications/XAMPP/xamppfiles/htdocs/progetti';
+    if (!is_dir($base)) {
+        return [];
+    }
+
+    // Nomi gia' coperti da un VirtualHost: non vanno ripetuti
+    $withPort = [];
+    foreach ($vh as $entry) {
+        if ($entry['project'] !== '') {
+            $withPort[strtolower($entry['project'])] = true;
+        }
+    }
+
+    $out = [];
+    foreach (scandir($base) ?: [] as $entry) {
+        if ($entry === '.' || $entry === '..' || str_starts_with($entry, '.')) {
+            continue;
+        }
+        $dir = $base . '/' . $entry;
+        if (!is_dir($dir) || isset($withPort[strtolower($entry)])) {
+            continue;
+        }
+        $out[] = [
+            'name'     => $entry,
+            'url'      => '/progetti/' . rawurlencode($entry) . '/',
+            'modified' => (int) @filemtime($dir),
+        ];
+    }
+
+    usort($out, static fn(array $a, array $b): int => $b['modified'] <=> $a['modified']);
+    return $out;
 }
 
 /**
@@ -282,7 +393,7 @@ function http_ports(array $ports): array
     $request = "HEAD / HTTP/1.0\r\nHost: localhost\r\nConnection: close\r\n\r\n";
     $pending = $sockets;   // in attesa di connessione + invio
     $waiting = [];         // richiesta inviata, in attesa di risposta
-    $deadline = microtime(true) + 0.7;   // su localhost la risposta e' immediata
+    $deadline = microtime(true) + 1.8;   // un progetto pesante puo' rispondere in ~1s
 
     while (($pending || $waiting) && microtime(true) < $deadline) {
         // 1. Socket appena connessi: invia la richiesta
@@ -365,14 +476,19 @@ function vhosts(): array
         return $out;
     }
 
-    // Via i commenti prima del parsing, altrimenti si leggono vhost inattivi
-    $lines = [];
+    // I blocchi commentati restano nel file ma Apache non li carica: li si
+    // legge comunque, per poterli mostrare come "configurato ma non attivo".
+    $active = [];
+    $disabled = [];
     foreach (explode("\n", (string) file_get_contents($file)) as $line) {
-        if (!str_starts_with(ltrim($line), '#')) {
-            $lines[] = $line;
+        if (str_starts_with(ltrim($line), '#')) {
+            $disabled[] = ltrim(ltrim($line), '# ');
+        } else {
+            $active[] = $line;
         }
     }
-    $conf = implode("\n", $lines);
+    $conf = implode("\n", $active);
+    $off = implode("\n", $disabled);
 
     if (preg_match_all('/<VirtualHost\s+([^>]+)>(.*?)<\/VirtualHost>/is', $conf, $blocks, PREG_SET_ORDER)) {
         foreach ($blocks as $block) {
@@ -390,6 +506,32 @@ function vhosts(): array
                 'root'     => $docroot,
                 'project'  => guess_project($docroot, ''),
                 'modified' => is_dir($docroot) ? (int) @filemtime($docroot) : 0,
+                'enabled'  => true,
+            ];
+        }
+    }
+
+    // Stessi dati per i blocchi commentati, marcati come non attivi
+    if (preg_match_all('/<VirtualHost\s+([^>]+)>(.*?)<\/VirtualHost>/is', $off, $blocks, PREG_SET_ORDER)) {
+        foreach ($blocks as $block) {
+            preg_match('/ServerName\s+(\S+)/i', $block[2], $name);
+            preg_match('/DocumentRoot\s+"?([^"\n]+?)"?\s*$/im', $block[2], $root);
+            $port = 0;
+            if (preg_match('/:(\d+)\s*$/', trim($block[1]), $bind)) {
+                $port = (int) $bind[1];
+            }
+            if ($port === 0 || isset($out[$port])) {
+                continue;
+            }
+
+            $docroot = trim($root[1] ?? '');
+            $out[$port] = [
+                'port'     => $port,
+                'name'     => $name[1] ?? 'localhost',
+                'root'     => $docroot,
+                'project'  => guess_project($docroot, ''),
+                'modified' => is_dir($docroot) ? (int) @filemtime($docroot) : 0,
+                'enabled'  => false,
             ];
         }
     }
@@ -412,9 +554,11 @@ if ($ports !== null) {
         }
     }
     $isHttp = http_ports(array_values($candidates));
+    $vhPorts = vhosts();
 
     foreach ($ports as $p) {
-        if (!empty($isHttp[$p['port']])) {
+        // Un VirtualHost e' per definizione un servizio web: non dipende dal probe
+        if (!empty($isHttp[$p['port']]) || isset($vhPorts[$p['port']])) {
             $web[] = $p;
         } else {
             $other[] = $p;
@@ -584,9 +728,12 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
             <?php else: ?>
             <div class="bento">
               <?php foreach ($vh as $v): ?>
-              <a class="card" href="http://<?php echo h($v['name']); ?>:<?php echo (int) $v['port']; ?>/" target="_blank" rel="noopener">
+              <a class="card<?php echo $v['enabled'] ? '' : ' card--off'; ?>"
+                 href="http://<?php echo h($v['name']); ?>:<?php echo (int) $v['port']; ?>/" target="_blank" rel="noopener">
                 <span class="card-icon card-icon--violet"><?php echo xampp_icon('globe', 22); ?></span>
-                <h3><?php echo h($v['project'] !== '' ? $v['project'] : $v['name']); ?></h3>
+                <h3><?php echo h($v['project'] !== '' ? $v['project'] : $v['name']); ?>
+                  <?php if (!$v['enabled']): ?><span class="badge badge--warn"><?php echo h(p_t('disabled')); ?></span><?php endif; ?>
+                </h3>
                 <p class="mono" dir="ltr"><?php echo h($v['name']); ?>:<?php echo (int) $v['port']; ?></p>
                 <p class="mono port-path" dir="ltr" title="<?php echo h($v['root']); ?>"><?php echo h($v['root']); ?></p>
                 <?php if ($v['modified']): ?>
@@ -600,6 +747,37 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
           </div>
         </div>
       </section>
+
+      <!-- PROGETTI SENZA PORTA DEDICATA -->
+      <?php $pathProjects = path_served_projects($vh); if ($pathProjects): ?>
+      <section class="section section--tight">
+        <div class="row">
+          <div class="large-12 columns" data-reveal>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow"><?php echo h(p_t('nodedicated')); ?></p>
+                <h2><span class="mono" dir="ltr">localhost/progetti/…</span></h2>
+              </div>
+              <p class="muted"><?php echo count($pathProjects); ?></p>
+            </div>
+            <p class="muted" style="max-width:80ch"><?php echo h(p_t('nodedicated_p')); ?></p>
+
+            <div class="bento howto-grid">
+              <?php foreach ($pathProjects as $p): ?>
+              <a class="card" href="<?php echo h($p['url']); ?>" target="_blank" rel="noopener">
+                <span class="card-icon"><?php echo xampp_icon('folder', 20); ?></span>
+                <h3><?php echo h($p['name']); ?></h3>
+                <?php if ($p['modified']): ?>
+                <span class="badge"><?php echo date('d/m/Y', $p['modified']); ?></span>
+                <?php endif; ?>
+                <span class="card-link"><?php echo xampp_icon('external', 16); ?></span>
+              </a>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        </div>
+      </section>
+      <?php endif; ?>
 
       <!-- COME SI APRE UNA PORTA -->
       <section class="section">

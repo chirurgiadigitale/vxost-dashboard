@@ -191,17 +191,31 @@ function xampp_header(string $title, string $active = '', bool $full = false): v
 <?php
 }
 
+/** Versione di XAMPP e del restyling, mostrate nel footer. */
+const XAMPP_VERSION = '8.2.4';
+const DASHBOARD_VERSION = '8.19.9';
+
 /** Chiusura di <main> e pie' di pagina identico a quello delle pagine statiche. */
 function xampp_footer(): void
 {
     $base = xampp_base();
-    $uid  = 'fla' . substr(md5($base), 0, 5);
+    $isIt = xampp_lang() === 'it';
+
+    $about = $isIt
+        ? 'Una distribuzione Apache gratuita che installa un server web completo sul tuo computer: Apache, il database MariaDB, PHP e Perl, pronti per sviluppare e collaudare in locale senza toccare un server di produzione.'
+        : 'A free Apache distribution that installs a complete web server on your computer: Apache, the MariaDB database, PHP and Perl, ready to develop and test locally without touching a production server.';
+
+    $credits = $isIt
+        ? 'Questa versione di XAMPP è stata risviluppata e rielaborata stilisticamente e strutturalmente dallo staff di %s nel luglio 2026. Sperando di dare un contributo significativo a questo bellissimo progetto open source.'
+        : 'This version of XAMPP was redeveloped and reworked, both visually and structurally, by the %s team in July 2026. In the hope of making a meaningful contribution to this beautiful open source project.';
+
+    $cd = '<a href="https://www.chirurgiadigitale.it" target="_blank" rel="noopener">Chirurgia Digitale</a>';
     ?>
     </main>
 
     <footer class="footer">
       <div class="row footer-main">
-        <div class="large-4 columns footer-brand">
+        <div class="large-3 columns footer-brand">
           <p class="footer-logo">
             <img src="/dashboard/images/xampp-logo.svg" width="26" height="26" alt="" />
             <span>XAMPP</span>
@@ -213,7 +227,17 @@ function xampp_footer(): void
           </ul>
         </div>
 
-        <div class="large-4 columns">
+        <div class="large-3 columns footer-about">
+          <h4 class="footer-title"><?php echo $isIt ? "Cos'è XAMPP" : 'What XAMPP is'; ?></h4>
+          <p class="muted"><?php echo h($about); ?></p>
+          <p class="footer-version">
+            <span>XAMPP <?php echo XAMPP_VERSION; ?></span> ·
+            <strong>v<?php echo DASHBOARD_VERSION; ?></strong>
+            <span><?php echo $isIt ? 'restyling' : 'restyling'; ?></span>
+          </p>
+        </div>
+
+        <div class="large-2 columns">
           <h4 class="footer-title"><?php echo h(t('nav')); ?></h4>
           <ul class="footer_links footer_links--stack">
             <li><a href="<?php echo h($base); ?>index.html"><?php echo h(t('dash')); ?></a></li>
@@ -225,7 +249,7 @@ function xampp_footer(): void
           </ul>
         </div>
 
-        <div class="large-4 columns">
+        <div class="large-2 columns">
           <h4 class="footer-title"><?php echo h(t('project')); ?></h4>
           <ul class="footer_links footer_links--stack">
             <li><a href="https://www.apachefriends.org/" target="_blank" rel="noopener">Apache Friends</a></li>
@@ -234,6 +258,11 @@ function xampp_footer(): void
             <li><a href="https://community.apachefriends.org" target="_blank" rel="noopener">Community forum</a></li>
             <li><a href="https://www.apachefriends.org/blog.html" target="_blank" rel="noopener">Blog</a></li>
           </ul>
+        </div>
+
+        <div class="large-2 columns footer-credits">
+          <h4 class="footer-title"><?php echo $isIt ? 'Crediti' : 'Credits'; ?></h4>
+          <p class="muted"><?php printf($credits, $cd); ?></p>
         </div>
       </div>
 
