@@ -783,6 +783,15 @@ a.card:hover .card-link svg { transform: translateX(3px); }
   color: var(--text);
 }
 .howto-grid .card .card-link { margin: 0; padding: 0; flex: none; color: var(--text-muted); }
+/* Marca la lingua del documento collegato (le guide sono in inglese) */
+.badge--lang {
+  flex: none;
+  padding: 2px var(--s-2);
+  font-size: .62rem;
+  letter-spacing: .08em;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
 .howto-grid .card:hover .card-link { color: var(--accent); }
 .howto-grid .card-icon { width: 40px; height: 40px; border-radius: var(--r-sm); }
 .howto-grid .card-icon svg { width: 20px; height: 20px; }
@@ -1102,21 +1111,40 @@ a.pdf span { color: var(--text-muted); font-family: var(--font-mono); font-size:
    11. ARTICOLI ASCIIDOCTOR (cartella /docs)
    -------------------------------------------------------------------------- */
 article.asciidoctor {
-  max-width: 80ch;
+  width: 100%;
+  max-width: none;               /* la guida occupa tutto il container */
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   padding: clamp(var(--s-4), 3vw, var(--s-7));
   box-shadow: var(--sh-1);
 }
+/* Il testo lungo resta leggibile anche a piena larghezza */
+article.asciidoctor .paragraph p,
+article.asciidoctor .ulist li,
+article.asciidoctor .olist li { max-width: 90ch; }
 article.asciidoctor > h1:first-child { margin-top: 0; }
 article.asciidoctor h1 { font-size: clamp(1.6rem, 1.3rem + 1.4vw, 2.2rem); }
 article.asciidoctor h2 { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--border); }
 article.asciidoctor h3 { margin-top: var(--s-5); }
 article.asciidoctor .paragraph p { margin-bottom: var(--s-4); }
 article.asciidoctor .listingblock, article.asciidoctor .literalblock { margin-bottom: var(--s-4); }
+/* Tutte le figure hanno la stessa larghezza e la stessa cornice */
 article.asciidoctor .imageblock { margin: var(--s-5) 0; }
-article.asciidoctor .imageblock img { border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--sh-2); }
+article.asciidoctor .imageblock .content { display: block; }
+article.asciidoctor .imageblock img,
+article.asciidoctor .content > img,
+.accordion dd img {
+  display: block;
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  margin-inline: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-2);
+  background: var(--bg-elev);
+}
 article.asciidoctor .title { font-size: .85rem; color: var(--text-muted); margin-top: var(--s-2); }
 article.asciidoctor .olist, article.asciidoctor .ulist { margin-bottom: var(--s-4); }
 article.asciidoctor table { width: 100%; border-collapse: collapse; margin-bottom: var(--s-4); font-size: .92rem; }

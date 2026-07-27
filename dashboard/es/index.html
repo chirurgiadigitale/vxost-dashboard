@@ -2,13 +2,11 @@
 <html lang="es">
   <head>
     <meta charset="utf-8">
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Use title if it's in the page YAML frontmatter -->
-    <title>Welcome to XAMPP</title>
+    <title>XAMPP — Entorno de desarrollo local</title>
 
-    <meta name="description" content="XAMPP is an easy to install Apache distribution containing MariaDB, PHP and Perl." />
+    <meta name="description" content="XAMPP es una distribución de Apache fácil de instalar que incluye MariaDB, PHP y Perl." />
     <meta name="keywords" content="xampp, apache, php, perl, mariadb, open source distribution" />
 
     <link href="/dashboard/stylesheets/normalize.css" rel="stylesheet" type="text/css" /><link href="/dashboard/stylesheets/all.css" rel="stylesheet" type="text/css" />
@@ -17,24 +15,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-
     <link href="/dashboard/images/favicon.png" rel="icon" type="image/png" />
-
-
   </head>
 
   <body class="es es_index index">
     <a class="skip-link" href="#main">Ir al contenido</a>
+
     <header class="header contain-to-grid">
       <nav class="top-bar" data-topbar>
         <ul class="title-area">
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/es/index.html">
               <svg class="brand-mark" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
-                <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#bgindex)" fill-opacity=".18" stroke="url(#bgindex)" stroke-width="1.4"/>
-                <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#bgindex)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#bges)" fill-opacity=".18" stroke="url(#bges)" stroke-width="1.4"/>
+                <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#bges)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <defs>
-                  <linearGradient id="bgindex" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                  <linearGradient id="bges" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
                     <stop stop-color="#22C55E"/><stop offset=".55" stop-color="#38BDF8"/><stop offset="1" stop-color="#A78BFA"/>
                   </linearGradient>
                 </defs>
@@ -43,65 +39,269 @@
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
-            <a href="#">
-              <span>Menu</span>
-            </a>
+            <a href="#"><span>Menu</span></a>
           </li>
         </ul>
 
         <section class="top-bar-section">
-          <!-- Left Nav Section -->
           <ul class="left">
-              <li class="item "><a href="/dashboard/es/faq.html">Preguntas frecuentes</a></li>
-              <li class="item "><a href="/dashboard/es/howto.html">HOW-TO Guides</a></li>
-              <li class="item "><a target="_blank" href="/dashboard/phpinfo.php">PHPInfo</a></li>
-              <li class="item "><a href="/phpmyadmin/">phpMyAdmin</a></li>
-              <li class="item "><a href="/progetti/">Proyectos</a></li>
+            <li class="item active"><a href="/dashboard/es/index.html">Panel</a></li>
+            <li class="item"><a href="/dashboard/es/faq.html">Preguntas frecuentes</a></li>
+            <li class="item"><a href="/dashboard/es/howto.html">Guías HOW-TO</a></li>
+            <li class="item"><a target="_blank" href="/dashboard/phpinfo.php">PHPInfo</a></li>
+            <li class="item"><a href="/phpmyadmin/">phpMyAdmin</a></li>
+            <li class="item"><a href="/progetti/">Proyectos</a></li>
           </ul>
         </section>
       </nav>
     </header>
 
     <main id="main" class="wrapper">
-      <div class="hero">
-  <div class="row">
-    <div class="large-12 columns">
-      <h1><img src="/dashboard/images/xampp-logo.svg" />XAMPP <span>Apache + MariaDB + PHP + Perl</span></h1>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="large-12 columns">
-    <h2>Welcome to XAMPP for OS X 8.2.4</h2>
-  </div>
-</div>
-<div class="row">
-  <div class="large-12 columns">
-    <p>
-      You have successfully installed XAMPP on this system! Now you can start using Apache, MariaDB, PHP and other components.
-      You can find more info in the <a href="/dashboard/es/faq.html">Preguntas frecuentes</a> section or check the <a href="/dashboard/es/howto.html">HOW-TO Guides</a> for getting started with PHP applications.
-    </p>
-    <p>
-      XAMPP is meant only for development purposes. It has certain configuration settings that make it easy to develop locally but that are insecure if you want to have your installation accessible to others.
-    </p>
-    <p>
-      Start the XAMPP Control Panel to check the server status.
-    </p>
-  </div>
-</div>
-<div class="row">
-  <div class="large-12 columns">
-    <h3>Comunidad</h3>
-  </div>
-</div>
-<div class="row">
-  <div class="large-12 columns">
-    <p>
-      XAMPP tiene más de 10 años &ndash; hay una gran comunidad detrás del proyecto. Puedes participar uniéndote a nuestros <a href="https://community.apachefriends.org">Foros</a>, uniéndote a nuestro <a href="https://www.facebook.com/we.are.xampp">Facebook</a>, o siguiendo nuestras hazañas en <a href="https://twitter.com/apachefriends">Twitter</a>.
-    </p>
-  </div>
-</div>
 
+      <!-- HERO -->
+      <section class="hero">
+        <div class="row">
+          <div class="large-7 columns" data-reveal>
+            <p class="eyebrow">Entorno de desarrollo local</p>
+            <h1>XAMPP <span>Apache · MariaDB · PHP · Perl — ejecutándose en esta máquina</span></h1>
+            <p class="hero-lead">XAMPP se ha instalado correctamente en este sistema: todo lo necesario para crear, probar y depurar aplicaciones PHP en local ya está funcionando.</p>
+            <div class="hero-actions">
+              <a class="btn btn--primary" href="/phpmyadmin/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Abrir phpMyAdmin</a>
+              <a class="btn btn--ghost" href="/progetti/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h3.2c.6 0 1.1.3 1.5.7l1 1.3h7.3A2.5 2.5 0 0 1 21 10.5v7A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>Ver proyectos</a>
+            </div>
+          </div>
+
+          <div class="large-5 columns" data-reveal data-reveal-delay="120">
+            <div class="terminal" role="img" aria-label="XAMPP stack status">
+              <div class="terminal-bar"><i></i><i></i><i></i><em>~/xamppfiles</em></div>
+              <pre class="terminal-body" dir="ltr"><span class="t-prompt">$</span> xampp status
+<span class="t-key">Apache</span>      <span class="t-dim">…</span> running   <span class="t-dim">:80 · :443</span>
+<span class="t-key">MariaDB</span>     <span class="t-dim">…</span> running   <span class="t-dim">:3306</span>
+<span class="t-key">ProFTPD</span>     <span class="t-dim">…</span> ready     <span class="t-dim">:21</span>
+
+<span class="t-prompt">$</span> php -v
+PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v4.2.4</span>
+
+<span class="t-prompt">$</span> _</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATO SERVIZI -->
+      <section class="section section--tight">
+        <div class="row">
+          <div class="large-12 columns" data-reveal>
+            <div class="status-grid">
+              <div class="stat">
+                <span class="dot dot--pulse" style="color:var(--accent)"></span>
+                <span><span class="stat-label">Apache</span><br><span class="stat-value">En línea</span></span>
+              </div>
+              <div class="stat" data-probe="/phpmyadmin/">
+                <span class="dot" style="color:var(--text-muted)"></span>
+                <span><span class="stat-label">phpMyAdmin</span><br><span class="stat-value">Comprobando…</span></span>
+              </div>
+              <div class="stat" data-probe="/progetti/">
+                <span class="dot" style="color:var(--text-muted)"></span>
+                <span><span class="stat-label">Proyectos</span><br><span class="stat-value">Comprobando…</span></span>
+              </div>
+              <div class="stat">
+                <span class="dot" style="color:var(--violet)"></span>
+                <span><span class="stat-label">PHP</span><br><span class="stat-value">8.2.4</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACCESSO RAPIDO -->
+      <section class="section">
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="section-head" data-reveal>
+              <div>
+                <p class="eyebrow">Acceso rápido</p>
+                <h2>Tus herramientas locales</h2>
+              </div>
+              <p class="muted">Todo servido desde <span class="mono" dir="ltr">http://localhost</span></p>
+            </div>
+
+            <div class="bento" data-reveal data-reveal-delay="80">
+              <a class="card" href="/dashboard/es/faq.html">
+                <span class="card-icon card-icon--amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.2 2.7c-.8.4-1.3 1.1-1.3 2M12 17h.01"/></svg></span>
+                <h3>Preguntas frecuentes</h3>
+                <p>Instalar, iniciar, detener y proteger XAMPP, y resolver los problemas más comunes.</p>
+                <span class="card-link">Leer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </a>
+              <a class="card" href="/dashboard/es/howto.html">
+                <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5z"/><path d="M8 7.5h7M8 11h5"/></svg></span>
+                <h3>Guías HOW-TO</h3>
+                <p>Hosts virtuales, Xdebug, SQLite, copias de seguridad, FTP y más guías paso a paso.</p>
+                <span class="card-link">Explorar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </a>
+              <a class="card" href="/progetti/">
+                <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h3.2c.6 0 1.1.3 1.5.7l1 1.3h7.3A2.5 2.5 0 0 1 21 10.5v7A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></span>
+                <h3>Proyectos</h3>
+                <p>Todos los sitios y aplicaciones de la carpeta <span class="mono">htdocs/progetti</span>.</p>
+                <span class="card-link">Explorar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </a>
+              <a class="card" href="/phpmyadmin/">
+                <span class="card-icon card-icon--cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span>
+                <h3>phpMyAdmin</h3>
+                <p>Gestiona bases de datos MariaDB, ejecuta consultas SQL, importa y exporta volcados.</p>
+                <span class="card-link">Abrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </a>
+              <a class="card" href="/dashboard/phpinfo.php" target="_blank" rel="noopener">
+                <span class="card-icon card-icon--violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg></span>
+                <h3>PHPInfo</h3>
+                <p>Configuración completa de PHP: módulos, límites, rutas ini y opciones de compilación.</p>
+                <span class="card-link">Inspeccionar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </a>
+
+              <div class="card">
+                <span class="card-icon card-icon--cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2.5"/><path d="M8 21h8M12 18v3M7.5 9l2 2-2 2M12 13h4"/></svg></span>
+                <h3>Panel de control</h3>
+                <p>Inicia el panel de control de XAMPP (<span class="mono">manager-osx</span>) para comprobar el estado de los servidores.</p>
+                <span class="badge"><span class="dot" style="color:var(--text-muted)"></span> Aplicación de escritorio</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STACK -->
+      <section class="section section--tight">
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="section-head" data-reveal>
+              <div>
+                <p class="eyebrow">El stack</p>
+                <h2>Qué está instalado</h2>
+              </div>
+            </div>
+            <div class="bento" data-reveal>
+              <div class="card">
+                <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18V9.5A2.5 2.5 0 0 1 5.5 7h13A2.5 2.5 0 0 1 21 9.5V18"/><path d="M2 18h20M7 11.5h10M7 14.5h6"/></svg></span>
+                <h4>Apache</h4>
+                <p>Servidor HTTP en los puertos 80 y 443, con soporte para hosts virtuales.</p>
+              </div>
+              <div class="card">
+                <span class="card-icon card-icon--cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span>
+                <h4>MariaDB</h4>
+                <p>Base de datos relacional en el puerto 3306, totalmente compatible con MySQL.</p>
+              </div>
+              <div class="card">
+                <span class="card-icon card-icon--violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 8-5 4 5 4M15 8l5 4-5 4"/></svg></span>
+                <h4>PHP 8.2.4</h4>
+                <p>Lenguaje del lado del servidor con Zend Engine 4 y las extensiones habituales.</p>
+              </div>
+              <div class="card">
+                <span class="card-icon card-icon--amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V6.5A2.5 2.5 0 0 1 6.5 4H14l6 6v10z"/><path d="M14 4v6h6M8 15.5h8M8 12h4"/></svg></span>
+                <h4>Perl</h4>
+                <p>Lenguaje de scripting disponible para CGI y tareas de automatización.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOTE -->
+      <section class="section">
+        <div class="row">
+          <div class="large-7 columns" data-reveal>
+            <div class="admonitionblock warning">
+              <h3 style="font-size:1.05rem">Solo para desarrollo</h3>
+              <p>XAMPP está pensado únicamente para desarrollo. Su configuración facilita el trabajo local, pero resulta insegura si la instalación queda accesible para otras personas.</p>
+              <p class="muted" style="margin-bottom:0">Ejecuta <span class="mono" dir="ltr">sudo /Applications/XAMPP/xamppfiles/xampp security</span> para reforzar la seguridad de la instalación.</p>
+            </div>
+          </div>
+
+          <div class="large-5 columns" data-reveal data-reveal-delay="100">
+            <div class="card">
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 19v-1.5a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3V19"/><circle cx="9.5" cy="8" r="3.2"/><path d="M21 19v-1.5a3 3 0 0 0-2.2-2.9M15.5 5.1a3.2 3.2 0 0 1 0 5.8"/></svg></span>
+              <h3>Comunidad</h3>
+              <p>XAMPP existe desde hace más de 10 años y cuenta con una enorme comunidad. Puedes participar en nuestros <a href="https://community.apachefriends.org">Foros</a>, seguirnos en <a href="https://www.facebook.com/we.are.xampp">Facebook</a> o en <a href="https://twitter.com/apachefriends">Twitter</a>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LINGUE -->
+      <section class="section section--tight" id="languages">
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="section-head" data-reveal>
+              <div>
+                <p class="eyebrow">Idiomas</p>
+                <h2>Elige tu idioma</h2>
+              </div>
+              <p class="muted">El panel está disponible en 15 idiomas</p>
+            </div>
+            <div class="lang-grid" data-reveal>
+              <a class="lang-card" href="/dashboard/index.html" lang="en" hreflang="en">
+                <span class="lang-card__code">EN</span>
+                <span class="lang-card__name">English</span>
+              </a>
+              <a class="lang-card" href="/dashboard/it/index.html" lang="it" hreflang="it">
+                <span class="lang-card__code">IT</span>
+                <span class="lang-card__name">Italiano</span>
+              </a>
+              <a class="lang-card" href="/dashboard/de/index.html" lang="de" hreflang="de">
+                <span class="lang-card__code">DE</span>
+                <span class="lang-card__name">Deutsch</span>
+              </a>
+              <a class="lang-card lang-card--current" href="/dashboard/es/index.html" lang="es" hreflang="es" aria-current="page">
+                <span class="lang-card__code">ES</span>
+                <span class="lang-card__name">Español</span>
+              </a>
+              <a class="lang-card" href="/dashboard/fr/index.html" lang="fr" hreflang="fr">
+                <span class="lang-card__code">FR</span>
+                <span class="lang-card__name">Français</span>
+              </a>
+              <a class="lang-card" href="/dashboard/pt_br/index.html" lang="pt-BR" hreflang="pt-BR">
+                <span class="lang-card__code">PT</span>
+                <span class="lang-card__name">Português (BR)</span>
+              </a>
+              <a class="lang-card" href="/dashboard/ro/index.html" lang="ro" hreflang="ro">
+                <span class="lang-card__code">RO</span>
+                <span class="lang-card__name">Română</span>
+              </a>
+              <a class="lang-card" href="/dashboard/hu/index.html" lang="hu" hreflang="hu">
+                <span class="lang-card__code">HU</span>
+                <span class="lang-card__name">Magyar</span>
+              </a>
+              <a class="lang-card" href="/dashboard/pl/index.html" lang="pl" hreflang="pl">
+                <span class="lang-card__code">PL</span>
+                <span class="lang-card__name">Polski</span>
+              </a>
+              <a class="lang-card" href="/dashboard/ru/index.html" lang="ru" hreflang="ru">
+                <span class="lang-card__code">RU</span>
+                <span class="lang-card__name">Русский</span>
+              </a>
+              <a class="lang-card" href="/dashboard/tr/index.html" lang="tr" hreflang="tr">
+                <span class="lang-card__code">TR</span>
+                <span class="lang-card__name">Türkçe</span>
+              </a>
+              <a class="lang-card" href="/dashboard/jp/index.html" lang="ja" hreflang="ja">
+                <span class="lang-card__code">JP</span>
+                <span class="lang-card__name">日本語</span>
+              </a>
+              <a class="lang-card" href="/dashboard/zh_cn/index.html" lang="zh-CN" hreflang="zh-CN">
+                <span class="lang-card__code">CN</span>
+                <span class="lang-card__name">简体中文</span>
+              </a>
+              <a class="lang-card" href="/dashboard/zh_tw/index.html" lang="zh-TW" hreflang="zh-TW">
+                <span class="lang-card__code">TW</span>
+                <span class="lang-card__name">繁體中文</span>
+              </a>
+              <a class="lang-card" href="/dashboard/ur/index.html" lang="ur" hreflang="ur">
+                <span class="lang-card__code">UR</span>
+                <span class="lang-card__name">اردو</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
     </main>
 
@@ -110,9 +310,9 @@
         <div class="large-4 columns footer-brand">
           <p class="footer-logo">
             <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
-              <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#fgindex)" fill-opacity=".18" stroke="url(#fgindex)" stroke-width="1.4"/>
-              <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#fgindex)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <defs><linearGradient id="fgindex" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+              <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#fges)" fill-opacity=".18" stroke="url(#fges)" stroke-width="1.4"/>
+              <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#fges)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs><linearGradient id="fges" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
                 <stop stop-color="#22C55E"/><stop offset=".55" stop-color="#38BDF8"/><stop offset="1" stop-color="#A78BFA"/>
               </linearGradient></defs>
             </svg>
@@ -128,9 +328,10 @@
         <div class="large-4 columns">
           <h4 class="footer-title">Navegación</h4>
           <ul class="footer_links footer_links--stack">
+            <li><a href="/dashboard/es/index.html">Panel</a></li>
             <li><a href="/dashboard/es/faq.html">Preguntas frecuentes</a></li>
-            <li><a href="/dashboard/es/howto.html">HOW-TO Guides</a></li>
-            <li><a href="/dashboard/phpinfo.php" target="_blank" rel="noopener">PHPInfo</a></li>
+            <li><a href="/dashboard/es/howto.html">Guías HOW-TO</a></li>
+            <li><a href="/dashboard/phpinfo.php">PHPInfo</a></li>
             <li><a href="/phpmyadmin/">phpMyAdmin</a></li>
             <li><a href="/progetti/">Proyectos</a></li>
           </ul>
@@ -149,12 +350,32 @@
       </div>
 
       <div class="row footer-bottom">
-        <p class="footer_copyright">© <span data-year>2026</span> Apache Friends — XAMPP is released under the GNU General Public License.</p>
+        <p class="footer_copyright">© <span data-year>2026</span> Apache Friends — XAMPP se distribuye bajo la Licencia Pública General de GNU.</p>
         <a class="footer-top" href="#main">Volver arriba ↑</a>
       </div>
     </footer>
 
-    <!-- JS Libraries -->
     <script src="/dashboard/javascripts/all.js" type="text/javascript"></script>
+    <script>
+      /* Sonda di raggiungibilita' dei servizi locali (stessa origine, nessun dato esterno) */
+      (function () {
+        var LABELS = { ok: 'Accesible', ko: 'No accesible' };
+        Array.prototype.forEach.call(document.querySelectorAll('[data-probe]'), function (box) {
+          var dot = box.querySelector('.dot');
+          var value = box.querySelector('.stat-value');
+          fetch(box.getAttribute('data-probe'), { method: 'HEAD', cache: 'no-store' })
+            .then(function (res) {
+              var ok = res.ok || res.status === 401 || res.status === 403;
+              dot.style.color = ok ? 'var(--accent)' : 'var(--danger)';
+              if (ok) dot.classList.add('dot--pulse');
+              value.textContent = ok ? LABELS.ok : LABELS.ko;
+            })
+            .catch(function () {
+              dot.style.color = 'var(--danger)';
+              value.textContent = LABELS.ko;
+            });
+        });
+      })();
+    </script>
   </body>
 </html>

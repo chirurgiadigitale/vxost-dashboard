@@ -27,10 +27,10 @@
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/it/index.html">
               <svg class="brand-mark" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
-                <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#brandGradIt)" fill-opacity=".18" stroke="url(#brandGradIt)" stroke-width="1.4"/>
-                <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#brandGradIt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#bgit)" fill-opacity=".18" stroke="url(#bgit)" stroke-width="1.4"/>
+                <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#bgit)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <defs>
-                  <linearGradient id="brandGradIt" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                  <linearGradient id="bgit" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
                     <stop stop-color="#22C55E"/><stop offset=".55" stop-color="#38BDF8"/><stop offset="1" stop-color="#A78BFA"/>
                   </linearGradient>
                 </defs>
@@ -64,29 +64,20 @@
           <div class="large-7 columns" data-reveal>
             <p class="eyebrow">Ambiente di sviluppo locale</p>
             <h1>XAMPP <span>Apache · MariaDB · PHP · Perl — in esecuzione su questa macchina</span></h1>
-            <p class="hero-lead">
-              XAMPP è stato installato correttamente su questo sistema: tutto ciò che serve per
-              sviluppare, testare ed eseguire il debug delle applicazioni PHP in locale è già attivo.
-            </p>
+            <p class="hero-lead">XAMPP è stato installato correttamente su questo sistema: tutto ciò che serve per sviluppare, testare ed eseguire il debug delle applicazioni PHP in locale è già attivo.</p>
             <div class="hero-actions">
-              <a class="btn btn--primary" href="/phpmyadmin/">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
-                Apri phpMyAdmin
-              </a>
-              <a class="btn btn--ghost" href="/progetti/">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h3.2c.6 0 1.1.3 1.5.7l1 1.3h7.3A2.5 2.5 0 0 1 21 10.5v7A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>
-                Vai ai progetti
-              </a>
+              <a class="btn btn--primary" href="/phpmyadmin/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Apri phpMyAdmin</a>
+              <a class="btn btn--ghost" href="/progetti/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h3.2c.6 0 1.1.3 1.5.7l1 1.3h7.3A2.5 2.5 0 0 1 21 10.5v7A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>Vai ai progetti</a>
             </div>
           </div>
 
           <div class="large-5 columns" data-reveal data-reveal-delay="120">
-            <div class="terminal" role="img" aria-label="Terminale con lo stato dello stack XAMPP locale">
+            <div class="terminal" role="img" aria-label="XAMPP stack status">
               <div class="terminal-bar"><i></i><i></i><i></i><em>~/xamppfiles</em></div>
-              <pre class="terminal-body"><span class="t-prompt">$</span> xampp status
-<span class="t-key">Apache</span>      <span class="t-dim">…</span> attivo    <span class="t-dim">:80 · :443</span>
-<span class="t-key">MariaDB</span>     <span class="t-dim">…</span> attivo    <span class="t-dim">:3306</span>
-<span class="t-key">ProFTPD</span>     <span class="t-dim">…</span> pronto    <span class="t-dim">:21</span>
+              <pre class="terminal-body" dir="ltr"><span class="t-prompt">$</span> xampp status
+<span class="t-key">Apache</span>      <span class="t-dim">…</span> running   <span class="t-dim">:80 · :443</span>
+<span class="t-key">MariaDB</span>     <span class="t-dim">…</span> running   <span class="t-dim">:3306</span>
+<span class="t-key">ProFTPD</span>     <span class="t-dim">…</span> ready     <span class="t-dim">:21</span>
 
 <span class="t-prompt">$</span> php -v
 PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v4.2.4</span>
@@ -123,7 +114,7 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
         </div>
       </section>
 
-      <!-- SERVIZI -->
+      <!-- ACCESSO RAPIDO -->
       <section class="section">
         <div class="row">
           <div class="large-12 columns">
@@ -132,75 +123,47 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
                 <p class="eyebrow">Accesso rapido</p>
                 <h2>Gli strumenti in locale</h2>
               </div>
-              <p class="muted">Tutto servito da <span class="mono">http://localhost</span></p>
+              <p class="muted">Tutto servito da <span class="mono" dir="ltr">http://localhost</span></p>
             </div>
 
             <div class="bento" data-reveal data-reveal-delay="80">
-
-              <a class="card" href="/progetti/">
-                <span class="card-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h3.2c.6 0 1.1.3 1.5.7l1 1.3h7.3A2.5 2.5 0 0 1 21 10.5v7A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>
-                </span>
-                <h3>Progetti</h3>
-                <p>Tutti i siti e le applicazioni contenuti nella cartella <span class="mono">htdocs/progetti</span>.</p>
-                <span class="card-link">Sfoglia
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
-              </a>
-
-              <a class="card" href="/phpmyadmin/">
-                <span class="card-icon card-icon--cyan">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
-                </span>
-                <h3>phpMyAdmin</h3>
-                <p>Gestione dei database MariaDB, query SQL, import ed export dei dump.</p>
-                <span class="card-link">Apri
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
-              </a>
-
-              <a class="card" href="/dashboard/phpinfo.php" target="_blank" rel="noopener">
-                <span class="card-icon card-icon--violet">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg>
-                </span>
-                <h3>PHPInfo</h3>
-                <p>Configurazione completa di PHP: moduli, limiti, percorsi ini e opzioni di build.</p>
-                <span class="card-link">Ispeziona
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
-              </a>
-
               <a class="card" href="/dashboard/it/faq.html">
-                <span class="card-icon card-icon--amber">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.2 2.7c-.8.4-1.3 1.1-1.3 2M12 17h.01"/></svg>
-                </span>
+                <span class="card-icon card-icon--amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.2 2.7c-.8.4-1.3 1.1-1.3 2M12 17h.01"/></svg></span>
                 <h3>Domande frequenti</h3>
                 <p>Installazione, avvio, arresto, sicurezza e soluzioni ai problemi più comuni.</p>
-                <span class="card-link">Consulta
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
+                <span class="card-link">Consulta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
               </a>
-
               <a class="card" href="/dashboard/it/howto.html">
-                <span class="card-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5z"/><path d="M8 7.5h7M8 11h5"/></svg>
-                </span>
+                <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5z"/><path d="M8 7.5h7M8 11h5"/></svg></span>
                 <h3>Guide HOW-TO</h3>
                 <p>Virtual host, Xdebug, SQLite, backup, FTP e altre guide passo passo.</p>
-                <span class="card-link">Esplora
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
+                <span class="card-link">Esplora <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </a>
+              <a class="card" href="/progetti/">
+                <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h3.2c.6 0 1.1.3 1.5.7l1 1.3h7.3A2.5 2.5 0 0 1 21 10.5v7A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></span>
+                <h3>Progetti</h3>
+                <p>Tutti i siti e le applicazioni contenuti nella cartella <span class="mono">htdocs/progetti</span>.</p>
+                <span class="card-link">Sfoglia <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </a>
+              <a class="card" href="/phpmyadmin/">
+                <span class="card-icon card-icon--cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span>
+                <h3>phpMyAdmin</h3>
+                <p>Gestione dei database MariaDB, query SQL, import ed export dei dump.</p>
+                <span class="card-link">Apri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </a>
+              <a class="card" href="/dashboard/phpinfo.php" target="_blank" rel="noopener">
+                <span class="card-icon card-icon--violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg></span>
+                <h3>PHPInfo</h3>
+                <p>Configurazione completa di PHP: moduli, limiti, percorsi ini e opzioni di build.</p>
+                <span class="card-link">Ispeziona <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
               </a>
 
               <div class="card">
-                <span class="card-icon card-icon--cyan">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2.5"/><path d="M8 21h8M12 18v3M7.5 9l2 2-2 2M12 13h4"/></svg>
-                </span>
+                <span class="card-icon card-icon--cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2.5"/><path d="M8 21h8M12 18v3M7.5 9l2 2-2 2M12 13h4"/></svg></span>
                 <h3>Pannello di controllo</h3>
                 <p>Avvia il pannello di controllo XAMPP (<span class="mono">manager-osx</span>) per verificare lo stato dei server.</p>
                 <span class="badge"><span class="dot" style="color:var(--text-muted)"></span> Applicazione desktop</span>
               </div>
-
             </div>
           </div>
         </div>
@@ -218,30 +181,22 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
             </div>
             <div class="bento" data-reveal>
               <div class="card">
-                <span class="card-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18V9.5A2.5 2.5 0 0 1 5.5 7h13A2.5 2.5 0 0 1 21 9.5V18"/><path d="M2 18h20M7 11.5h10M7 14.5h6"/></svg>
-                </span>
+                <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18V9.5A2.5 2.5 0 0 1 5.5 7h13A2.5 2.5 0 0 1 21 9.5V18"/><path d="M2 18h20M7 11.5h10M7 14.5h6"/></svg></span>
                 <h4>Apache</h4>
                 <p>Server HTTP sulle porte 80 e 443, con supporto ai virtual host.</p>
               </div>
               <div class="card">
-                <span class="card-icon card-icon--cyan">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
-                </span>
+                <span class="card-icon card-icon--cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span>
                 <h4>MariaDB</h4>
                 <p>Database relazionale sulla porta 3306, pienamente compatibile con MySQL.</p>
               </div>
               <div class="card">
-                <span class="card-icon card-icon--violet">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 8-5 4 5 4M15 8l5 4-5 4"/></svg>
-                </span>
+                <span class="card-icon card-icon--violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 8-5 4 5 4M15 8l5 4-5 4"/></svg></span>
                 <h4>PHP 8.2.4</h4>
                 <p>Linguaggio lato server con Zend Engine 4 e le estensioni consuete.</p>
               </div>
               <div class="card">
-                <span class="card-icon card-icon--amber">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V6.5A2.5 2.5 0 0 1 6.5 4H14l6 6v10z"/><path d="M14 4v6h6M8 15.5h8M8 12h4"/></svg>
-                </span>
+                <span class="card-icon card-icon--amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V6.5A2.5 2.5 0 0 1 6.5 4H14l6 6v10z"/><path d="M14 4v6h6M8 15.5h8M8 12h4"/></svg></span>
                 <h4>Perl</h4>
                 <p>Linguaggio di scripting disponibile per CGI e attività di automazione.</p>
               </div>
@@ -256,29 +211,16 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
           <div class="large-7 columns" data-reveal>
             <div class="admonitionblock warning">
               <h3 style="font-size:1.05rem">Solo per lo sviluppo</h3>
-              <p>
-                XAMPP non è inteso per la produzione ma solo per ambienti di sviluppo: la configurazione
-                è volutamente aperta per agevolare il lavoro in locale, ma risulta insicura se
-                l'installazione viene resa accessibile ad altri.
-              </p>
-              <p class="muted" style="margin-bottom:0">
-                Esegui <span class="mono">sudo /Applications/XAMPP/xamppfiles/xampp security</span> per mettere in sicurezza l'installazione.
-              </p>
+              <p>XAMPP non è inteso per la produzione ma solo per ambienti di sviluppo: la configurazione è volutamente aperta per agevolare il lavoro in locale, ma risulta insicura se l'installazione viene resa accessibile ad altri.</p>
+              <p class="muted" style="margin-bottom:0">Esegui <span class="mono" dir="ltr">sudo /Applications/XAMPP/xamppfiles/xampp security</span> per mettere in sicurezza l'installazione.</p>
             </div>
           </div>
 
           <div class="large-5 columns" data-reveal data-reveal-delay="100">
             <div class="card">
-              <span class="card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 19v-1.5a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3V19"/><circle cx="9.5" cy="8" r="3.2"/><path d="M21 19v-1.5a3 3 0 0 0-2.2-2.9M15.5 5.1a3.2 3.2 0 0 1 0 5.8"/></svg>
-              </span>
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 19v-1.5a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3V19"/><circle cx="9.5" cy="8" r="3.2"/><path d="M21 19v-1.5a3 3 0 0 0-2.2-2.9M15.5 5.1a3.2 3.2 0 0 1 0 5.8"/></svg></span>
               <h3>Comunità</h3>
-              <p>
-                XAMPP è in uso da circa 10 anni ed ha alle sue spalle un'enorme community. Anche tu puoi
-                farne parte partecipando ai nostri <a href="https://community.apachefriends.org">Forum</a>,
-                cliccando mi piace nella nostra pagina <a href="https://www.facebook.com/we.are.xampp">Facebook</a>,
-                oppure seguendo i nostri post su <a href="https://twitter.com/apachefriends">Twitter</a>.
-              </p>
+              <p>XAMPP è in uso da circa 10 anni ed ha alle sue spalle un'enorme community. Anche tu puoi farne parte partecipando ai nostri <a href="https://community.apachefriends.org">Forum</a>, cliccando mi piace nella nostra pagina <a href="https://www.facebook.com/we.are.xampp">Facebook</a>, oppure seguendo i nostri post su <a href="https://twitter.com/apachefriends">Twitter</a>.</p>
             </div>
           </div>
         </div>
@@ -368,9 +310,9 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
         <div class="large-4 columns footer-brand">
           <p class="footer-logo">
             <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
-              <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#fgindex)" fill-opacity=".18" stroke="url(#fgindex)" stroke-width="1.4"/>
-              <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#fgindex)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <defs><linearGradient id="fgindex" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+              <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#fgit)" fill-opacity=".18" stroke="url(#fgit)" stroke-width="1.4"/>
+              <path d="M11 20.5 8 16l3-4.5M21 11.5 24 16l-3 4.5M18.4 9.5l-4.8 13" stroke="url(#fgit)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs><linearGradient id="fgit" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
                 <stop stop-color="#22C55E"/><stop offset=".55" stop-color="#38BDF8"/><stop offset="1" stop-color="#A78BFA"/>
               </linearGradient></defs>
             </svg>
@@ -389,7 +331,7 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
             <li><a href="/dashboard/it/index.html">Dashboard</a></li>
             <li><a href="/dashboard/it/faq.html">Domande frequenti</a></li>
             <li><a href="/dashboard/it/howto.html">Guide HOW-TO</a></li>
-            <li><a href="/dashboard/phpinfo.php" target="_blank" rel="noopener">PHPInfo</a></li>
+            <li><a href="/dashboard/phpinfo.php">PHPInfo</a></li>
             <li><a href="/phpmyadmin/">phpMyAdmin</a></li>
             <li><a href="/progetti/">Progetti</a></li>
           </ul>
@@ -408,22 +350,20 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
       </div>
 
       <div class="row footer-bottom">
-        <p class="footer_copyright">© <span data-year>2026</span> Apache Friends — XAMPP is released under the GNU General Public License.</p>
+        <p class="footer_copyright">© <span data-year>2026</span> Apache Friends — XAMPP è distribuito con licenza GNU General Public License.</p>
         <a class="footer-top" href="#main">Torna su ↑</a>
       </div>
     </footer>
 
     <script src="/dashboard/javascripts/all.js" type="text/javascript"></script>
     <script>
-      /* Sonda di raggiungibilità dei servizi locali (stessa origine, nessun dato esterno) */
+      /* Sonda di raggiungibilita' dei servizi locali (stessa origine, nessun dato esterno) */
       (function () {
         var LABELS = { ok: 'Raggiungibile', ko: 'Non raggiungibile' };
         Array.prototype.forEach.call(document.querySelectorAll('[data-probe]'), function (box) {
-          var url = box.getAttribute('data-probe');
           var dot = box.querySelector('.dot');
           var value = box.querySelector('.stat-value');
-
-          fetch(url, { method: 'HEAD', cache: 'no-store' })
+          fetch(box.getAttribute('data-probe'), { method: 'HEAD', cache: 'no-store' })
             .then(function (res) {
               var ok = res.ok || res.status === 401 || res.status === 403;
               dot.style.color = ok ? 'var(--accent)' : 'var(--danger)';
