@@ -1,18 +1,63 @@
-# --- Claude Code -----------------------------------------------------------
+# =============================================================================
+#  XAMPP restyling — whitelist policy
+#
+#  Everything is ignored by default; only the files that belong to the
+#  distributable XAMPP web root are explicitly allowed back in.
+#  This keeps private customer projects, credentials and local data out of the
+#  public repository by construction, not by convention.
+# =============================================================================
+
+# 1. Ignore everything at the root
+/*
+
+# 2. Allow only what ships with XAMPP
+!/.gitignore
+!/dashboard/
+!/img/
+!/index.php
+!/applications.html
+!/bitnami.css
+!/favicon.ico
+
+# 3. The projects folder ships EMPTY: only its landing page is versioned.
+#    Every real project stays private and is never committed.
+!/progetti/
+/progetti/*
+!/progetti/index.php
+!/progetti/README.txt
+
+# -----------------------------------------------------------------------------
+#  Never version, anywhere in the tree
+# -----------------------------------------------------------------------------
+
+# Claude Code
 .claude/
 .claude*
 CLAUDE.md
 
-# --- Documentazione e note (richiesta esplicita: nessun file .md nel repo) ---
+# Markdown notes
 *.md
 
-# --- Backup del tema originale (rollback locale, non serve nel repo) --------
+# Secrets and environment
+.env
+.env.*
+credentials.json
+*.pem
+*.key
+
+# Database dumps and local data
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+
+# Original theme backups (local rollback only)
 *.foundation.bak.css
 *.foundation.bak.js
 *.bak
 *.bak.*
 
-# --- Sistema operativo / editor --------------------------------------------
+# OS and editors
 .DS_Store
 ._*
 .Spotlight-V100
@@ -22,8 +67,7 @@ Thumbs.db
 *~
 .idea/
 .vscode/
+*.code-workspace
 
-# --- Ambiente --------------------------------------------------------------
-.env
-.env.*
+# Logs
 *.log
