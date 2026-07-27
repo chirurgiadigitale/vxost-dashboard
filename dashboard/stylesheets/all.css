@@ -30,17 +30,18 @@
   --border:        rgba(148, 163, 184, 0.16);
   --border-strong: rgba(148, 163, 184, 0.30);
 
-  /* Accenti semantici */
-  --accent:        #22C55E;   /* running / CTA primaria */
-  --accent-ink:    #04220F;
-  --cyan:          #38BDF8;   /* database / dati */
-  --violet:        #A78BFA;   /* codice / tooling */
-  --amber:         #F59E0B;   /* warning */
-  --danger:        #EF4444;   /* errori */
+  /* Accenti semantici — tutti derivati dall'arancione ufficiale XAMPP #FB7A24.
+     Contrasto verificato su --bg: 7.40:1 (AAA) per l'accento, mai sotto 4.5:1. */
+  --accent:        #FB7A24;   /* arancione ufficiale: CTA, stato attivo   7.40:1 */
+  --accent-ink:    #1A0A00;   /* testo sopra l'accento                    7.28:1 */
+  --cyan:          #FFB35C;   /* ambra chiara: dati e database           11.09:1 */
+  --violet:        #FF6B3D;   /* corallo: codice e tooling                6.95:1 */
+  --amber:         #FFC15E;   /* oro: avvisi                             12.21:1 */
+  --danger:        #E5341C;   /* rosso caldo: errori                      4.53:1 */
 
   /* Glow */
-  --glow-accent:   0 0 0 1px rgba(34, 197, 94, .35), 0 8px 30px -8px rgba(34, 197, 94, .45);
-  --glow-cyan:     0 0 0 1px rgba(56, 189, 248, .35), 0 8px 30px -8px rgba(56, 189, 248, .40);
+  --glow-accent:   0 0 0 1px rgba(251, 122, 36, .35), 0 8px 30px -8px rgba(251, 122, 36, .45);
+  --glow-cyan:     0 0 0 1px rgba(255, 179, 92, .35), 0 8px 30px -8px rgba(255, 179, 92, .40);
 
   /* Raggi */
   --r-xs: 6px;
@@ -90,12 +91,13 @@
   --text-muted:    #5A6B85;
   --border:        rgba(15, 23, 42, 0.12);
   --border-strong: rgba(15, 23, 42, 0.24);
-  --accent:        #15803D;
+  /* Stesse tinte, scurite per restare leggibili su fondo chiaro (tutte ≥ 5.4:1) */
+  --accent:        #A8480B;
   --accent-ink:    #FFFFFF;
-  --cyan:          #0369A1;
-  --violet:        #6D28D9;
-  --amber:         #B45309;
-  --danger:        #B91C1C;
+  --cyan:          #8A4A08;
+  --violet:        #A8380F;
+  --amber:         #7A4E10;
+  --danger:        #A3200D;
   --sh-1: 0 1px 2px rgba(15, 23, 42, .08);
   --sh-2: 0 8px 24px -10px rgba(15, 23, 42, .22);
   --sh-3: 0 24px 60px -24px rgba(15, 23, 42, .28);
@@ -152,9 +154,9 @@ body::after {
   z-index: var(--z-bg);
   pointer-events: none;
   background:
-    radial-gradient(45% 55% at 18% 0%, rgba(34, 197, 94, .18), transparent 70%),
-    radial-gradient(40% 50% at 78% 8%, rgba(56, 189, 248, .16), transparent 70%),
-    radial-gradient(35% 45% at 50% 0%, rgba(167, 139, 250, .12), transparent 70%);
+    radial-gradient(45% 55% at 18% 0%, rgba(251, 122, 36, .20), transparent 70%),
+    radial-gradient(40% 50% at 78% 8%, rgba(255, 179, 92, .16), transparent 70%),
+    radial-gradient(35% 45% at 50% 0%, rgba(255, 107, 61, .14), transparent 70%);
   filter: blur(10px);
 }
 
@@ -237,7 +239,7 @@ blockquote {
   border-radius: var(--r-xs);
 }
 
-::selection { background: rgba(34, 197, 94, .30); color: var(--text); }
+::selection { background: rgba(251, 122, 36, .30); color: var(--text); }
 
 /* Scrollbar coerente col tema */
 * { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
@@ -403,7 +405,7 @@ blockquote {
   flex: none;
   border-radius: 9px;
   background: linear-gradient(135deg, var(--accent), var(--cyan) 55%, var(--violet));
-  box-shadow: 0 0 0 1px var(--border), 0 6px 18px -8px rgba(34, 197, 94, .8);
+  box-shadow: 0 0 0 1px var(--border), 0 6px 18px -8px rgba(251, 122, 36, .8);
 }
 /* Se la pagina fornisce gia' un marchio SVG inline, il segnaposto CSS sparisce */
 .title-area .name h1 a.has-mark::before { display: none; }
@@ -624,7 +626,7 @@ blockquote {
 }
 
 /* Logo legacy (immagine SVG XAMPP nelle pagine non ancora ricostruite) */
-.hero h1 img { width: 52px; height: auto; filter: drop-shadow(0 6px 18px rgba(34, 197, 94, .35)); }
+.hero h1 img { width: 52px; height: auto; filter: drop-shadow(0 6px 18px rgba(251, 122, 36, .35)); }
 
 .hero-lead {
   font-size: clamp(1rem, .95rem + .3vw, 1.15rem);
@@ -672,7 +674,7 @@ blockquote {
 .btn--primary:hover {
   color: var(--accent-ink);
   background: color-mix(in srgb, var(--accent) 88%, white);
-  box-shadow: 0 0 0 1px rgba(34, 197, 94, .5), 0 14px 34px -10px rgba(34, 197, 94, .6);
+  box-shadow: 0 0 0 1px rgba(251, 122, 36, .5), 0 14px 34px -10px rgba(251, 122, 36, .6);
 }
 
 .btn--ghost {
@@ -926,7 +928,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 }
 .terminal-bar i:nth-child(1) { background: #FF5F57; }
 .terminal-bar i:nth-child(2) { background: #FEBC2E; }
-.terminal-bar i:nth-child(3) { background: #28C840; }
+.terminal-bar i:nth-child(3) { background: #FB7A24; }
 .terminal-bar em {
   margin-left: auto;
   font-style: normal;
