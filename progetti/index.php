@@ -117,7 +117,7 @@ function detect_stack_deep(string $dir): array
 /** Porte dei VirtualHost, indicizzate per cartella di progetto. */
 function vhost_ports(): array
 {
-    $file = '/Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf';
+    $file = xampp_env()['vhosts'];
     if (!is_readable($file)) {
         return [];
     }

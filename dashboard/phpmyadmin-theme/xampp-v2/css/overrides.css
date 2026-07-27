@@ -1,0 +1,211 @@
+/* ==========================================================================
+   phpMyAdmin — tema XAMPP Dashboard v2
+   Sovrascrive il tema pmahomme con la palette e la tipografia della dashboard.
+   Da concatenare dopo il CSS di pmahomme: vedi WHATSNEW.txt per l'installazione.
+   ========================================================================== */
+
+:root {
+  --xa-bg:        #070B16;
+  --xa-elev:      #0B1220;
+  --xa-surface:   rgba(148, 163, 184, 0.05);
+  --xa-surface-2: rgba(148, 163, 184, 0.09);
+  --xa-text:      #E9EFFA;
+  --xa-soft:      #B7C3D6;
+  --xa-muted:     #8493AB;
+  --xa-border:    rgba(148, 163, 184, 0.18);
+  --xa-accent:    #FB7A24;
+  --xa-ink:       #1A0A00;
+  --xa-amber:     #FFC15E;
+  --xa-danger:    #E5341C;
+  --xa-radius:    10px;
+  --xa-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --xa-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base                                                                       */
+/* -------------------------------------------------------------------------- */
+html, body, #page_content, .container-fluid {
+  background: var(--xa-bg) !important;
+  color: var(--xa-text) !important;
+  font-family: var(--xa-sans) !important;
+}
+
+body { font-size: 14px; line-height: 1.6; }
+
+a { color: var(--xa-accent) !important; text-decoration: none; }
+a:hover { color: #FFA05C !important; text-decoration: underline; }
+
+code, kbd, pre, .sqlquery, textarea {
+  font-family: var(--xa-mono) !important;
+  background: var(--xa-elev) !important;
+  color: var(--xa-soft) !important;
+  border-color: var(--xa-border) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Barra superiore e navigazione                                              */
+/* -------------------------------------------------------------------------- */
+#page_nav_icons, .navbar, #topmenucontainer, #topmenu {
+  background: color-mix(in srgb, var(--xa-elev) 92%, transparent) !important;
+  border-color: var(--xa-border) !important;
+}
+
+#topmenu li a, #topmenu a {
+  color: var(--xa-soft) !important;
+  border-radius: var(--xa-radius) var(--xa-radius) 0 0;
+}
+#topmenu li.active a, #topmenu a.tabactive {
+  color: var(--xa-ink) !important;
+  background: var(--xa-accent) !important;
+  border-color: transparent !important;
+}
+#topmenu li a:hover { background: var(--xa-surface-2) !important; color: var(--xa-text) !important; }
+
+/* Pannello di navigazione a sinistra */
+#pma_navigation, #pma_navigation_tree, #pma_navigation_content {
+  background: var(--xa-elev) !important;
+  border-right: 1px solid var(--xa-border) !important;
+  color: var(--xa-soft) !important;
+}
+#pma_navigation a { color: var(--xa-soft) !important; }
+#pma_navigation a:hover { color: var(--xa-accent) !important; }
+#pma_navigation_select_database, #pma_navigation_tree_content { background: transparent !important; }
+.list_container li:hover, .database:hover { background: var(--xa-surface-2) !important; }
+#pma_navigation_resizer { background: var(--xa-border) !important; }
+
+/* -------------------------------------------------------------------------- */
+/* Tabelle                                                                     */
+/* -------------------------------------------------------------------------- */
+table.table, table.data, table.show_create, .table_results {
+  background: var(--xa-surface) !important;
+  border: 1px solid var(--xa-border) !important;
+  border-radius: var(--xa-radius);
+  overflow: hidden;
+  color: var(--xa-soft) !important;
+}
+table.table th, table.data th, .table_results th, thead th {
+  background: var(--xa-surface-2) !important;
+  color: var(--xa-text) !important;
+  border-color: var(--xa-border) !important;
+  font-weight: 600;
+  text-transform: none;
+}
+table.table td, table.data td, .table_results td {
+  background: transparent !important;
+  border-color: var(--xa-border) !important;
+  color: var(--xa-soft) !important;
+}
+table tr:hover td, .table_results tbody tr:hover td { background: var(--xa-surface-2) !important; }
+tr.odd, tr.even, tr.odd th, tr.even th { background: transparent !important; }
+.marked td, tr.marked { background: color-mix(in srgb, var(--xa-accent) 14%, transparent) !important; }
+
+/* -------------------------------------------------------------------------- */
+/* Pannelli, box e messaggi                                                    */
+/* -------------------------------------------------------------------------- */
+.card, fieldset, .panel, #serverstatus, .CodeMirror {
+  background: var(--xa-surface) !important;
+  border: 1px solid var(--xa-border) !important;
+  border-radius: var(--xa-radius) !important;
+  color: var(--xa-soft) !important;
+}
+legend, .card-header, .panel-heading {
+  background: var(--xa-surface-2) !important;
+  color: var(--xa-text) !important;
+  border-color: var(--xa-border) !important;
+}
+
+.alert, .success, .notice, .error, .warning {
+  border-radius: var(--xa-radius) !important;
+  border: 1px solid var(--xa-border) !important;
+}
+.alert-success, .success {
+  background: color-mix(in srgb, var(--xa-accent) 12%, transparent) !important;
+  border-left: 3px solid var(--xa-accent) !important;
+  color: var(--xa-text) !important;
+}
+.alert-danger, .error {
+  background: color-mix(in srgb, var(--xa-danger) 12%, transparent) !important;
+  border-left: 3px solid var(--xa-danger) !important;
+  color: var(--xa-text) !important;
+}
+.alert-warning, .warning {
+  background: color-mix(in srgb, var(--xa-amber) 12%, transparent) !important;
+  border-left: 3px solid var(--xa-amber) !important;
+  color: var(--xa-text) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Moduli e controlli                                                          */
+/* -------------------------------------------------------------------------- */
+input, select, textarea, .form-control, .form-select {
+  background: var(--xa-elev) !important;
+  border: 1px solid var(--xa-border) !important;
+  border-radius: 8px !important;
+  color: var(--xa-text) !important;
+  min-height: 34px;
+}
+input:focus, select:focus, textarea:focus, .form-control:focus {
+  outline: 2px solid var(--xa-accent) !important;
+  outline-offset: 1px;
+  border-color: var(--xa-accent) !important;
+  box-shadow: none !important;
+}
+
+input[type="submit"], button, .btn, .button {
+  background: var(--xa-surface-2) !important;
+  border: 1px solid var(--xa-border) !important;
+  border-radius: 8px !important;
+  color: var(--xa-text) !important;
+  font-weight: 500;
+  min-height: 34px;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+input[type="submit"]:hover, button:hover, .btn:hover {
+  border-color: var(--xa-accent) !important;
+  color: var(--xa-accent) !important;
+}
+.btn-primary, input[type="submit"].btn-primary {
+  background: var(--xa-accent) !important;
+  border-color: transparent !important;
+  color: var(--xa-ink) !important;
+  font-weight: 600;
+}
+.btn-primary:hover { background: #FF8C3D !important; color: var(--xa-ink) !important; }
+
+/* -------------------------------------------------------------------------- */
+/* Editor SQL                                                                  */
+/* -------------------------------------------------------------------------- */
+.CodeMirror { background: var(--xa-elev) !important; color: var(--xa-text) !important; }
+.CodeMirror-gutters { background: var(--xa-surface) !important; border-color: var(--xa-border) !important; }
+.CodeMirror-linenumber { color: var(--xa-muted) !important; }
+.cm-keyword { color: var(--xa-accent) !important; font-weight: 600; }
+.cm-string { color: #FFC15E !important; }
+.cm-number { color: #FFB35C !important; }
+.cm-comment { color: var(--xa-muted) !important; font-style: italic; }
+
+/* -------------------------------------------------------------------------- */
+/* Dettagli                                                                    */
+/* -------------------------------------------------------------------------- */
+.breadcrumb, #server-breadcrumb {
+  background: var(--xa-surface) !important;
+  border: 1px solid var(--xa-border) !important;
+  border-radius: var(--xa-radius);
+  color: var(--xa-muted) !important;
+}
+hr, .separator { border-color: var(--xa-border) !important; }
+
+::selection { background: rgba(251, 122, 36, .30); color: var(--xa-text); }
+
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, .3);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+}

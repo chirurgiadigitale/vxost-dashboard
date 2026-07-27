@@ -10,6 +10,55 @@
 
 declare(strict_types=1);
 
+/**
+ * Percorsi e comandi dell'installazione XAMPP, rilevati a runtime.
+ *
+ * La radice si ricava risalendo da questo file (htdocs/dashboard/includes),
+ * quindi funziona ovunque XAMPP sia installato:
+ *   macOS   /Applications/XAMPP/xamppfiles
+ *   Linux   /opt/lampp
+ *   Windows C:\xampp
+ *
+ * @return array{os: string, root: string, htdocs: string, projects: string,
+ *               httpd: string, vhosts: string, restart: string, security: string}
+ */
+function xampp_env(): array
+{
+    static $env = null;
+    if ($env !== null) {
+        return $env;
+    }
+
+    $root = dirname(__DIR__, 3);              // .../includes -> dashboard -> htdocs -> radice
+    $windows = DIRECTORY_SEPARATOR === '\\' || stripos(PHP_OS_FAMILY, 'win') === 0;
+    $os = $windows ? 'windows' : (PHP_OS_FAMILY === 'Darwin' ? 'macos' : 'linux');
+
+    // Su Windows i file di Apache stanno sotto apache\conf, altrove sotto etc
+    $confDir = $windows ? $root . '/apache/conf' : $root . '/etc';
+
+    $restart = match ($os) {
+        'windows' => 'Riavvia Apache dal Control Panel di XAMPP',
+        'linux'   => 'sudo ' . $root . '/lampp restartapache',
+        default   => 'sudo ' . $root . '/xampp restartapache',
+    };
+    $security = match ($os) {
+        'windows' => 'Imposta le password dal Control Panel di XAMPP',
+        'linux'   => 'sudo ' . $root . '/lampp security',
+        default   => 'sudo ' . $root . '/xampp security',
+    };
+
+    return $env = [
+        'os'       => $os,
+        'root'     => $root,
+        'htdocs'   => $root . '/htdocs',
+        'projects' => $root . '/htdocs/progetti',
+        'httpd'    => $confDir . '/httpd.conf',
+        'vhosts'   => $confDir . '/extra/httpd-vhosts.conf',
+        'restart'  => $restart,
+        'security' => $security,
+    ];
+}
+
 /** Traduzioni delle pagine strumentali (le altre lingue ricadono su EN). */
 function xampp_strings(): array
 {

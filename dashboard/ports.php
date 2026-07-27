@@ -200,11 +200,21 @@ function listening_ports(): ?array
             continue;
         }
         $cols = preg_split('/\s+/', trim($line));
-        if (count($cols) < 4) {
+        if (count($cols) < 3) {
             continue;
         }
-        // "127.0.0.1.4001" oppure "*.80" oppure "::1.3306"
-        if (!preg_match('/^(.*)[.:](\d+)$/', $cols[3], $m)) {
+
+        // L'indirizzo locale sta in colonne diverse a seconda del sistema:
+        // BSD/macOS lo mette in posizione 3, Windows in posizione 1. Si cerca
+        // la prima colonna che ha la forma indirizzo + porta.
+        $m = null;
+        foreach ([$cols[3] ?? '', $cols[1] ?? '', $cols[2] ?? ''] as $candidate) {
+            if ($candidate !== '' && preg_match('/^(.*)[.:](\d+)$/', $candidate, $found)) {
+                $m = $found;
+                break;
+            }
+        }
+        if ($m === null) {
             continue;
         }
         $port = (int) $m[2];
@@ -327,7 +337,7 @@ function listening_ports(): ?array
  */
 function path_served_projects(array $vh): array
 {
-    $base = '/Applications/XAMPP/xamppfiles/htdocs/progetti';
+    $base = xampp_env()['projects'];
     if (!is_dir($base)) {
         return [];
     }
@@ -471,7 +481,7 @@ function vhosts(): array
     }
     $out = [];
 
-    $file = '/Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf';
+    $file = xampp_env()['vhosts'];
     if (!is_readable($file)) {
         return $out;
     }
@@ -794,16 +804,16 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
             <ol class="steps">
               <li>
                 <strong><?php echo h(p_t('step1')); ?></strong>
-                <p class="mono muted" dir="ltr">/Applications/XAMPP/xamppfiles/etc/httpd.conf</p>
+                <p class="mono muted" dir="ltr"><?php echo h(xampp_env()['httpd']); ?></p>
                 <pre dir="ltr">Listen 4010</pre>
               </li>
               <li>
                 <strong><?php echo h(p_t('step2')); ?></strong>
-                <p class="mono muted" dir="ltr">/Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf</p>
+                <p class="mono muted" dir="ltr"><?php echo h(xampp_env()['vhosts']); ?></p>
                 <pre dir="ltr">&lt;VirtualHost *:4010&gt;
-    DocumentRoot "/Applications/XAMPP/xamppfiles/htdocs/progetti/nome-progetto"
+    DocumentRoot "<?php echo h(xampp_env()['projects']); ?>/nome-progetto"
     ServerName localhost
-    &lt;Directory "/Applications/XAMPP/xamppfiles/htdocs/progetti/nome-progetto"&gt;
+    &lt;Directory "<?php echo h(xampp_env()['projects']); ?>/nome-progetto"&gt;
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
@@ -812,7 +822,7 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
               </li>
               <li>
                 <strong><?php echo h(p_t('step3')); ?></strong>
-                <pre dir="ltr">sudo /Applications/XAMPP/xamppfiles/xampp restartapache
+                <pre dir="ltr"><?php echo h(xampp_env()['restart']); ?>
 
 http://localhost:4010   →   http://127.0.0.1:4010<?php
                 foreach (array_keys($ips['lan']) as $lanIp) {
@@ -829,10 +839,7 @@ http://localhost:4010   →   http://127.0.0.1:4010<?php
               <span class="card-icon card-icon--cyan"><?php echo xampp_icon('ports', 22); ?></span>
               <h3><?php echo h(p_t('conf')); ?></h3>
               <?php
-              $files = [
-                  '/Applications/XAMPP/xamppfiles/etc/httpd.conf',
-                  '/Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf',
-              ];
+              $files = [xampp_env()['httpd'], xampp_env()['vhosts']];
               foreach ($files as $file):
                   $time = is_readable($file) ? (int) @filemtime($file) : 0;
               ?>

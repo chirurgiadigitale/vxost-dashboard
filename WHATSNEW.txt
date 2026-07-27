@@ -1,0 +1,419 @@
+===============================================================================
+  XAMPP DASHBOARD v9.26.0 — RESTYLING
+  Base: XAMPP 8.2.4  ·  Luglio 2026
+  https://github.com/chirurgiadigitale/xampp
+===============================================================================
+
+Restyling completo della radice web di XAMPP: dashboard, documentazione e tre
+nuovi strumenti, tutti con lo stesso design system scuro costruito attorno
+all'arancione ufficiale XAMPP.
+
+Nessun framework grafico, nessuna dipendenza CSS o JavaScript, nessuna
+richiesta a servizi esterni durante l'uso. Le icone sono SVG in linea o
+maschere CSS.
+
+
+-------------------------------------------------------------------------------
+ 1. INDICE
+-------------------------------------------------------------------------------
+
+  1. Indice
+  2. Che cosa cambia
+  3. Nuove pagine
+  4. Design system
+  5. Accessibilita'
+  6. Lingue
+  7. Prestazioni e dipendenze rimosse
+  8. Come scaricare e installare
+  9. Permessi su macOS
+ 10. Windows e Linux
+ 11. Tema per phpMyAdmin
+ 12. phpMyAdmin dentro la dashboard
+ 13. Privacy dell'ambiente locale
+ 14. Struttura dei file
+ 15. Licenza e crediti
+
+
+-------------------------------------------------------------------------------
+ 2. CHE COSA CAMBIA
+-------------------------------------------------------------------------------
+
+INTERFACCIA
+  - Tema scuro predefinito, tema chiaro incluso, con interruttore nella barra
+    di navigazione e scelta ricordata dal browser.
+  - Palette costruita sull'arancione ufficiale XAMPP #FB7A24, letto dal file
+    del logo. Ogni accostamento di colori e' stato verificato secondo i
+    rapporti di contrasto WCAG.
+  - Tipografia Inter, con ripiego sui caratteri di sistema se non disponibile.
+  - Barra di navigazione a tutta larghezza, sempre visibile in alto, identica
+    su ogni pagina: Dashboard, Progetti, Database, Porte e IP, PHPInfo,
+    Domande frequenti, Guide HOW-TO.
+  - Pie' di pagina a tutta larghezza su cinque colonne, presente ovunque.
+  - Layout mobile-first verificato a 375, 768, 1024 e 1440 pixel.
+
+CONTENUTI
+  - Home ricostruita: stato dei servizi in tempo reale, accesso rapido,
+    riepilogo dello stack, avviso sull'uso in sviluppo.
+  - Guide HOW-TO trasformate in griglia di schede con icona per argomento.
+  - Pagina 404 ridisegnata e finalmente servita da Apache.
+  - Output di phpinfo() diviso in sezioni richiudibili con sommario e filtro.
+
+
+-------------------------------------------------------------------------------
+ 3. NUOVE PAGINE
+-------------------------------------------------------------------------------
+
+PROGETTI                          http://localhost/progetti/
+  Elenca le cartelle presenti in htdocs/progetti e ne riconosce la tecnologia
+  (WordPress, Laravel, Node, Next/Nuxt, Composer, PHP, HTML) guardando anche
+  un livello piu' in basso, perche' molte cartelle sono contenitori.
+  Ricerca immediata, filtri per tecnologia, vista a griglia o a elenco,
+  ordinamento alfabetico, data di ultima modifica e collegamento diretto alla
+  porta del VirtualHost quando esiste.
+  Su una installazione nuova la cartella e' vuota e la pagina lo spiega.
+
+PORTE E IP                        http://localhost/dashboard/ports.php
+  Elenca le porte TCP in ascolto, il processo che le occupa e il progetto a
+  cui appartengono, ricavato dalla configurazione dei VirtualHost o dalla
+  cartella di lavoro del processo.
+  Mostra gli indirizzi della macchina, spiega la differenza fra localhost e
+  127.0.0.1, elenca i VirtualHost inclusi quelli disattivati, i progetti che
+  non hanno una porta dedicata, e documenta come aprirne una nuova.
+
+DATABASE                          http://localhost/dashboard/database.php
+  phpMyAdmin incorniciato dalla dashboard, con barra e footer sempre visibili.
+  phpMyAdmin resta l'applicazione originale, quindi continua ad aggiornarsi
+  normalmente. Vedi il punto 12.
+
+PHPINFO                           http://localhost/dashboard/phpinfo.php
+  L'output nativo di phpinfo() con riepilogo del runtime, elenco delle
+  estensioni caricate e le 58 sezioni richiudibili, con sommario e filtro.
+
+
+-------------------------------------------------------------------------------
+ 4. DESIGN SYSTEM
+-------------------------------------------------------------------------------
+
+Tutto vive in un unico foglio di stile: dashboard/stylesheets/all.css
+
+Colori, tema scuro, con il rapporto di contrasto sul fondo pagina:
+
+    --accent    #FB7A24    7.40:1  AAA   azioni, stato attivo
+    --accent-ink #1A0A00   7.28:1        testo sopra l'accento
+    --cyan      #FFB35C   11.09:1  AAA   dati e database
+    --violet    #FF6B3D    6.95:1  AA    codice e strumenti
+    --amber     #FFC15E   12.21:1  AAA   avvisi
+    --danger    #E5341C    4.53:1  AA    errori
+
+Tema chiaro: stesse tinte scurite (#A8480B, #8A4A08, #A8380F, #7A4E10,
+#A3200D), mai sotto 5.4:1.
+
+Altri elementi del sistema: scala di spaziature a 4 pixel, sei raggi di
+bordo, tre livelli di ombra, griglia a dodici colonne compatibile con il
+markup preesistente, transizioni di 220 ms con una sola curva di easing.
+
+
+-------------------------------------------------------------------------------
+ 5. ACCESSIBILITA'
+-------------------------------------------------------------------------------
+
+  - Collegamento "vai al contenuto" e landmark <main> su ogni pagina.
+  - Anelli di focus sempre visibili, mai rimossi.
+  - Aree cliccabili di almeno 44 pixel.
+  - aria-current sulla voce di menu attiva, aria-expanded sui menu a comparsa.
+  - Fisarmonica delle domande frequenti e menu delle lingue usabili da
+    tastiera, con chiusura tramite Esc.
+  - prefers-reduced-motion rispettato: le animazioni si annullano.
+  - Le informazioni non sono mai affidate al solo colore.
+
+
+-------------------------------------------------------------------------------
+ 6. LINGUE
+-------------------------------------------------------------------------------
+
+Quindici lingue: inglese, italiano, tedesco, spagnolo, francese, portoghese
+brasiliano, rumeno, ungherese, polacco, russo, turco, giapponese, cinese
+semplificato, cinese tradizionale e urdu, quest'ultimo da destra a sinistra.
+
+  - Selettore della lingua nella barra di navigazione di ogni pagina: mantiene
+    la pagina corrente quando ne esiste la traduzione.
+  - Mappa delle lingue cliccabile nella home.
+  - Home e indici delle guide generati da un unico modello piu' una tabella di
+    stringhe: correggere una traduzione significa toccare una riga sola.
+  - Le guide dentro dashboard/docs/ restano in inglese, come nell'originale;
+    ogni scheda lo dichiara con una targhetta EN.
+
+
+-------------------------------------------------------------------------------
+ 7. PRESTAZIONI E DIPENDENZE RIMOSSE
+-------------------------------------------------------------------------------
+
+Rimossi: jQuery 1.10 da CDN, Foundation 4, Modernizr, Font Awesome da CDN,
+l'SDK di Facebook e il logo Fastly.
+
+  - javascripts/all.js e' passato da 5.523 righe a circa 400, in JavaScript
+    puro, senza dipendenze.
+  - Nessuna richiesta a domini di terze parti mentre si naviga: la dashboard
+    funziona anche senza connessione.
+  - Nessun cookie di tracciamento.
+
+Rimossi anche quindici file vuoti (howto_platform_links.html) e i residui
+index-old.html, applications.html e bitnami.css.
+
+
+-------------------------------------------------------------------------------
+ 8. COME SCARICARE E INSTALLARE
+-------------------------------------------------------------------------------
+
+PRIMA DI TUTTO: fai una copia di sicurezza della cartella htdocs.
+
+    cd /Applications/XAMPP/xamppfiles          # macOS
+    sudo cp -R htdocs htdocs-backup
+
+Scaricamento con git:
+
+    cd /tmp
+    git clone https://github.com/chirurgiadigitale/xampp.git xampp-restyling
+
+Oppure come archivio, dalla pagina del progetto su GitHub:
+"Code" > "Download ZIP", poi scompatta.
+
+Copia dei file nella radice web, senza toccare i tuoi progetti:
+
+    sudo cp -R /tmp/xampp-restyling/dashboard   /Applications/XAMPP/xamppfiles/htdocs/
+    sudo cp -R /tmp/xampp-restyling/img         /Applications/XAMPP/xamppfiles/htdocs/
+    sudo cp    /tmp/xampp-restyling/index.php   /Applications/XAMPP/xamppfiles/htdocs/
+    sudo cp    /tmp/xampp-restyling/.htaccess   /Applications/XAMPP/xamppfiles/htdocs/
+
+    # pagina indice dei progetti: la cartella resta tua, si aggiunge solo l'indice
+    sudo mkdir -p /Applications/XAMPP/xamppfiles/htdocs/progetti
+    sudo cp /tmp/xampp-restyling/progetti/index.php /Applications/XAMPP/xamppfiles/htdocs/progetti/
+    sudo cp /tmp/xampp-restyling/progetti/.htaccess /Applications/XAMPP/xamppfiles/htdocs/progetti/
+
+Sistema i permessi (vedi il punto 9), poi apri:
+
+    http://localhost/dashboard/
+
+Non serve compilare niente: sono pagine servite cosi' come sono.
+
+NOTA: la cartella progetti/ del progetto e' volutamente vuota. Chi scarica
+questa build parte senza progetti e senza dati nei database.
+
+
+-------------------------------------------------------------------------------
+ 9. PERMESSI SU macOS
+-------------------------------------------------------------------------------
+
+Su macOS i file di XAMPP appartengono a root e Apache gira come "daemon".
+Dopo aver copiato i file, i permessi vanno sistemati o il server risponde 403.
+
+    XR=/Applications/XAMPP/xamppfiles/htdocs
+
+    # proprietario: root, gruppo admin (l'impostazione usata da XAMPP)
+    sudo chown -R root:admin $XR/dashboard $XR/progetti/index.php
+
+    # lettura per tutti, scrittura solo al proprietario
+    sudo chmod -R a+rX $XR/dashboard
+    sudo chmod 644 $XR/progetti/index.php $XR/.htaccess $XR/progetti/.htaccess
+
+    # se hai copiato lo script del tema di phpMyAdmin
+    sudo chmod +x $XR/dashboard/phpmyadmin-theme/install.sh
+
+Verifica:
+
+    curl -o /dev/null -w "%{http_code}\n" http://localhost/dashboard/
+
+Deve rispondere 200. Se risponde 403 il problema e' quasi sempre nei permessi
+di lettura di una cartella superiore: controlla con
+
+    ls -la /Applications/XAMPP/xamppfiles/htdocs
+
+Le pagine PHP hanno bisogno che shell_exec sia consentito per leggere le porte
+in ascolto. Se e' disabilitato, la pagina Porte e IP lo dice apertamente e
+tutto il resto continua a funzionare.
+
+
+-------------------------------------------------------------------------------
+ 10. WINDOWS E LINUX
+-------------------------------------------------------------------------------
+
+Il restyling e' scritto per funzionare su tutti i sistemi su cui gira XAMPP.
+I percorsi non sono scritti nel codice: vengono ricavati risalendo dalla
+posizione dei file, quindi la radice viene riconosciuta ovunque sia.
+
+    macOS      /Applications/XAMPP/xamppfiles
+    Linux      /opt/lampp
+    Windows    C:\xampp
+
+I file di configurazione di Apache vengono cercati in etc/ su macOS e Linux,
+in apache\conf\ su Windows.
+
+LINUX (Debian, Ubuntu, Fedora...)
+
+    sudo cp -R xampp-restyling/dashboard /opt/lampp/htdocs/
+    sudo cp xampp-restyling/index.php /opt/lampp/htdocs/
+    sudo cp xampp-restyling/.htaccess /opt/lampp/htdocs/
+    sudo chown -R root:root /opt/lampp/htdocs/dashboard
+    sudo chmod -R a+rX /opt/lampp/htdocs/dashboard
+    sudo /opt/lampp/lampp restartapache
+
+WINDOWS
+
+    Copia le cartelle dentro C:\xampp\htdocs\ con Esplora risorse.
+    I permessi non richiedono interventi.
+    Riavvia Apache dal Control Panel di XAMPP.
+
+    Il file .htaccess funziona solo se in httpd.conf, dentro il blocco
+    <Directory "C:/xampp/htdocs">, e' presente AllowOverride All.
+
+DIFFERENZE DA SAPERE
+
+  - La pagina Porte e IP usa netstat, presente su tutti e tre i sistemi, e
+    riconosce sia il formato BSD/macOS sia quello di Windows. Il dettaglio del
+    processo usa lsof e ps, disponibili su macOS e Linux: su Windows le porte
+    si vedono lo stesso, senza il nome del processo.
+  - Il comando per riavviare Apache viene mostrato gia' adattato al sistema in
+    uso nella pagina Porte e IP.
+  - Il tema chiaro, le traduzioni e tutto il resto sono identici ovunque.
+
+Il progetto e' stato sviluppato e verificato su macOS con XAMPP 8.2.4. Il
+supporto a Windows e Linux e' scritto seguendo le rispettive convenzioni ma
+non e' stato provato sul campo: le segnalazioni sono benvenute.
+
+
+-------------------------------------------------------------------------------
+ 11. TEMA PER phpMyAdmin
+-------------------------------------------------------------------------------
+
+Nel progetto trovi anche un tema che porta la stessa grafica dentro
+phpMyAdmin, in dashboard/phpmyadmin-theme/
+
+Il tema non riscrive phpMyAdmin: parte dal tema predefinito pmahomme e gli
+aggiunge in coda il foglio di stile della dashboard, cosi' l'applicazione
+resta aggiornabile.
+
+Installazione:
+
+    cd /Applications/XAMPP/xamppfiles/htdocs/dashboard/phpmyadmin-theme
+    sudo bash install.sh
+
+Su Linux:
+
+    sudo bash install.sh /opt/lampp/phpmyadmin
+
+Attivazione: dal selettore dei temi nella home di phpMyAdmin, oppure
+aggiungendo a phpmyadmin/config.inc.php la riga
+
+    $cfg['ThemeDefault'] = 'xampp-v2';
+
+Se un aggiornamento di phpMyAdmin sovrascrive la cartella dei temi, basta
+rieseguire lo script.
+
+
+-------------------------------------------------------------------------------
+ 12. phpMyAdmin DENTRO LA DASHBOARD
+-------------------------------------------------------------------------------
+
+La pagina Database mostra phpMyAdmin dentro la cornice della dashboard, con
+la barra di navigazione e il pie' di pagina sempre visibili.
+
+phpMyAdmin rifiuta di essere mostrato dentro un riquadro, rispondendo con
+l'intestazione X-Frame-Options: DENY. Per consentirlo dallo stesso host
+aggiungi a phpmyadmin/config.inc.php:
+
+    $cfg['AllowThirdPartyFraming'] = 'sameorigin';
+
+Comando pronto per macOS:
+
+    sudo sh -c 'echo "\$cfg[\"AllowThirdPartyFraming\"] = \"sameorigin\";" \
+      >> /Applications/XAMPP/xamppfiles/phpmyadmin/config.inc.php'
+
+Finche' non lo fai, la pagina spiega la situazione e offre il collegamento per
+aprire phpMyAdmin in una scheda separata: non si rompe nulla.
+
+Nota: 'sameorigin' consente l'inclusione solo da questa stessa macchina.
+
+
+-------------------------------------------------------------------------------
+ 13. PRIVACY DELL'AMBIENTE LOCALE
+-------------------------------------------------------------------------------
+
+Questa build viaggia vuota: nessun progetto, nessun database, nessuna
+configurazione di porte.
+
+Le pagine Porte e Progetti non contengono dati: leggono il sistema quando
+vengono aperte. Chi scarica il progetto ottiene soltanto lo scanner.
+
+Il file .gitignore usa una lista di ammissione: tutto e' escluso e rientrano
+solo i file che fanno parte della distribuzione. In piu' .githooks/pre-commit
+rifiuta un commit che contenga nomi di cartelle di progetto, indirizzi IP
+privati, direttive Listen, percorsi DocumentRoot reali, copie di database o
+credenziali.
+
+Per attivare il controllo dopo il clone:
+
+    git config core.hooksPath .githooks
+
+Il file .htaccess incluso disattiva l'elenco automatico dei file nella radice,
+nega l'accesso a .env, dump, chiavi e file nascosti, e blocca le richieste
+alla cartella .git. Dentro progetti/ l'elenco resta attivo, perche' li' serve
+a lavorare.
+
+
+-------------------------------------------------------------------------------
+ 14. STRUTTURA DEI FILE
+-------------------------------------------------------------------------------
+
+    .htaccess                          404, elenco file, protezioni
+    README.md                          presentazione del progetto
+    WHATSNEW.txt                       questo file
+    .githooks/pre-commit               controllo di riservatezza
+
+    dashboard/
+      index.html                       home in inglese
+      <lingua>/index.html              home nelle altre quattordici lingue
+      <lingua>/faq.html                domande frequenti
+      <lingua>/howto.html              indice delle guide
+      docs/                            le guide, in inglese
+      404.html                         pagina di errore
+      phpinfo.php                      configurazione di PHP
+      ports.php                        porte in ascolto e indirizzi
+      database.php                     phpMyAdmin nella cornice
+      includes/layout.php              intestazione e pie' di pagina condivisi
+      stylesheets/all.css              il design system
+      stylesheets/all-rtl.css          variante da destra a sinistra
+      javascripts/all.js               tema, menu, lingue, fisarmonica
+      images/xampp-logo.svg            logo ufficiale
+      phpmyadmin-theme/                tema per phpMyAdmin
+
+    progetti/
+      index.php                        indice dei progetti
+      .htaccess                        elenco file consentito qui
+
+
+-------------------------------------------------------------------------------
+ 15. LICENZA E CREDITI
+-------------------------------------------------------------------------------
+
+XAMPP e la sua documentazione appartengono ad Apache Friends e mantengono la
+licenza originale, la GNU General Public License. Questo restyling segue le
+stesse condizioni.
+
+Progetto originale
+    Apache Friends            https://www.apachefriends.org/
+    Codice sorgente           https://github.com/ApacheFriends/xampp-build
+    Organizzazione            https://github.com/ApacheFriends
+    Argomento su GitHub       https://github.com/topics/xampp
+    Apache HTTP Server        https://httpd.apache.org/
+    Apache Software Foundation https://www.apache.org/
+    Forum della comunita'     https://community.apachefriends.org
+
+Restyling
+    Questa versione di XAMPP e' stata risviluppata e rielaborata
+    stilisticamente e strutturalmente dallo staff di Chirurgia Digitale nel
+    luglio 2026. Sperando di dare un contributo significativo a questo
+    bellissimo progetto open source.
+
+    Chirurgia Digitale        https://www.chirurgiadigitale.it
+
+===============================================================================

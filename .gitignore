@@ -12,6 +12,7 @@
 
 # 2. Allow only what ships with XAMPP
 !/.gitignore
+!/WHATSNEW.txt
 !/.htaccess
 !/.githooks/
 !/dashboard/
