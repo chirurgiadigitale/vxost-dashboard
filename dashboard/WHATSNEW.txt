@@ -309,6 +309,35 @@ aggiungendo a phpmyadmin/config.inc.php la riga
 Se un aggiornamento di phpMyAdmin sovrascrive la cartella dei temi, basta
 rieseguire lo script.
 
+ANTEPRIMA PRIMA DI INSTALLARE
+
+    http://localhost/dashboard/phpmyadmin-theme/preview.html
+
+La pagina mostra i componenti reali di phpMyAdmin (schede, tabella dei
+risultati, editor SQL, messaggi, moduli, albero dei database, console) con il
+foglio di stile del tema applicato, cosi' si vede il risultato senza toccare
+l'installazione.
+
+CHE COSA COPRE, E CHE COSA NO
+
+Il tema e' un foglio di sovrascrittura di 102 regole: ridefinisce colori,
+tipografia, bordi e raggi dei componenti che si incontrano usando phpMyAdmin.
+Il tema di partenza pmahomme dichiara oltre 2500 selettori: le parti meno
+frequentate dell'interfaccia mantengono l'aspetto originale, adattato ai nuovi
+colori solo dove le regole generali arrivano.
+
+In pratica: le schermate di uso quotidiano (elenco database, struttura,
+risultati, SQL, importazione ed esportazione, messaggi) seguono la grafica
+della dashboard. Alcune pagine di configurazione avanzata possono mostrare
+elementi ancora nello stile originale. Non e' un difetto di installazione: e'
+il limite di un tema costruito per sovrapposizione invece che riscrivendo
+phpMyAdmin, scelta fatta per non impedirne gli aggiornamenti.
+
+La cartella del tema non e' navigabile via browser (risponde 403): contiene
+sorgenti, non pagine. Si consulta l'anteprima oppure il file CSS:
+
+    http://localhost/dashboard/phpmyadmin-theme/xampp-v2/css/overrides.css
+
 
 -------------------------------------------------------------------------------
  12. phpMyAdmin DENTRO LA DASHBOARD

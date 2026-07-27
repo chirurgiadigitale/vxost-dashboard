@@ -209,3 +209,138 @@ hr, .separator { border-color: var(--xa-border) !important; }
 @media print {
   html, body { background: #fff !important; color: #000 !important; }
 }
+
+/* ==========================================================================
+   Componenti Bootstrap 5 usati da phpMyAdmin 5.2
+   Senza queste regole console, menu a discesa, elenchi e finestre modali
+   restano con l'aspetto del tema di partenza.
+   ========================================================================== */
+
+/* Barre di navigazione e schede */
+.navbar, .navbar-nav, .nav-tabs, .nav-pills {
+  background: var(--xa-elev) !important;
+  border-color: var(--xa-border) !important;
+}
+.nav-link { color: var(--xa-soft) !important; border-radius: 8px 8px 0 0; }
+.nav-link:hover { color: var(--xa-text) !important; background: var(--xa-surface-2) !important; }
+.nav-link.active, .nav-tabs .nav-link.active {
+  color: var(--xa-ink) !important;
+  background: var(--xa-accent) !important;
+  border-color: transparent !important;
+}
+.navbar-brand, .navbar-text { color: var(--xa-text) !important; }
+.navbar-toggler { border-color: var(--xa-border) !important; }
+
+/* Menu a discesa */
+.dropdown-menu {
+  background: var(--xa-elev) !important;
+  border: 1px solid var(--xa-border) !important;
+  border-radius: var(--xa-radius) !important;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .7) !important;
+}
+.dropdown-item { color: var(--xa-soft) !important; }
+.dropdown-item:hover, .dropdown-item:focus {
+  background: var(--xa-surface-2) !important;
+  color: var(--xa-accent) !important;
+}
+.dropdown-divider { border-color: var(--xa-border) !important; }
+
+/* Elenchi */
+.list-group { background: transparent !important; }
+.list-group-item {
+  background: var(--xa-surface) !important;
+  border-color: var(--xa-border) !important;
+  color: var(--xa-soft) !important;
+}
+.list-group-item-action:hover { background: var(--xa-surface-2) !important; color: var(--xa-text) !important; }
+.list-group-item.active {
+  background: color-mix(in srgb, var(--xa-accent) 18%, transparent) !important;
+  border-color: var(--xa-accent) !important;
+  color: var(--xa-text) !important;
+}
+
+/* Moduli Bootstrap */
+.form-label, .form-check-label, .col-form-label { color: var(--xa-soft) !important; }
+.form-check-input {
+  background-color: var(--xa-elev) !important;
+  border-color: var(--xa-border) !important;
+}
+.form-check-input:checked {
+  background-color: var(--xa-accent) !important;
+  border-color: var(--xa-accent) !important;
+}
+.form-floating > label { color: var(--xa-muted) !important; }
+.form-text, .form-hint { color: var(--xa-muted) !important; }
+.input-group-text {
+  background: var(--xa-surface-2) !important;
+  border-color: var(--xa-border) !important;
+  color: var(--xa-soft) !important;
+}
+.was-validated .form-control:valid, .form-control.is-valid { border-color: var(--xa-accent) !important; }
+.was-validated .form-control:invalid, .form-control.is-invalid { border-color: var(--xa-danger) !important; }
+.invalid-feedback { color: var(--xa-danger) !important; }
+
+/* Gruppi di pulsanti e varianti */
+.btn-group .btn { border-radius: 0 !important; }
+.btn-group .btn:first-child { border-radius: 8px 0 0 8px !important; }
+.btn-group .btn:last-child { border-radius: 0 8px 8px 0 !important; }
+.btn-secondary, .btn-light, .btn-outline-secondary {
+  background: var(--xa-surface-2) !important;
+  border-color: var(--xa-border) !important;
+  color: var(--xa-text) !important;
+}
+.btn-danger { background: var(--xa-danger) !important; border-color: transparent !important; color: #fff !important; }
+.btn-success { background: var(--xa-accent) !important; border-color: transparent !important; color: var(--xa-ink) !important; }
+.btn-link { color: var(--xa-accent) !important; }
+.btn:disabled, .btn.disabled { opacity: .45 !important; }
+
+/* Finestre modali e riquadri sovrapposti */
+.modal-content, .popover, .tooltip-inner, .offcanvas {
+  background: var(--xa-elev) !important;
+  border: 1px solid var(--xa-border) !important;
+  border-radius: var(--xa-radius) !important;
+  color: var(--xa-text) !important;
+}
+.modal-header, .modal-footer, .offcanvas-header { border-color: var(--xa-border) !important; }
+.modal-backdrop { background: #000 !important; opacity: .6 !important; }
+.btn-close { filter: invert(1) grayscale(1) brightness(1.6); }
+
+/* Console SQL e pannello di debug */
+#pma_console, #debug_console, #pma_console .content, #pma_console .toolbar {
+  background: var(--xa-elev) !important;
+  border-color: var(--xa-border) !important;
+  color: var(--xa-soft) !important;
+}
+#pma_console .button, #pma_console .message {
+  background: var(--xa-surface) !important;
+  border-color: var(--xa-border) !important;
+  color: var(--xa-soft) !important;
+}
+#pma_console .message:hover { background: var(--xa-surface-2) !important; }
+#pma_console .toolbar .button:hover { color: var(--xa-accent) !important; }
+
+/* Messaggi, badge, paginazione, schede */
+.message, .messagebox { border-radius: var(--xa-radius) !important; border-color: var(--xa-border) !important; }
+.badge { border-radius: 999px !important; }
+.badge.bg-primary, .badge.bg-success { background: var(--xa-accent) !important; color: var(--xa-ink) !important; }
+.badge.bg-danger { background: var(--xa-danger) !important; }
+.page-link {
+  background: var(--xa-surface) !important;
+  border-color: var(--xa-border) !important;
+  color: var(--xa-soft) !important;
+}
+.page-item.active .page-link { background: var(--xa-accent) !important; border-color: transparent !important; color: var(--xa-ink) !important; }
+.accordion-item, .accordion-button {
+  background: var(--xa-surface) !important;
+  border-color: var(--xa-border) !important;
+  color: var(--xa-text) !important;
+}
+.accordion-button:not(.collapsed) { background: var(--xa-surface-2) !important; color: var(--xa-accent) !important; }
+
+/* Utility di sfondo e testo di Bootstrap usate nei pannelli */
+.bg-light, .bg-white, .bg-body, .bg-body-tertiary { background: var(--xa-surface) !important; }
+.bg-dark { background: var(--xa-elev) !important; }
+.text-dark, .text-body, .text-black { color: var(--xa-text) !important; }
+.text-muted, .text-secondary { color: var(--xa-muted) !important; }
+.border, .border-top, .border-bottom, .border-start, .border-end { border-color: var(--xa-border) !important; }
+.table > :not(caption) > * > * { background: transparent !important; color: var(--xa-soft) !important; }
