@@ -1,0 +1,101 @@
+#!/bin/bash
+#
+# Blocca il commit se stanno per finire nel repo dati locali o privati.
+# Attivazione:  git config core.hooksPath .githooks
+#
+# Controlla tre cose:
+#   1. nomi delle cartelle presenti in progetti/ (i lavori dei clienti)
+#   2. indirizzi IP privati, direttive Listen, DocumentRoot con percorsi reali
+#   3. file che non devono mai essere versionati (dump, chiavi, credenziali)
+
+set -u
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+FAIL=0
+
+if [ -z "$STAGED" ]; then
+    exit 0
+fi
+
+red()  { printf '\033[31m%s\033[0m\n' "$1"; }
+warn() { printf '\033[33m%s\033[0m\n' "$1"; }
+
+# ---------------------------------------------------------------------------
+# 1. Nomi dei progetti locali
+# ---------------------------------------------------------------------------
+if [ -d "$ROOT/progetti" ]; then
+    for dir in "$ROOT"/progetti/*/; do
+        [ -d "$dir" ] || continue
+        name=$(basename "$dir")
+        # ignora nomi troppo corti o generici: darebbero falsi positivi
+        case "$name" in
+            ?|??|???|????|public|src|app|web|test|v4|Theme) continue ;;
+        esac
+        hits=$(git diff --cached -U0 | grep -i -- "$name" | grep -v '^-' || true)
+        if [ -n "$hits" ]; then
+            red "✗ Il nome del progetto '$name' compare nelle modifiche in stage."
+            FAIL=1
+        fi
+    done
+fi
+
+# ---------------------------------------------------------------------------
+# 2. Dati di configurazione locale
+# ---------------------------------------------------------------------------
+DIFF=$(git diff --cached -U0 | grep '^+' | grep -v '^+++' || true)
+
+check_pattern() {
+    local pattern="$1" label="$2"
+    local found
+    found=$(printf '%s\n' "$DIFF" | grep -E -- "$pattern" || true)
+    if [ -n "$found" ]; then
+        red "✗ $label rilevato:"
+        printf '%s\n' "$found" | head -3 | sed 's/^/    /'
+        FAIL=1
+    fi
+}
+
+check_pattern '\b192\.168\.[0-9]+\.[0-9]+' 'Indirizzo IP di rete locale'
+check_pattern '\b10\.[0-9]+\.[0-9]+\.[0-9]+' 'Indirizzo IP privato'
+check_pattern '\b172\.(1[6-9]|2[0-9]|3[01])\.[0-9]+\.[0-9]+' 'Indirizzo IP privato'
+check_pattern 'blowfish_secret[[:space:]]*=[[:space:]]*.[^\x27"]' 'Segreto di phpMyAdmin'
+check_pattern '(password|passwd|secret|api[_-]?key)[[:space:]]*=[[:space:]]*.[A-Za-z0-9]{6}' 'Possibile credenziale'
+
+# DocumentRoot che punta a una cartella reale dentro progetti/
+check_pattern 'DocumentRoot[[:space:]]+"?[^"]*htdocs/progetti/[a-z0-9]' 'DocumentRoot di un progetto reale'
+
+# ---------------------------------------------------------------------------
+# 3. File che non vanno mai versionati
+# ---------------------------------------------------------------------------
+for file in $STAGED; do
+    case "$file" in
+        progetti/*)
+            # Fanno parte della distribuzione, non sono lavoro di un cliente
+            case "$file" in
+                progetti/index.php|progetti/README.txt|progetti/.htaccess) ;;
+                *)
+                    red "✗ File dalla cartella progetti in stage: $file"
+                    FAIL=1
+                    ;;
+            esac
+            ;;
+        *.sql|*.sqlite|*.sqlite3|*.db|*.dump|*credentials*|*.pem|*.key|.env|.env.*)
+            red "✗ File sensibile in stage: $file"
+            FAIL=1
+            ;;
+        */.DS_Store|.DS_Store)
+            red "✗ .DS_Store in stage: $file"
+            FAIL=1
+            ;;
+    esac
+done
+
+if [ "$FAIL" -ne 0 ]; then
+    echo
+    warn "Commit interrotto: rimuovi i dati locali dallo stage prima di procedere."
+    warn "Per forzare consapevolmente:  git commit --no-verify"
+    exit 1
+fi
+
+exit 0

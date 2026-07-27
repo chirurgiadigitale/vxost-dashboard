@@ -68,15 +68,15 @@
     <div class="large-12 columns">
     <dl class="accordion">
     
-      <dt>What is the difference between XAMPP for OS X and XAMPP-VM?</dt>
+      <dt>Qual è la differenza tra XAMPP per OS X e XAMPP-VM?</dt>
       <dd>
         <p>
         <ul>
-          <li>XAMPP for OS X is a native installer for OS X. It installs Apache, PHP and other XAMPP components directly on your OS X system, in the /Applications/XAMPP folder.</li>
-          <li>XAMPP-VM is a virtual machine for OS X. It includes Apache, PHP and other XAMPP components and runs them in a Linux-based virtual machine on your OS X system.</li>
+          <li>XAMPP per OS X è un installer nativo per OS X: installa Apache, PHP e gli altri componenti XAMPP direttamente sul sistema, nella cartella /Applications/XAMPP.</li>
+          <li>XAMPP-VM è una macchina virtuale per OS X: include Apache, PHP e gli altri componenti XAMPP e li esegue in una macchina virtuale basata su Linux.</li>
         </ul>
         </p>
-        <p>For more information, refer to the blog post at <a href="https://www.apachefriends.org/blog/new_xampp_20170628.html">https://www.apachefriends.org/blog/new_xampp_20170628.html</a>.</p>.
+        <p>Per maggiori informazioni consulta l'articolo del blog: <a href="https://www.apachefriends.org/blog/new_xampp_20170628.html" target="_blank" rel="noopener">https://www.apachefriends.org/blog/new_xampp_20170628.html</a>.</p>
       </dd> 
     
       <dt>Come faccio installare XAMPP per Mac OS X?</dt>
@@ -87,9 +87,9 @@
         <li>Fare doppio clic sull' file immagine per avviare il processo di installazione.</li></ul>
       <p>Questo è tutto. XAMPP è ora installato sotto la cartella /Applications/XAMPP.</p>
       </dd>
-      <dt>Does XAMPP include MySQL or MariaDB?</dt>
+      <dt>XAMPP include MySQL o MariaDB?</dt>
       <dd>
-        <p>Since XAMPP 5.5.30 and 5.6.14, XAMPP ships MariaDB instead of MySQL. The commands and tools are the same for both.</p>
+        <p>Dalle versioni XAMPP 5.5.30 e 5.6.14, XAMPP distribuisce MariaDB al posto di MySQL. I comandi e gli strumenti sono gli stessi per entrambi.</p>
       </dd>
       <dt>Come posso avviare XAMPP?</dt>
       <dd>
@@ -130,11 +130,11 @@
         <p>Ciò è in gran parte dovuto alle stesse ragioni all'errore precedente. Lo script di avvio LAMPP trovato un demone MySQL già in esecuzione sul vostro sistema. Per avviare correttamente LAMPP, prima devi fermare questo demone.</p>
       </dd>
 
-      <dt>Apache doesn't seem to start. What can I do?</dt>
+      <dt>Apache non sembra avviarsi. Cosa posso fare?</dt>
       <dd>
-        <p>Questo errore può esistere per diverse ragioni. Apache viene visualizzato questo errore in diverse circostanze. Per trovare l'esatta ragione dobbiamo fare qualche ricerca</p>
+        <p>Questo errore può avere diverse cause: Apache lo mostra in varie circostanze. Per individuare il motivo esatto occorre fare qualche verifica:</p>
         <p><code>tail -2 /Applications/XAMPP/logs/error_log</code></p>
-        <p>Se ricevete un qualsiasi messaggio d'errore visitate <a href="/community.html">le nostre pagine di comunità</a> per ricevere aiuto.</p>
+        <p>Se compaiono messaggi di errore, visita <a href="https://community.apachefriends.org" target="_blank" rel="noopener">le pagine della community</a> per ricevere aiuto.</p>
       </dd>
 
       <dt>Come posso rendere la mia installazione XAMPP più sicura?</dt>
@@ -189,98 +189,73 @@ LAMPP: Starting Apache with SSL...</code></p>
         <p>Ora l'estensione dovrebbe essere attiva.</p>
       </dd>
 
-      <dt>How do I enable access to phpMyAdmin from the outside?</dt>
+      <dt>Come abilito l'accesso a phpMyAdmin dall'esterno?</dt>
       <dd>
-        <p>In the basic configuration of XAMPP, phpMyAdmin is accessible only from the same host that XAMPP is running on, at http://127.0.0.1 or http://localhost.</p>
-        <p>IMPORTANT: Enabling external access for phpMyAdmin in production environments is a significant security risk. You are strongly advised to only allow access from localhost. A remote attacker could take advantage of any existing vulnerability for executing code or for modifying your data.</p>
-        <p>To enable remote access to phpMyAdmin, follow these steps:</p>
+        <p>Nella configurazione di base di XAMPP, phpMyAdmin è accessibile solo dallo stesso computer su cui XAMPP è in esecuzione, all'indirizzo http://127.0.0.1 oppure http://localhost.</p>
+        <p>IMPORTANTE: abilitare l'accesso esterno a phpMyAdmin in ambienti di produzione è un rischio di sicurezza rilevante. È fortemente consigliato consentire l'accesso solo da localhost: un attaccante remoto potrebbe sfruttare una vulnerabilità per eseguire codice o modificare i dati.</p>
+        <p>Per abilitare l'accesso remoto a phpMyAdmin, segui questi passaggi:</p>
         <ul>
-          <li>Edit the xamppfiles/etc/extra/httpd-xampp.conf file in your XAMPP installation directory.</li>
-          <li>Within this file, find the lines below. 
+          <li>Modifica il file xamppfiles/etc/extra/httpd-xampp.conf nella cartella di installazione di XAMPP.</li>
+          <li>All'interno del file individua le righe seguenti:
             <p><code>
                 Alias /phpmyadmin "/Applications/XAMPP/xamppfiles/phpmyadmin"
                 &lt;Directory "/Applications/XAMPP/xamppfiles/phpmyadmin"&gt;
-                  AllowOverride AuthConfig
-                  Require local
+                    AllowOverride AuthConfig
+                    Require local
+                    ErrorDocument 403 /error/XAMPP_FORBIDDEN.html.var
+                &lt;/Directory&gt;
             </code></p>
           </li>
-          <li>Then replace 'Require local' with 'Require all granted'.</li>
-            <p><code>
-                Alias /phpmyadmin "/Applications/XAMPP/xamppfiles/phpmyadmin"
-                &lt;Directory "/Applications/XAMPP/xamppfiles/phpmyadmin"&gt;
-                  AllowOverride AuthConfig
-                  Require all granted
-            </code></p>
-          <li>Restart the Apache server using the XAMPP control panel.</li>
+          <li>Sostituisci la direttiva <code>Require local</code> con <code>Require all granted</code>.</li>
+          <li>Riavvia Apache con il pannello di controllo di XAMPP.</li>
+        </ul>
+        <p>Dopo il riavvio phpMyAdmin sarà raggiungibile anche dagli altri computer della rete. Ricorda di impostare una password per l'utente root di MariaDB prima di esporre l'interfaccia.</p>
+      </dd>
+
+      <dt>Dove si trovano i principali file di configurazione di XAMPP?</dt>
+      <dd>
+        <p>I principali file di configurazione di XAMPP si trovano in questi percorsi:</p>
+        <ul>
+          <li>Configurazione di Apache: /Applications/XAMPP/xamppfiles/etc/httpd.conf e /Applications/XAMPP/xamppfiles/etc/extra/httpd-xampp.conf</li>
+          <li>Configurazione di PHP: /Applications/XAMPP/xamppfiles/etc/php.ini</li>
+          <li>Configurazione di MySQL/MariaDB: /Applications/XAMPP/xamppfiles/etc/my.cnf</li>
+          <li>Configurazione di ProFTPD: /Applications/XAMPP/xamppfiles/etc/proftpd.conf</li>
         </ul>
       </dd>
 
-      <dt>Where are the main XAMPP configuration files?</dt>
+      <dt>Come invio email con XAMPP?</dt>
       <dd>
-        <p>The main XAMPP configuration files are located as follows:</p>
+        <p>Per inviare email con XAMPP si usano i pacchetti PEAR Mail e Net_SMTP, che permettono di inviare messaggi attraverso un account SMTP esterno (per esempio un account Gmail). Segui questi passaggi:</p>
         <ul>
-          <li>Apache configuration file: /Applications/XAMPP/xamppfiles/etc/httpd.conf, /Applications/XAMPP/xamppfiles/etc/extra/httpd-xampp.conf</li>
-          <li>PHP configuration file: /Applications/XAMPP/xamppfiles/etc/php.ini</li>
-          <li>MySQL configuration file: /Applications/XAMPP/xamppfiles/etc/my.cnf</li>
-          <li>ProFTPD configuration file: /Applications/XAMPP/xamppfiles/etc/proftpd.conf</li>
+          <li>Installa i moduli PEAR Mail e Net_SMTP:
+          <code>pear install Net_SMTP Mail</code>
+          Se i pacchetti sono già presenti nel sistema, il comando restituisce messaggi di questo tipo:
+          <code>Ignoring installed package pear/Net_SMTP<br />Ignoring installed package pear/Mail<br />Nothing to install</code>
+          </li>
+          <li>Crea nella cartella "htdocs" uno script di esempio come il seguente:
+          <code>
+          &lt;?php<br />
+          require_once "Mail.php";<br /><br />
+          $from = "tuo-utente-gmail@gmail.com";<br />
+          $to = 'destinatario@example.com';<br />
+          $subject = "Messaggio di prova";<br />
+          $body = "Contenuto del messaggio";<br /><br />
+          $headers = array('From' =&gt; $from, 'To' =&gt; $to, 'Subject' =&gt; $subject);<br />
+          $smtp = Mail::factory('smtp', array(<br />
+          &nbsp;&nbsp;'host' =&gt; 'ssl://smtp.gmail.com',<br />
+          &nbsp;&nbsp;'port' =&gt; '465',<br />
+          &nbsp;&nbsp;'auth' =&gt; true,<br />
+          &nbsp;&nbsp;'username' =&gt; 'tuo-utente-gmail@gmail.com',<br />
+          &nbsp;&nbsp;'password' =&gt; 'tua-password'));<br /><br />
+          $mail = $smtp-&gt;send($to, $headers, $body);<br />
+          if (PEAR::isError($mail)) { echo($mail-&gt;getMessage()); }<br />
+          else { echo("Messaggio inviato correttamente"); }<br />
+          ?&gt;
+          </code>
+          </li>
+          <li>Sostituisci i segnaposto con le credenziali del tuo account e con l'indirizzo del destinatario, poi apri lo script dal browser.</li>
         </ul>
-      </dd>
-
-      <dt>How do I send email with XAMPP?</dt>
-      <dd>
-        <p>To send email with XAMPP, use the PEAR Mail and Net_SMTP packages, which allow you to send email using an external SMTP account (such as a Gmail account). Follow these steps:</p>
-        <ul>
-          <li>Install the Mail and Net_SMTP PEAR modules:
-          <code>
-          pear install Net_SMTP Mail
-          </code>
-          Note that if these packages are already installed in your system you see the messages below when executing that command:
-          <code>
-          Ignoring installed package pear/Net_SMTP
-          Ignoring installed package pear/Mail
-          Nothing to install
-          </code>
-          </li>
-          <li>
-          Create the following example script in your "htdocs" directory to send an email:
-          <code>
-          &lt;?php
-          require_once "Mail.php";
-
-          $from = "your-gmail-username@gmail.com";
-          $to = 'recipients@example.com';
-
-          $host = "ssl://smtp.gmail.com";
-          $port = "465";
-          $username = 'your-gmail-username@gmail.com';
-          $password = 'your-gmail-password';
-
-          $subject = "test";
-          $body = "test";
-
-          $headers = array ('From' => $from, 'To' => $to,'Subject' => $subject);
-          $smtp = Mail::factory('smtp',
-             array ('host' => $host,
-               'port' => $port,
-               'auth' => true,
-               'username' => $username,
-               'password' => $password));
-
-          $mail = $smtp->send($to, $headers, $body);
-
-          if (PEAR::isError($mail)) {
-            echo($mail->getMessage());
-          } else {
-            echo("Message successfully sent!\n");
-          }
-          ?>
-          </code>
-          <p>Remember to replace the dummy values shown with your actual Gmail address and account password. If you don't plan to use Gmail's SMTP server, replace the SMTP host details with appropriate values for your organization or ISP's SMTP server.</p>
-          </li>
-          <li>
-          Execute the script by browsing to it using your Web browser. You should see a notification that the message was successfully sent, and the message should be delivered to the recipient email address.
-          </li>
-        </ul>
+        <p>Se usi Gmail con la verifica in due passaggi, genera una password per le app dedicata invece di usare la password dell'account.</p>
       </dd>
       
       <dt>Come faccio il backup/ripristino mio sistema XAMPP?</dt>

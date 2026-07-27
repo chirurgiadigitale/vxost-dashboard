@@ -12,6 +12,8 @@
 
 # 2. Allow only what ships with XAMPP
 !/.gitignore
+!/.htaccess
+!/.githooks/
 !/dashboard/
 !/img/
 !/index.php
@@ -25,6 +27,7 @@
 /progetti/*
 !/progetti/index.php
 !/progetti/README.txt
+!/progetti/.htaccess
 
 # -----------------------------------------------------------------------------
 #  Never version, anywhere in the tree
@@ -35,8 +38,9 @@
 .claude*
 CLAUDE.md
 
-# Markdown notes
+# Markdown notes: nessuno, tranne il README che presenta il progetto su GitHub
 *.md
+!/README.md
 
 # Secrets and environment
 .env

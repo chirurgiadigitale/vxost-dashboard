@@ -1,0 +1,26 @@
+# =============================================================================
+#  XAMPP Dashboard v2 — configurazione della radice web
+#  Funziona senza modificare httpd.conf: qui bastano i permessi utente.
+# =============================================================================
+
+# Pagina di errore della dashboard al posto di quella predefinita di Apache
+ErrorDocument 404 /dashboard/404.html
+
+# Non esporre l'elenco dei file delle cartelle senza indice: su una macchina di
+# sviluppo il listing rivela i nomi di tutti i progetti in lavorazione.
+Options -Indexes
+
+# Nega l'accesso ai file di configurazione, ai dump e alle chiavi che possono
+# trovarsi dentro le cartelle dei progetti.
+<FilesMatch "(^\.|\.(env|sql|sqlite|sqlite3|db|dump|pem|key|log|bak)$|composer\.(json|lock)$)">
+    Require all denied
+</FilesMatch>
+
+# La cartella con la cronologia di git non deve mai essere servita
+RedirectMatch 404 /\.git
+
+<IfModule mod_headers.c>
+    # Il contenuto e' locale: nessun referrer verso l'esterno
+    Header set Referrer-Policy "no-referrer"
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

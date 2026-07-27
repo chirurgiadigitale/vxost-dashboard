@@ -1,0 +1,9 @@
+# La radice web nasconde gli elenchi di file, ma dentro i progetti in
+# lavorazione il listing e' utile per raggiungere sottocartelle e versioni
+# che non hanno un index. Questa cartella lo riabilita.
+Options +Indexes
+
+# Restano protetti i file che non vanno mai serviti, anche qui.
+<FilesMatch "(^\.|\.(env|sql|sqlite|sqlite3|db|dump|pem|key|bak)$)">
+    Require all denied
+</FilesMatch>
