@@ -11,6 +11,7 @@ Every icon is inline SVG or a CSS mask.
 
 | Path | What it does |
 |------|--------------|
+| `dashboard/WHATSNEW.txt` | Full release notes: what changed, install steps, permissions, platforms |
 | `dashboard/` | The dashboard itself, in 15 languages |
 | `dashboard/stylesheets/all.css` | The whole design system: tokens, grid, components |
 | `dashboard/javascripts/all.js` | Theme, mobile menu, language switcher, accordion, reveal |

@@ -366,10 +366,10 @@ a lavorare.
 
     .htaccess                          404, elenco file, protezioni
     README.md                          presentazione del progetto
-    WHATSNEW.txt                       questo file
     .githooks/pre-commit               controllo di riservatezza
 
     dashboard/
+      WHATSNEW.txt                     questo file
       index.html                       home in inglese
       <lingua>/index.html              home nelle altre quattordici lingue
       <lingua>/faq.html                domande frequenti

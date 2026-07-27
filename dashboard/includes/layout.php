@@ -311,6 +311,9 @@ function xampp_footer(): void
             <strong>v<?php echo DASHBOARD_VERSION; ?></strong>
             <span><?php echo $isIt ? 'restyling' : 'restyling'; ?></span>
           </p>
+          <a href="/dashboard/WHATSNEW.txt" target="_blank" rel="noopener"
+             style="display:inline-block;margin-top:var(--s-2);font-size:.78rem"><?php
+             echo $isIt ? 'Note di versione' : 'Release notes'; ?> ↗</a>
         </div>
 
         <div class="large-2 columns footer-credits">
