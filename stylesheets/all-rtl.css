@@ -1,0 +1,45 @@
+@charset "UTF-8";
+/* ==========================================================================
+   XAMPP Dashboard — variante RTL (arabo, urdu, ...)
+   Riusa integralmente il design system e ne specchia gli assi orizzontali.
+   Backup originale: all-rtl.foundation.bak.css
+   ========================================================================== */
+
+@import url("all.css");
+
+html[dir="rtl"], body[dir="rtl"], .rtl { direction: rtl; }
+
+/* Il layout usa proprieta' logiche (margin-inline, padding-inline):
+   qui restano solo gli specchiamenti espliciti. */
+
+.rtl .eyebrow::before,
+[dir="rtl"] .eyebrow::before {
+  background: linear-gradient(270deg, var(--accent), transparent);
+}
+
+[dir="rtl"] blockquote {
+  border-left: 0;
+  border-right: 3px solid var(--accent);
+  border-radius: var(--r-sm) 0 0 var(--r-sm);
+}
+
+[dir="rtl"] .accordion dt { padding: var(--s-4) var(--s-4) var(--s-4) var(--s-7); }
+[dir="rtl"] .accordion dt::after { right: auto; left: var(--s-4); }
+
+[dir="rtl"] .admonitionblock {
+  border-left: 1px solid var(--border);
+  border-right: 3px solid var(--cyan);
+  padding: var(--s-4) var(--s-5) var(--s-4) var(--s-4);
+}
+[dir="rtl"] .admonitionblock.tip { border-right-color: var(--accent); }
+[dir="rtl"] .admonitionblock.warning,
+[dir="rtl"] .admonitionblock.caution { border-right-color: var(--amber); }
+[dir="rtl"] .admonitionblock.important { border-right-color: var(--danger); }
+
+[dir="rtl"] .nav-actions { margin-left: 0; margin-right: auto; }
+
+[dir="rtl"] article.asciidoctor th,
+[dir="rtl"] article.asciidoctor td { text-align: right; }
+
+[dir="rtl"] .card-link svg { transform: scaleX(-1); }
+[dir="rtl"] a.card:hover .card-link svg { transform: scaleX(-1) translateX(3px); }

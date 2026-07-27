@@ -1,0 +1,29 @@
+# --- Claude Code -----------------------------------------------------------
+.claude/
+.claude*
+CLAUDE.md
+
+# --- Documentazione e note (richiesta esplicita: nessun file .md nel repo) ---
+*.md
+
+# --- Backup del tema originale (rollback locale, non serve nel repo) --------
+*.foundation.bak.css
+*.foundation.bak.js
+*.bak
+*.bak.*
+
+# --- Sistema operativo / editor --------------------------------------------
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# --- Ambiente --------------------------------------------------------------
+.env
+.env.*
+*.log
