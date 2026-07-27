@@ -360,14 +360,17 @@ blockquote {
   border-bottom: 1px solid var(--border);
 }
 
+/* La barra usa tutta la larghezza della finestra: con sette voci piu' le
+   azioni, dentro il container da 1200px il menu andava a capo. */
 .top-bar {
   display: flex;
   align-items: center;
   gap: var(--s-4);
   flex-wrap: wrap;
-  max-width: var(--container);
-  margin-inline: auto;
-  padding: 0 var(--gutter);
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding: 0 clamp(var(--s-4), 2.5vw, var(--s-6));
   min-height: var(--nav-h);
 }
 
@@ -494,12 +497,29 @@ blockquote {
 .top-bar-section li.item.active > a svg { opacity: 1; color: var(--accent); }
 
 @media (min-width: 900px) {
-  .top-bar { flex-wrap: nowrap; gap: var(--s-5); }
+  .top-bar { flex-wrap: nowrap; gap: var(--s-4); }
   .title-area { flex: 0 0 auto; }
   .toggle-topbar.menu-icon { display: none; }
-  .top-bar-section { display: block !important; flex: 1 1 auto; padding-bottom: 0; }
-  .top-bar-section ul.left { flex-direction: row; align-items: center; gap: var(--s-1); }
-  .top-bar-section li.item > a { min-height: 38px; padding: var(--s-2) var(--s-3); }
+  .top-bar-section { display: block !important; flex: 1 1 auto; min-width: 0; padding-bottom: 0; }
+  .top-bar-section ul.left {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;          /* mai su due righe */
+    gap: 2px;
+  }
+  .top-bar-section li.item { min-width: 0; }
+  .top-bar-section li.item > a {
+    min-height: 38px;
+    padding: var(--s-2) var(--s-3);
+    white-space: nowrap;
+  }
+  /* Su schermi stretti il testo si comprime prima di rompere la riga */
+  .top-bar-section li.item > a { font-size: .9rem; }
+}
+
+@media (min-width: 1200px) {
+  .top-bar-section ul.left { gap: var(--s-1); }
+  .top-bar-section li.item > a { font-size: .95rem; }
 }
 
 /* Azioni a destra della navbar (tema) */
@@ -983,6 +1003,49 @@ a.card:hover .card-link svg { transform: translateX(3px); }
   text-align: left;
 }
 .phpinfo h2 a { color: inherit; }
+
+/* Sommario delle sezioni */
+.info-toc { margin-bottom: var(--s-5); }
+.info-toc .chip { text-decoration: none; }
+
+/* Sezioni richiudibili: l'output nativo e' un elenco di 96 tabelle */
+.info-section {
+  margin-bottom: var(--s-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+.info-section > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  min-height: 44px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: .95rem;
+  color: var(--text);
+  list-style: none;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.info-section > summary::-webkit-details-marker { display: none; }
+.info-section > summary::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: rotate(-45deg);
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.info-section[open] > summary { color: var(--accent); background: var(--surface-2); }
+.info-section[open] > summary::before { transform: rotate(45deg); border-color: var(--accent); }
+.info-section > summary:hover { background: var(--surface-2); }
+.info-section__body { padding: var(--s-4); overflow-x: auto; }
+.info-section__body > h2 { display: none; }   /* il titolo e' gia' nel summary */
+.info-section__body table:last-child { margin-bottom: 0; }
 
 .phpinfo table {
   width: 100%;

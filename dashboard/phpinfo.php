@@ -25,6 +25,58 @@ $body = preg_replace('/<style[^>]*>.*?<\/style>/is', '', $body);   // via il CSS
 $body = preg_replace('/<img[^>]*>/i', '', $body);                   // nessuna immagine
 $body = preg_replace('/<a href="http:\/\/www\.php\.net\/"[^>]*>\s*<\/a>/i', '', $body);
 
+/**
+ * L'output nativo e' un elenco piatto di 96 tabelle: scorrerlo e' scomodo.
+ * Ogni sezione <h2> diventa un blocco richiudibile e alimenta il sommario,
+ * senza toccare i dati che contiene.
+ *
+ * @return array{html: string, sections: array<int, array{id: string, title: string}>}
+ */
+function group_sections(string $body): array
+{
+    // Divide l'output sui titoli di sezione, mantenendoli
+    $parts = preg_split('/(<h2[^>]*>.*?<\/h2>)/is', $body, -1, PREG_SPLIT_DELIM_CAPTURE);
+    if (count($parts) < 3) {
+        return ['html' => $body, 'sections' => []];
+    }
+
+    $html = trim($parts[0]);       // intestazione generale, resta sempre visibile
+    $sections = [];
+    $index = 0;
+
+    for ($i = 1; $i < count($parts); $i += 2) {
+        $title = trim(strip_tags($parts[$i]));
+        $content = $parts[$i + 1] ?? '';
+        if ($title === '') {
+            continue;
+        }
+
+        $index++;
+        $id = 'sec-' . preg_replace('/[^a-z0-9]+/i', '-', strtolower($title));
+        $sections[] = ['id' => $id, 'title' => $title];
+
+        // Le prime due sezioni restano aperte: sono quelle che si consultano
+        $open = $index <= 2 ? ' open' : '';
+        $html .= sprintf(
+            '<details class="info-section" id="%s"%s data-title="%s">'
+            . '<summary><span>%s</span></summary>'
+            . '<div class="info-section__body">%s</div>'
+            . '</details>',
+            htmlspecialchars($id, ENT_QUOTES, 'UTF-8'),
+            $open,
+            htmlspecialchars(mb_strtolower($title), ENT_QUOTES, 'UTF-8'),
+            htmlspecialchars($title, ENT_QUOTES, 'UTF-8'),
+            $content
+        );
+    }
+
+    return ['html' => $html, 'sections' => $sections];
+}
+
+$grouped = group_sections($body);
+$body = $grouped['html'];
+$sections = $grouped['sections'];
+
 // 3. Dati di sintesi per le card di stato
 $isIt = xampp_lang() === 'it';
 $summary = [
@@ -102,9 +154,64 @@ xampp_header('XAMPP — PHPInfo', 'phpinfo');
                 <p class="eyebrow"><?php echo $isIt ? 'Output completo' : 'Full output'; ?></p>
                 <h2>phpinfo()</h2>
               </div>
-              <p class="muted"><?php echo $isIt ? 'Dati nativi, presentazione della dashboard' : 'Native data, dashboard presentation'; ?></p>
+              <p class="muted"><?php echo count($sections); ?> <?php echo $isIt ? 'sezioni' : 'sections'; ?></p>
             </div>
+
+            <?php if ($sections): ?>
+            <div class="toolbar" style="margin-bottom:var(--s-4)">
+              <label class="search-field">
+                <span class="visually-hidden"><?php echo $isIt ? 'Cerca una sezione' : 'Search a section'; ?></span>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                <input type="search" id="info-filter" autocomplete="off" spellcheck="false"
+                       placeholder="<?php echo $isIt ? 'Filtra le sezioni…' : 'Filter sections…'; ?>">
+              </label>
+              <div class="chip-list">
+                <button type="button" class="chip chip--filter" id="info-expand"><?php echo $isIt ? 'Espandi tutto' : 'Expand all'; ?></button>
+                <button type="button" class="chip chip--filter" id="info-collapse"><?php echo $isIt ? 'Chiudi tutto' : 'Collapse all'; ?></button>
+              </div>
+            </div>
+
+            <nav class="chip-list info-toc" aria-label="<?php echo $isIt ? 'Sommario' : 'Table of contents'; ?>">
+              <?php foreach ($sections as $s): ?>
+              <a class="chip" href="#<?php echo h($s['id']); ?>"><?php echo h($s['title']); ?></a>
+              <?php endforeach; ?>
+            </nav>
+            <?php endif; ?>
+
             <div class="phpinfo"><?php echo $body; ?></div>
+
+            <script>
+              /* Sommario e filtro delle sezioni di phpinfo() */
+              (function () {
+                var sections = Array.prototype.slice.call(document.querySelectorAll('.info-section'));
+                var filter = document.getElementById('info-filter');
+                if (!sections.length || !filter) return;
+
+                filter.addEventListener('input', function () {
+                  var q = filter.value.trim().toLowerCase();
+                  sections.forEach(function (s) {
+                    var match = !q || s.getAttribute('data-title').indexOf(q) !== -1;
+                    s.classList.toggle('hide', !match);
+                    if (q && match) s.open = true;
+                  });
+                });
+
+                document.getElementById('info-expand').addEventListener('click', function () {
+                  sections.forEach(function (s) { s.open = true; });
+                });
+                document.getElementById('info-collapse').addEventListener('click', function () {
+                  sections.forEach(function (s) { s.open = false; });
+                });
+
+                /* Un link del sommario apre la sezione prima di saltarci */
+                document.querySelectorAll('.info-toc a').forEach(function (link) {
+                  link.addEventListener('click', function () {
+                    var target = document.getElementById(link.getAttribute('href').slice(1));
+                    if (target) target.open = true;
+                  });
+                });
+              })();
+            </script>
           </div>
         </div>
       </section>
