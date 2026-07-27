@@ -1330,6 +1330,177 @@ ul.social li.facebook a::before {
 .footer a:hover img { opacity: 1; filter: none; }
 
 /* --------------------------------------------------------------------------
+   12b. PAGINE STRUMENTALI (porte, progetti, database)
+   -------------------------------------------------------------------------- */
+
+/* Barra dei filtri */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.toolbar .chip-list { flex: 1 1 auto; }
+
+.search-field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: min(100%, 260px);
+  padding: 0 var(--s-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--bg-elev);
+  color: var(--text-muted);
+  transition: border-color var(--dur) var(--ease);
+}
+.search-field:focus-within { border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+.search-field input {
+  flex: 1 1 auto;
+  min-height: 40px;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: .92rem;
+  outline: none;
+}
+.search-field input::placeholder { color: var(--text-muted); }
+.search-field input::-webkit-search-cancel-button { filter: grayscale(1) opacity(.6); }
+
+.chip--filter {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 32px;
+}
+.chip--filter.is-active {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: transparent;
+}
+
+/* Card progetto */
+.project-card .project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+}
+.project-card h3 { word-break: break-word; }
+
+.empty-state { align-items: flex-start; max-width: 60ch; }
+
+/* Card porta */
+.port-card {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--s-4);
+}
+.port-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  height: 52px;
+  flex: none;
+  padding: 0 var(--s-2);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.port-body { flex: 1 1 auto; min-width: 0; }
+.port-body h3 { margin: 0 0 2px; font-size: 1rem; }
+.port-body p { margin: 0; font-size: .78rem; color: var(--text-muted); }
+.port-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: .75;
+}
+
+/* Tabella dati */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .875rem;
+  min-width: 620px;
+}
+.data-table th, .data-table td {
+  padding: var(--s-3);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.data-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.data-table tbody tr:last-child td { border-bottom: 0; }
+.data-table tbody tr:hover td { background: var(--surface-2); }
+
+/* Contenitore a tutta altezza per phpMyAdmin */
+.page-full { overflow: hidden; }
+.page-full .wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+  height: calc(100dvh - var(--nav-h) - 62px);
+  min-height: 420px;
+}
+.page-full .footer { margin-top: 0; padding-block: var(--s-3); }
+.page-full .footer-main, .page-full .footer-brand, .page-full .footer-title,
+.page-full .footer_links--stack, .page-full .social { display: none; }
+.page-full .footer-bottom { margin-top: 0; padding-top: 0; border-top: 0; }
+
+.embed-bar {
+  flex: none;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.embed-bar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: var(--s-2) var(--gutter);
+}
+.embed-bar__actions { display: flex; gap: var(--s-2); margin-left: auto; }
+
+.btn--sm { min-height: 34px; padding: 0 var(--s-3); font-size: .82rem; }
+
+.embed-frame {
+  flex: 1 1 auto;
+  width: 100%;
+  border: 0;
+  background: var(--bg-elev);
+}
+
+/* --------------------------------------------------------------------------
    13. ANIMAZIONI DI INGRESSO
    -------------------------------------------------------------------------- */
 [data-reveal] {

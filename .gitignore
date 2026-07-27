@@ -71,3 +71,16 @@ Thumbs.db
 
 # Logs
 *.log
+
+# -----------------------------------------------------------------------------
+#  MySQL / MariaDB data — the distribution ships with empty databases
+# -----------------------------------------------------------------------------
+mysql/
+var/mysql/
+*.frm
+*.ibd
+*.MYD
+*.MYI
+ib_logfile*
+ibdata*
+*.dump

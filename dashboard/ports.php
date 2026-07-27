@@ -1,0 +1,579 @@
+<?php
+/**
+ * XAMPP Dashboard v2 — Porte in ascolto e indirizzi IP
+ *
+ * Elenca le porte TCP in ascolto sulla macchina, il processo che le occupa e,
+ * quando riconoscibile, il progetto a cui appartengono (dal percorso di lavoro
+ * del processo). Utile per ritrovare i dev server aperti su localhost:3000,
+ * :8000, :5173 e simili.
+ *
+ * Sola lettura: nessun comando modifica lo stato del sistema.
+ */
+
+declare(strict_types=1);
+
+require __DIR__ . '/includes/layout.php';
+
+/** Etichette della pagina. */
+function p_t(string $key): string
+{
+    static $s = [
+        'en' => [
+            'title' => 'Ports & IPs', 'eyebrow' => 'Network overview',
+            'subtitle' => 'TCP ports currently listening on this machine, with the process and project behind each one',
+            'refresh' => 'Refresh', 'open' => 'Open', 'port' => 'Port', 'process' => 'Process',
+            'project' => 'Project', 'address' => 'Address', 'pid' => 'PID', 'path' => 'Working directory',
+            'web' => 'Web services', 'other' => 'Other listening ports', 'ips' => 'Addresses of this machine',
+            'vhosts' => 'Apache virtual hosts', 'none' => 'No listening port detected.',
+            'novhost' => 'No virtual host configured in httpd-vhosts.conf.',
+            'unavailable' => 'Port scanning is unavailable: the lsof command cannot be executed by PHP.',
+            'hint' => 'Ports serving HTTP are clickable. The project name is derived from the process working directory.',
+            'loopback' => 'Loopback', 'lan' => 'Local network', 'count' => 'listening ports',
+            'auto' => 'Auto refresh every 30s',
+        ],
+        'it' => [
+            'title' => 'Porte e IP', 'eyebrow' => 'Panoramica di rete',
+            'subtitle' => 'Porte TCP in ascolto su questa macchina, con il processo e il progetto che le occupa',
+            'refresh' => 'Aggiorna', 'open' => 'Apri', 'port' => 'Porta', 'process' => 'Processo',
+            'project' => 'Progetto', 'address' => 'Indirizzo', 'pid' => 'PID', 'path' => 'Cartella di lavoro',
+            'web' => 'Servizi web', 'other' => 'Altre porte in ascolto', 'ips' => 'Indirizzi di questa macchina',
+            'vhosts' => 'Virtual host Apache', 'none' => 'Nessuna porta in ascolto rilevata.',
+            'novhost' => 'Nessun virtual host configurato in httpd-vhosts.conf.',
+            'unavailable' => 'Scansione non disponibile: PHP non può eseguire il comando lsof.',
+            'hint' => 'Le porte che servono HTTP sono cliccabili. Il nome del progetto è dedotto dalla cartella di lavoro del processo.',
+            'loopback' => 'Loopback', 'lan' => 'Rete locale', 'count' => 'porte in ascolto',
+            'auto' => 'Aggiornamento automatico ogni 30s',
+        ],
+    ];
+    $lang = xampp_lang();
+    return $s[$lang][$key] ?? $s['en'][$key] ?? $key;
+}
+
+/** Esegue un comando in sola lettura, restituendo l'output o null. */
+function run(string $cmd): ?string
+{
+    if (!function_exists('shell_exec')) {
+        return null;
+    }
+    $disabled = array_map('trim', explode(',', (string) ini_get('disable_functions')));
+    if (in_array('shell_exec', $disabled, true)) {
+        return null;
+    }
+    $out = @shell_exec($cmd . ' 2>/dev/null');
+    return is_string($out) && $out !== '' ? $out : null;
+}
+
+/**
+ * Comando completo e cartella di lavoro di tutti i processi, in due sole
+ * chiamate di sistema (una per PID sarebbe decine di fork: troppo lento).
+ *
+ * @return array<int, array{command: string, cwd: string}>
+ */
+function process_table(array $pids = []): array
+{
+    static $table = null;
+    if ($table !== null) {
+        return $table;
+    }
+    $table = [];
+
+    // Riga per riga: "<pid> <comando completo>"
+    $ps = run('ps -axo pid=,command=');
+    foreach (explode("\n", (string) $ps) as $line) {
+        if (preg_match('/^\s*(\d+)\s+(.*)$/', $line, $m)) {
+            $table[(int) $m[1]] = ['command' => trim($m[2]), 'cwd' => ''];
+        }
+    }
+
+    // Cartelle di lavoro: solo per i PID che interessano, altrimenti lsof
+    // dovrebbe attraversare tutti i processi della macchina (secondi di attesa).
+    $pids = array_values(array_unique(array_filter($pids)));
+    if ($pids) {
+        $list = implode(',', array_map('intval', array_slice($pids, 0, 200)));
+        $cwds = run('lsof -a -p ' . $list . ' -d cwd -Fpn -w');
+        $pid = 0;
+        foreach (explode("\n", (string) $cwds) as $line) {
+            if ($line === '') {
+                continue;
+            }
+            if ($line[0] === 'p') {
+                $pid = (int) substr($line, 1);
+            } elseif ($line[0] === 'n' && $pid > 0 && isset($table[$pid])) {
+                $table[$pid]['cwd'] = substr($line, 1);
+            }
+        }
+    }
+
+    return $table;
+}
+
+/** Comando e cartella di lavoro di un singolo processo. */
+function process_info(int $pid): array
+{
+    $table = process_table();
+    return $table[$pid] ?? ['command' => '', 'cwd' => ''];
+}
+
+/**
+ * Deduce il nome del progetto dal percorso di lavoro o dal comando:
+ * la prima cartella sotto htdocs, Sites, www, Projects o simili.
+ */
+function guess_project(string $cwd, string $command): string
+{
+    $haystack = $cwd !== '' ? $cwd : $command;
+    $markers = ['/htdocs/progetti/', '/htdocs/', '/Sites/', '/www/', '/Projects/', '/Progetti/', '/dev/'];
+
+    foreach ($markers as $marker) {
+        $pos = stripos($haystack, $marker);
+        if ($pos !== false) {
+            $rest = substr($haystack, $pos + strlen($marker));
+            $name = strtok($rest, '/ ');
+            // "htdocs" da solo e' la radice del server, non un progetto
+            if (is_string($name) && $name !== '' && $name[0] !== '.' && $name !== 'htdocs') {
+                return $name;
+            }
+        }
+    }
+
+    // Fallback: ultima cartella significativa del percorso di lavoro
+    if ($cwd !== '' && $cwd !== '/') {
+        $name = basename($cwd);
+        if ($name !== '' && !in_array($name, ['/', 'root', 'bin', 'usr', 'tmp', 'var'], true)) {
+            return $name;
+        }
+    }
+    return '';
+}
+
+/** Porte note dei servizi di sistema. */
+function well_known(int $port): string
+{
+    static $map = [
+        21 => 'FTP', 22 => 'SSH', 25 => 'SMTP', 53 => 'DNS', 80 => 'Apache (HTTP)',
+        143 => 'IMAP', 443 => 'Apache (HTTPS)', 631 => 'CUPS', 3306 => 'MariaDB / MySQL',
+        5000 => 'macOS ControlCenter', 5432 => 'PostgreSQL', 6379 => 'Redis',
+        7000 => 'macOS ControlCenter', 8080 => 'HTTP alternativa', 8443 => 'HTTPS alternativa',
+        9000 => 'PHP-FPM / Xdebug', 11211 => 'Memcached', 27017 => 'MongoDB',
+    ];
+    return $map[$port] ?? '';
+}
+
+/** Elenco delle porte TCP in ascolto. */
+function listening_ports(): ?array
+{
+    $raw = run('lsof -nP -iTCP -sTCP:LISTEN');
+    if ($raw === null) {
+        return null;
+    }
+
+    // Prima passata: raccoglie i PID, cosi' le cartelle di lavoro si leggono
+    // con una sola invocazione di lsof mirata.
+    $pids = [];
+    foreach (explode("\n", $raw) as $line) {
+        $cols = preg_split('/\s+/', trim($line));
+        if (count($cols) > 1 && ctype_digit($cols[1])) {
+            $pids[] = (int) $cols[1];
+        }
+    }
+    process_table($pids);
+
+    $ports = [];
+    foreach (explode("\n", $raw) as $line) {
+        if ($line === '' || str_starts_with($line, 'COMMAND')) {
+            continue;
+        }
+        $cols = preg_split('/\s+/', trim($line));
+        if (count($cols) < 9) {
+            continue;
+        }
+
+        $name = end($cols);
+        if (str_ends_with($name, '(LISTEN)')) {
+            $name = trim($cols[count($cols) - 2]);
+        }
+        if (!preg_match('/^(.*):(\d+)$/', $name, $m)) {
+            continue;
+        }
+
+        $address = $m[1] === '*' ? '0.0.0.0' : $m[1];
+        $port    = (int) $m[2];
+        $pid     = (int) $cols[1];
+        $key     = $port . '@' . $address;
+
+        if (isset($ports[$key])) {
+            continue;
+        }
+
+        $info = process_info($pid);
+        $project = guess_project($info['cwd'], $info['command']);
+        $path = $info['cwd'];
+
+        // Le porte servite da Apache prendono nome e percorso dal VirtualHost:
+        // la cartella di lavoro del processo httpd non dice nulla sul progetto.
+        $vh = vhosts();
+        if (isset($vh[$port]) && $vh[$port]['root'] !== '') {
+            $project = $vh[$port]['project'] !== '' ? $vh[$port]['project'] : $project;
+            $path = $vh[$port]['root'];
+        }
+
+        $ports[$key] = [
+            'port'    => $port,
+            'address' => $address,
+            'command' => $cols[0],
+            'pid'     => $pid,
+            'user'    => $cols[2],
+            'proto'   => $cols[4] === 'IPv6' ? 'IPv6' : 'IPv4',
+            'cwd'     => $path,
+            'full'    => $info['command'],
+            'project' => $project,
+            'service' => well_known($port),
+        ];
+    }
+
+    uasort($ports, static fn(array $a, array $b): int => $a['port'] <=> $b['port']);
+    return $ports;
+}
+
+/**
+ * Verifica in parallelo quali porte rispondono a una richiesta HTTP.
+ * Un controllo sequenziale su decine di porte costerebbe secondi: qui i socket
+ * sono non bloccanti e vengono attesi tutti insieme.
+ *
+ * @param  int[] $ports
+ * @return array<int, bool>
+ */
+function http_ports(array $ports): array
+{
+    $result = array_fill_keys($ports, false);
+    $sockets = [];
+
+    foreach ($ports as $port) {
+        $sock = @stream_socket_client(
+            'tcp://127.0.0.1:' . $port,
+            $errno,
+            $errstr,
+            1,
+            STREAM_CLIENT_ASYNC_CONNECT | STREAM_CLIENT_CONNECT
+        );
+        if ($sock) {
+            stream_set_blocking($sock, false);
+            $sockets[$port] = $sock;
+        }
+    }
+    if (!$sockets) {
+        return $result;
+    }
+
+    $request = "HEAD / HTTP/1.0\r\nHost: localhost\r\nConnection: close\r\n\r\n";
+    $pending = $sockets;   // in attesa di connessione + invio
+    $waiting = [];         // richiesta inviata, in attesa di risposta
+    $deadline = microtime(true) + 0.7;   // su localhost la risposta e' immediata
+
+    while (($pending || $waiting) && microtime(true) < $deadline) {
+        // 1. Socket appena connessi: invia la richiesta
+        if ($pending) {
+            $write = $pending;
+            $read = $except = null;
+            if (@stream_select($read, $write, $except, 0, 150000) > 0) {
+                foreach ($write as $sock) {
+                    $port = array_search($sock, $sockets, true);
+                    if (@fwrite($sock, $request) !== false) {
+                        $waiting[$port] = $sock;
+                    } else {
+                        @fclose($sock);
+                    }
+                    unset($pending[$port]);
+                }
+            }
+        }
+
+        // 2. Socket con risposta pronta: leggi solo quelli segnalati
+        if ($waiting) {
+            $read = $waiting;
+            $write = $except = null;
+            if (@stream_select($read, $write, $except, 0, 150000) > 0) {
+                foreach ($read as $sock) {
+                    $port = array_search($sock, $sockets, true);
+                    $head = (string) @fread($sock, 16);
+                    $result[$port] = str_starts_with($head, 'HTTP/');
+                    @fclose($sock);
+                    unset($waiting[$port]);
+                }
+            }
+        }
+    }
+
+    foreach (array_merge($pending, $waiting) as $sock) {
+        @fclose($sock);
+    }
+
+    return $result;
+}
+
+/** Indirizzi IP della macchina. */
+function local_ips(): array
+{
+    $ips = ['loopback' => ['127.0.0.1', '::1'], 'lan' => []];
+
+    if (function_exists('net_get_interfaces')) {
+        $interfaces = @net_get_interfaces() ?: [];
+        foreach ($interfaces as $iface => $data) {
+            foreach ($data['unicast'] ?? [] as $unicast) {
+                $addr = $unicast['address'] ?? '';
+                if ($addr === '' || str_starts_with($addr, '127.') || str_starts_with($addr, 'fe80')
+                    || $addr === '::1' || str_contains($addr, ':')) {
+                    continue;
+                }
+                $ips['lan'][$addr] = $iface;
+            }
+        }
+    }
+    return $ips;
+}
+
+/**
+ * Virtual host attivi, indicizzati per porta.
+ * I blocchi commentati (#) vengono ignorati: Apache non li carica.
+ *
+ * @return array<int, array{port:int, name:string, root:string, project:string}>
+ */
+function vhosts(): array
+{
+    static $out = null;
+    if ($out !== null) {
+        return $out;
+    }
+    $out = [];
+
+    $file = '/Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf';
+    if (!is_readable($file)) {
+        return $out;
+    }
+
+    // Via i commenti prima del parsing, altrimenti si leggono vhost inattivi
+    $lines = [];
+    foreach (explode("\n", (string) file_get_contents($file)) as $line) {
+        if (!str_starts_with(ltrim($line), '#')) {
+            $lines[] = $line;
+        }
+    }
+    $conf = implode("\n", $lines);
+
+    if (preg_match_all('/<VirtualHost\s+([^>]+)>(.*?)<\/VirtualHost>/is', $conf, $blocks, PREG_SET_ORDER)) {
+        foreach ($blocks as $block) {
+            preg_match('/ServerName\s+(\S+)/i', $block[2], $name);
+            preg_match('/DocumentRoot\s+"?([^"\n]+?)"?\s*$/im', $block[2], $root);
+            $port = 80;
+            if (preg_match('/:(\d+)\s*$/', trim($block[1]), $bind)) {
+                $port = (int) $bind[1];
+            }
+
+            $docroot = trim($root[1] ?? '');
+            $out[$port] = [
+                'port'    => $port,
+                'name'    => $name[1] ?? 'localhost',
+                'root'    => $docroot,
+                'project' => guess_project($docroot, ''),
+            ];
+        }
+    }
+
+    ksort($out);
+    return $out;
+}
+
+$ports = listening_ports();
+$ips   = local_ips();
+$vh    = vhosts();
+
+// Separa i servizi web (raggiungibili via HTTP) dal resto
+$web = $other = [];
+if ($ports !== null) {
+    $candidates = [];
+    foreach ($ports as $p) {
+        if ($p['port'] >= 1024 || in_array($p['port'], [80, 443], true)) {
+            $candidates[$p['port']] = $p['port'];
+        }
+    }
+    $isHttp = http_ports(array_values($candidates));
+
+    foreach ($ports as $p) {
+        if (!empty($isHttp[$p['port']])) {
+            $web[] = $p;
+        } else {
+            $other[] = $p;
+        }
+    }
+}
+
+xampp_header('XAMPP — ' . p_t('title'), 'ports');
+?>
+
+      <section class="hero">
+        <div class="row">
+          <div class="large-9 columns" data-reveal>
+            <p class="eyebrow"><?php echo h(p_t('eyebrow')); ?></p>
+            <h1><?php echo h(p_t('title')); ?> <span><?php echo h(p_t('subtitle')); ?></span></h1>
+            <div class="hero-actions">
+              <a class="btn btn--primary" href="?ts=<?php echo time(); ?>">
+                <?php echo xampp_icon('refresh'); ?><?php echo h(p_t('refresh')); ?>
+              </a>
+              <span class="badge badge--ok">
+                <span class="dot dot--pulse"></span>
+                <?php echo $ports === null ? '—' : count($ports); ?> <?php echo h(p_t('count')); ?>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INDIRIZZI -->
+      <section class="section section--tight">
+        <div class="row">
+          <div class="large-12 columns" data-reveal>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow"><?php echo h(p_t('ips')); ?></p>
+                <h2><?php echo h(p_t('address')); ?></h2>
+              </div>
+            </div>
+            <div class="status-grid">
+              <?php foreach ($ips['loopback'] as $ip): ?>
+              <div class="stat">
+                <span class="dot" style="color:var(--cyan)"></span>
+                <span>
+                  <span class="stat-label"><?php echo h(p_t('loopback')); ?></span><br>
+                  <span class="stat-value mono"><?php echo h($ip); ?></span>
+                </span>
+              </div>
+              <?php endforeach; ?>
+              <?php foreach ($ips['lan'] as $ip => $iface): ?>
+              <div class="stat">
+                <span class="dot dot--pulse" style="color:var(--accent)"></span>
+                <span>
+                  <span class="stat-label"><?php echo h(p_t('lan')); ?> · <?php echo h($iface); ?></span><br>
+                  <span class="stat-value mono"><?php echo h($ip); ?></span>
+                </span>
+              </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <?php if ($ports === null): ?>
+      <section class="section">
+        <div class="row">
+          <div class="large-8 columns">
+            <div class="admonitionblock warning">
+              <p style="margin:0"><?php echo h(p_t('unavailable')); ?></p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <?php else: ?>
+
+      <!-- SERVIZI WEB -->
+      <section class="section">
+        <div class="row">
+          <div class="large-12 columns" data-reveal>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow"><?php echo h(p_t('web')); ?></p>
+                <h2>HTTP</h2>
+              </div>
+              <p class="muted"><?php echo h(p_t('hint')); ?></p>
+            </div>
+
+            <?php if (!$web): ?>
+              <p class="muted"><?php echo h(p_t('none')); ?></p>
+            <?php else: ?>
+            <div class="bento bento--2">
+              <?php foreach ($web as $p): ?>
+              <a class="card port-card" href="http://localhost:<?php echo (int) $p['port']; ?>/" target="_blank" rel="noopener">
+                <span class="port-number mono"><?php echo (int) $p['port']; ?></span>
+                <div class="port-body">
+                  <h3><?php echo h($p['project'] !== '' ? $p['project'] : ($p['service'] !== '' ? $p['service'] : $p['command'])); ?></h3>
+                  <p class="mono" dir="ltr"><?php echo h($p['command']); ?> · PID <?php echo (int) $p['pid']; ?></p>
+                  <?php if ($p['cwd'] !== ''): ?>
+                  <p class="mono port-path" dir="ltr" title="<?php echo h($p['cwd']); ?>"><?php echo h($p['cwd']); ?></p>
+                  <?php endif; ?>
+                </div>
+                <span class="card-link"><?php echo h(p_t('open')); ?> <?php echo xampp_icon('external', 16); ?></span>
+              </a>
+              <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALTRE PORTE -->
+      <section class="section section--tight">
+        <div class="row">
+          <div class="large-12 columns" data-reveal>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow"><?php echo h(p_t('other')); ?></p>
+                <h2>TCP</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th><?php echo h(p_t('port')); ?></th>
+                    <th><?php echo h(p_t('address')); ?></th>
+                    <th><?php echo h(p_t('process')); ?></th>
+                    <th><?php echo h(p_t('pid')); ?></th>
+                    <th><?php echo h(p_t('project')); ?></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($other as $p): ?>
+                  <tr>
+                    <td class="mono"><strong><?php echo (int) $p['port']; ?></strong></td>
+                    <td class="mono" dir="ltr"><?php echo h($p['address']); ?> <span class="muted"><?php echo h($p['proto']); ?></span></td>
+                    <td class="mono" dir="ltr"><?php echo h($p['command']); ?></td>
+                    <td class="mono"><?php echo (int) $p['pid']; ?></td>
+                    <td><?php echo h($p['service'] !== '' ? $p['service'] : $p['project']); ?></td>
+                  </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+      <?php endif; ?>
+
+      <!-- VIRTUAL HOST -->
+      <section class="section section--tight">
+        <div class="row">
+          <div class="large-12 columns" data-reveal>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow"><?php echo h(p_t('vhosts')); ?></p>
+                <h2>Apache</h2>
+              </div>
+            </div>
+            <?php if (!$vh): ?>
+              <p class="muted"><?php echo h(p_t('novhost')); ?></p>
+            <?php else: ?>
+            <div class="bento">
+              <?php foreach ($vh as $v): ?>
+              <a class="card" href="http://<?php echo h($v['name']); ?>:<?php echo (int) $v['port']; ?>/" target="_blank" rel="noopener">
+                <span class="card-icon card-icon--violet"><?php echo xampp_icon('globe', 22); ?></span>
+                <h3><?php echo h($v['project'] !== '' ? $v['project'] : $v['name']); ?></h3>
+                <p class="mono" dir="ltr"><?php echo h($v['name']); ?>:<?php echo (int) $v['port']; ?></p>
+                <p class="mono port-path" dir="ltr" title="<?php echo h($v['root']); ?>"><?php echo h($v['root']); ?></p>
+                <span class="card-link"><?php echo h(p_t('open')); ?> <?php echo xampp_icon('external', 16); ?></span>
+              </a>
+              <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+          </div>
+        </div>
+      </section>
+
+<?php xampp_footer(); ?>
