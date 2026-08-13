@@ -1,0 +1,164 @@
+@charset "UTF-8";
+/* ==========================================================================
+   VXOST, Apache directory listing
+   Apache still renders the page it rendered in 1996: a bare table, a horizontal
+   rule and the GIF icons that shipped with it. This is the same markup, dressed
+   in the dashboard's design system.
+
+   Loaded through IndexStyleSheet, so it applies to every folder Apache lists.
+   With IndexOptions HTMLTable, Apache hands out real class names, indexcolname
+   and the rest, which is what this hooks onto. The markup itself cannot be
+   changed, only styled.
+   ========================================================================== */
+
+:root {
+  --bg:            #070B16;
+  --bg-elev:       #0B1220;
+  --surface:       rgba(148, 163, 184, 0.05);
+  --surface-2:     rgba(148, 163, 184, 0.09);
+  --text:          #E9EFFA;
+  --text-soft:     #B7C3D6;
+  --text-muted:    #8493AB;
+  --border:        rgba(148, 163, 184, 0.16);
+  --accent:        #FD47FD;
+  --brand-gradient: linear-gradient(45deg, #0E05D0 0%, #6619E3 26%, #FD3BFC 55%, #FC6D5F 78%, #FA8406 100%);
+  --r-md: 14px;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #F4F7FC; --bg-elev: #FFFFFF;
+    --surface: rgba(15, 23, 42, 0.03); --surface-2: rgba(15, 23, 42, 0.07);
+    --text: #0B1220; --text-soft: #33415A; --text-muted: #5A6B85;
+    --border: rgba(15, 23, 42, 0.12);
+    --accent: #5A15C9;
+    color-scheme: light;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 48px 24px 64px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The heading Apache writes is "Index of /projects/<name>". The path is the
+   useful half, so it is set in the mono face and the label is toned down. */
+h1 {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  font-size: clamp(1.3rem, 1rem + 1.6vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-family: var(--font-mono);
+  word-break: break-all;
+}
+h1::before {
+  content: "";
+  display: block;
+  width: 54px; height: 4px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  background: var(--brand-gradient);
+}
+
+table {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+th a { color: inherit; }
+
+td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+tr:last-child td { border-bottom: 0; }
+tr:hover td { background: var(--surface); }
+
+/* Sizes and dates are figures: in the mono face they line up and can be read
+   down the column. */
+td.indexcollastmod,
+td.indexcolsize {
+  font-family: var(--font-mono);
+  font-size: .86rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+td.indexcolname { width: 100%; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+td a { color: var(--text); font-weight: 500; }
+td a:hover { color: var(--accent); }
+
+/* Apache's icons are 20-year-old GIFs. They are replaced by a coloured dot,
+   sized from the alt text, which is the only thing telling a folder from a
+   file in this markup. */
+img { display: none; }
+td.indexcolicon { width: 34px; padding-right: 0; }
+td.indexcolicon::after {
+  content: "";
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 3px;
+  background: var(--text-muted);
+  opacity: .55;
+}
+/* The alt text is the only thing in this markup that tells a folder from a
+   file, so the marker is chosen from it. */
+td.indexcolicon:has(img[alt="[DIR]"])::after {
+  background: var(--brand-gradient); opacity: 1; border-radius: 2px;
+}
+td.indexcolicon:has(img[alt="[PARENTDIR]"])::after {
+  background: none; border: 2px solid var(--text-muted); border-radius: 50%;
+}
+
+/* The rules Apache puts between header, body and footer add nothing here. */
+hr { display: none; }
+tr.indexbreakrow th { padding: 0; height: 0; border: 0; }
+
+address {
+  display: block;
+  max-width: 1100px;
+  margin: 20px auto 0;
+  font-size: .8rem;
+  font-style: normal;
+  color: var(--text-muted);
+}
+
+@media (max-width: 640px) {
+  body { padding: 28px 14px 40px; }
+  td, th { padding: 10px 12px; }
+  /* On a narrow screen the date costs the width the name needs. */
+  td.indexcollastmod, th.indexcollastmod { display: none; }
+}

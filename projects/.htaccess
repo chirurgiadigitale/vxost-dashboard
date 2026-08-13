@@ -1,9 +1,20 @@
-# La radice web nasconde gli elenchi di file, ma dentro i progetti in
-# lavorazione il listing e' utile per raggiungere sottocartelle e versioni
-# che non hanno un index. Questa cartella lo riabilita.
+# The web root hides file listings, but inside projects being worked on a
+# listing is useful for reaching subfolders and versions that have no index of
+# their own. This folder turns it back on.
 Options +Indexes
 
-# Restano protetti i file che non vanno mai serviti, anche qui.
+# The listing is Apache's own: this only asks for the modern table markup and
+# points at a stylesheet, rather than generating the pages with a script that
+# would have to run on every folder for no gain.
+#
+# Charset is not optional here: without it Apache serves the listing as
+# ISO-8859-1 and any project with an accent in its name comes out mangled.
+IndexOptions FancyIndexing HTMLTable VersionSort NameWidth=* Charset=UTF-8 SuppressDescription
+IndexOrderDefault Ascending Name
+IndexStyleSheet "/dashboard/stylesheets/autoindex.css"
+IndexIgnore .DS_Store .git .gitignore
+
+# The files that must never be served stay protected here too.
 <FilesMatch "(^\.|\.(env|sql|sqlite|sqlite3|db|dump|pem|key|bak)$)">
     Require all denied
 </FilesMatch>
