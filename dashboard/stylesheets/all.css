@@ -1308,7 +1308,33 @@ article.asciidoctor th { background: var(--surface-2); color: var(--text); font-
   background: color-mix(in srgb, var(--cyan) 7%, transparent);
 }
 .admonitionblock.tip { border-left-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
-.admonitionblock.warning, .admonitionblock.caution { border-left-color: var(--amber); background: color-mix(in srgb, var(--amber) 8%, transparent); }
+/* Il riquadro di avviso porta il gradiente di marchio al posto dell'arancione.
+   Il gradiente sta sulla barra laterale e non sotto il testo: nessuno dei suoi
+   estremi regge il contrasto su tutta la scala, quindi il testo non ci passa
+   mai sopra. Il fondo torna neutro, perche' una velatura arancione sotto una
+   barra sfumata darebbe due colori in disaccordo.
+
+   La barra e' un pseudo-elemento e non un border-image: border-image ignora
+   border-radius e gli angoli del riquadro si squadrerebbero. overflow: hidden
+   la ritaglia sulla forma arrotondata. */
+.admonitionblock.warning,
+.admonitionblock.caution {
+  position: relative;
+  overflow: hidden;
+  border-left-color: transparent;
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+
+.admonitionblock.warning::before,
+.admonitionblock.caution::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -3px;
+  width: 3px;
+  background: var(--brand-gradient);
+}
 .admonitionblock.important { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 8%, transparent); }
 .admonitionblock table, .admonitionblock td { border: 0; padding: 0; background: none; }
 .admonitionblock .icon { padding-right: var(--s-3); white-space: nowrap; vertical-align: top; }
@@ -1335,6 +1361,10 @@ article.asciidoctor th { background: var(--surface-2); color: var(--text); font-
 .admonitionblock .icon .fa.icon-warning,
 .admonitionblock .icon .fa.icon-caution {
   color: var(--amber);
+  /* La maschera si riempie col gradiente: su un'icona il testo non c'e', quindi
+     la regola del contrasto non si applica. Il color resta come ripiego per i
+     browser che non dipingono l'immagine di sfondo sotto la maschera. */
+  background-image: var(--brand-gradient);
   /* Icona "attenzione" */
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 3.9 2.5 17.5A2 2 0 0 0 4.2 20.5h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9.5v4M12 17h.01'/%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 3.9 2.5 17.5A2 2 0 0 0 4.2 20.5h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9.5v4M12 17h.01'/%3E%3C/svg%3E");
