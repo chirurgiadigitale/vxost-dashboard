@@ -1,18 +1,14 @@
-# The web root hides file listings, but inside projects being worked on a
-# listing is useful for reaching subfolders and versions that have no index of
-# their own. This folder turns it back on.
-Options +Indexes
-
-# The listing is Apache's own: this only asks for the modern table markup and
-# points at a stylesheet, rather than generating the pages with a script that
-# would have to run on every folder for no gain.
+# Folders under here are work in progress, so a folder without its own index
+# still has to be browsable: that is how you reach a version subfolder that has
+# no landing page of its own.
 #
-# Charset is not optional here: without it Apache serves the listing as
-# ISO-8859-1 and any project with an accent in its name comes out mangled.
-IndexOptions FancyIndexing HTMLTable VersionSort NameWidth=* Charset=UTF-8 SuppressDescription
-IndexOrderDefault Ascending Name
-IndexStyleSheet "/dashboard/stylesheets/autoindex.css"
-IndexIgnore .DS_Store .git .gitignore
+# The listing is rendered by dashboard/browse.php, which puts it inside the
+# dashboard layout. Apache's own autoindex is off: it can be styled but not
+# wrapped, because HeaderName and mod_autoindex disagree about who owns the
+# markup, and the table quietly loses its class names as soon as a header file
+# is involved.
+Options -Indexes
+DirectoryIndex index.php index.html index.htm /dashboard/browse.php
 
 # The files that must never be served stay protected here too.
 <FilesMatch "(^\.|\.(env|sql|sqlite|sqlite3|db|dump|pem|key|bak)$)">

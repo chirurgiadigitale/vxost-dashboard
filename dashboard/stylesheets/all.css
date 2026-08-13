@@ -1920,3 +1920,59 @@ ul.social li.github a::before {
    distingue le quattro categorie di scheda, e il gradiente e' uguale per
    tutte. */
 .card-icon svg { color: inherit; }
+
+/* --------------------------------------------------------------------------
+   15. ELENCO DI UNA CARTELLA (dashboard/browse.php)
+   -------------------------------------------------------------------------- */
+
+.crumbs { margin-top: var(--s-4); }
+.crumbs ol {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2);
+  margin: 0; padding: 0; list-style: none; font-size: .86rem;
+}
+.crumbs li + li::before {
+  content: "/"; margin-right: var(--s-2); color: var(--text-muted); opacity: .6;
+}
+.crumbs a { color: var(--text-soft); }
+.crumbs a:hover { color: var(--accent); }
+.crumbs [aria-current] { color: var(--text); font-weight: 600; }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-md); }
+.browse-table { width: 100%; border-collapse: collapse; background: var(--bg-elev); }
+.browse-table th {
+  text-align: left; padding: var(--s-3) var(--s-4);
+  font-size: .76rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-muted); background: var(--surface);
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+.browse-table td {
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft); white-space: nowrap;
+}
+.browse-table tr:last-child td { border-bottom: 0; }
+.browse-table tbody tr:hover td { background: var(--surface); }
+.browse-table .nm { width: 100%; }
+.browse-table .nm a { color: var(--text); font-weight: 500; }
+.browse-table .nm a:hover { color: var(--accent); }
+/* Numbers line up and can be compared down the column. */
+.browse-table .num {
+  font-family: var(--font-mono); font-size: .84rem;
+  color: var(--text-muted); text-align: right;
+}
+.browse-table .ico { width: 30px; padding-right: 0; }
+
+/* A folder carries the brand gradient, a file a plain dot: at this size an
+   icon would be a smudge, and the distinction is all that matters here. */
+.browse-dot {
+  display: inline-block; width: 9px; height: 9px;
+  border-radius: 3px; background: var(--text-muted); opacity: .55;
+}
+.browse-dot--dir { background: var(--brand-gradient); opacity: 1; border-radius: 2px; }
+.browse-dot--up  { background: none; border: 2px solid var(--text-muted); border-radius: 50%; }
+
+@media (max-width: 640px) {
+  .browse-table th, .browse-table td { padding: var(--s-3); }
+  /* On a narrow screen the date costs the width the name needs. */
+  .browse-table th:last-child, .browse-table td:last-child { display: none; }
+}
