@@ -1,7 +1,7 @@
 ===============================================================================
   VXOST v9.26.0, FIRST PUBLIC RELEASE
   Stack: 8.2.4  ·  August 2026
-  https://github.com/chirurgiadigitale/vxost
+  https://github.com/chirurgiadigitale/vxost-dashboard
 ===============================================================================
 
 The first public release of VXOST: a native Apple Silicon app, a rebuilt
@@ -174,7 +174,7 @@ FIRST OF ALL: back up your htdocs folder.
 Download with git:
 
     cd /tmp
-    git clone https://github.com/chirurgiadigitale/vxost.git vxost
+    git clone https://github.com/chirurgiadigitale/vxost-dashboard.git vxost
 
 Or as an archive, from the project page on GitHub:
 "Code" > "Download ZIP", then extract it.
@@ -427,12 +427,12 @@ licence, the GNU General Public License v2. VXOST follows the same terms.
 
 Upstream project
     VXOST             https://www.vxost.com/
-    Source code                https://github.com/chirurgiadigitale/vxost
+    Source code                https://github.com/chirurgiadigitale/vxost-dashboard
     Organisation               https://github.com/chirurgiadigitale
     Topic on GitHub            https://github.com/topics/vxost
     Apache HTTP Server         https://httpd.apache.org/
     Apache Software Foundation https://www.apache.org/
-    Community forum            https://github.com/chirurgiadigitale/vxost/issues
+    Community forum            https://github.com/chirurgiadigitale/vxost-dashboard/issues
 
 The release
     This version of VXOST was redeveloped and reworked, both visually and
