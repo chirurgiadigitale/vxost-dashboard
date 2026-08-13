@@ -1,6 +1,6 @@
 # VXOST Dashboard v2
 
-A complete restyling of the VXOST for macOS web root: the dashboard, the
+The first public release of VXOST for macOS: the app, the dashboard, the
 documentation pages and three new tools, all sharing one dark, developer
 oriented design system built around the official VXOST orange.
 
@@ -85,4 +85,4 @@ git config core.hooksPath .githooks
 ## Licence
 
 VXOST and its documentation belong to VXOST and keep their original
-licence (GNU GPL). This restyling follows the same terms.
+licence (GNU GPL v2). VXOST follows the same terms.

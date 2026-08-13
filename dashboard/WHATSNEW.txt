@@ -1,12 +1,12 @@
 ===============================================================================
-  VXOST DASHBOARD v9.26.0, RESTYLING
-  Base: VXOST 8.2.4  ·  July 2026
+  VXOST v9.26.0, FIRST PUBLIC RELEASE
+  Stack: 8.2.4  ·  August 2026
   https://github.com/chirurgiadigitale/vxost
 ===============================================================================
 
-A complete restyling of the VXOST web root: dashboard, documentation and three
-new tools, all sharing one dark design system built around the official VXOST
-orange.
+The first public release of VXOST: a native Apple Silicon app, a rebuilt
+dashboard, documentation and three new tools, all sharing one dark design
+system built around the official VXOST gradient.
 
 No design framework, no CSS or JavaScript dependency, no external request while
 you use it. Icons are inline SVG or CSS masks.
@@ -53,7 +53,7 @@ CONTENT
   - Homepage rebuilt: live service status, quick access, stack summary and the
     development-only warning.
   - HOW-TO guides turned into a grid of cards with an icon per topic.
-  - 404 page redesigned and, at last, actually served by Apache.
+  - New 404 page and, at last, actually served by Apache.
   - phpinfo() output split into collapsible sections with a table of contents
     and a filter.
 
@@ -174,22 +174,22 @@ FIRST OF ALL: back up your htdocs folder.
 Download with git:
 
     cd /tmp
-    git clone https://github.com/chirurgiadigitale/vxost.git vxost-restyling
+    git clone https://github.com/chirurgiadigitale/vxost.git vxost
 
 Or as an archive, from the project page on GitHub:
 "Code" > "Download ZIP", then extract it.
 
 Copy the files into the web root, without touching your own projects:
 
-    sudo cp -R /tmp/vxost-restyling/dashboard   /Applications/VXOST/vxostfiles/htdocs/
-    sudo cp -R /tmp/vxost-restyling/img         /Applications/VXOST/vxostfiles/htdocs/
-    sudo cp    /tmp/vxost-restyling/index.php   /Applications/VXOST/vxostfiles/htdocs/
-    sudo cp    /tmp/vxost-restyling/.htaccess   /Applications/VXOST/vxostfiles/htdocs/
+    sudo cp -R /tmp/vxost/dashboard   /Applications/VXOST/vxostfiles/htdocs/
+    sudo cp -R /tmp/vxost/img         /Applications/VXOST/vxostfiles/htdocs/
+    sudo cp    /tmp/vxost/index.php   /Applications/VXOST/vxostfiles/htdocs/
+    sudo cp    /tmp/vxost/.htaccess   /Applications/VXOST/vxostfiles/htdocs/
 
     # projects index: the folder stays yours, only the index page is added
     sudo mkdir -p /Applications/VXOST/vxostfiles/htdocs/projects
-    sudo cp /tmp/vxost-restyling/projects/index.php /Applications/VXOST/vxostfiles/htdocs/projects/
-    sudo cp /tmp/vxost-restyling/projects/.htaccess /Applications/VXOST/vxostfiles/htdocs/projects/
+    sudo cp /tmp/vxost/projects/index.php /Applications/VXOST/vxostfiles/htdocs/projects/
+    sudo cp /tmp/vxost/projects/.htaccess /Applications/VXOST/vxostfiles/htdocs/projects/
 
 Fix the permissions (see section 9), then open:
 
@@ -238,7 +238,7 @@ else keeps working.
  10. WINDOWS AND LINUX
 -------------------------------------------------------------------------------
 
-The restyling is written to run on every system VXOST supports. Paths are not
+VXOST is written to run on every system it supports. Paths are not
 written into the code: they are derived by walking up from the location of the
 files, so the install root is found wherever it is.
 
@@ -251,9 +251,9 @@ apache\conf\ on Windows.
 
 LINUX (Debian, Ubuntu, Fedora...)
 
-    sudo cp -R vxost-restyling/dashboard /opt/lampp/htdocs/
-    sudo cp vxost-restyling/index.php /opt/lampp/htdocs/
-    sudo cp vxost-restyling/.htaccess /opt/lampp/htdocs/
+    sudo cp -R vxost/dashboard /opt/lampp/htdocs/
+    sudo cp vxost/index.php /opt/lampp/htdocs/
+    sudo cp vxost/.htaccess /opt/lampp/htdocs/
     sudo chown -R root:root /opt/lampp/htdocs/dashboard
     sudo chmod -R a+rX /opt/lampp/htdocs/dashboard
     sudo /opt/lampp/lampp restartapache
@@ -423,7 +423,7 @@ where it is useful for work.
 -------------------------------------------------------------------------------
 
 VXOST and its documentation belong to VXOST and keep their original
-licence, the GNU General Public License. This restyling follows the same terms.
+licence, the GNU General Public License v2. VXOST follows the same terms.
 
 Upstream project
     VXOST             https://www.vxost.com/
@@ -434,7 +434,7 @@ Upstream project
     Apache Software Foundation https://www.apache.org/
     Community forum            https://github.com/chirurgiadigitale/vxost/issues
 
-Restyling
+The release
     This version of VXOST was redeveloped and reworked, both visually and
     structurally, by the Equipe Digitale team in July 2026. In the hope of
     making a meaningful contribution to this beautiful open source project.

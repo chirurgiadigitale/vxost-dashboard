@@ -256,8 +256,8 @@ function vxost_footer(): void
         : 'A free Apache distribution that installs a complete web server on your computer: Apache, the MariaDB database, PHP and Perl, ready to develop and test locally without touching a production server.';
 
     $credits = $isIt
-        ? 'Questa versione di VXOST è stata risviluppata e rielaborata stilisticamente e strutturalmente dallo staff di %s nel luglio 2026. Sperando di dare un contributo significativo a questo bellissimo progetto open source.'
-        : 'This version of VXOST was redeveloped and reworked, both visually and structurally, by the %s team in July 2026. In the hope of making a meaningful contribution to this beautiful open source project.';
+        ? 'VXOST 9.26.0 è la prima versione pubblica, rilasciata da %s nell\'agosto 2026: app nativa per Apple Silicon, dashboard ricostruita e quindici lingue. Software libero, sotto licenza GNU GPL v2.'
+        : 'VXOST 9.26.0 is the first public release, published by %s in August 2026: a native Apple Silicon app, a rebuilt dashboard and fifteen languages. Free software under the GNU GPL v2.';
 
     $cd = '<a href="https://www.equipedigitale.it" target="_blank" rel="noopener">Equipe Digitale</a>';
     ?>
@@ -307,9 +307,8 @@ function vxost_footer(): void
           <h4 class="footer-title"><?php echo $isIt ? "Cos'è VXOST" : 'What VXOST is'; ?></h4>
           <p class="muted"><?php echo h($about); ?></p>
           <p class="footer-version">
-            <span>VXOST <?php echo VXOST_VERSION; ?></span> ·
-            <strong>v<?php echo DASHBOARD_VERSION; ?></strong>
-            <span><?php echo $isIt ? 'restyling' : 'restyling'; ?></span>
+            <span><?php echo $isIt ? 'Stack' : 'Stack'; ?> <?php echo VXOST_VERSION; ?></span> ·
+            <strong>VXOST v<?php echo DASHBOARD_VERSION; ?></strong>
           </p>
           <a href="/dashboard/WHATSNEW.txt" target="_blank" rel="noopener"
              style="display:inline-block;margin-top:var(--s-2);font-size:.78rem"><?php

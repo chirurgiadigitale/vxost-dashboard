@@ -1,5 +1,5 @@
 # =============================================================================
-#  VXOST restyling, whitelist policy
+#  VXOST, whitelist policy
 #
 #  Everything is ignored by default; only the files that belong to the
 #  distributable VXOST web root are explicitly allowed back in.

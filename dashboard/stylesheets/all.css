@@ -4,7 +4,7 @@
    Stile: Dark Mode (OLED) tecnologico, mobile-first, 100% SVG / zero immagini.
    Nota: sostituisce il vecchio Foundation 4. Le classi legacy (row, columns,
    top-bar, hero, accordion, asciidoctor, footer) restano supportate cosi'
-   tutte le pagine esistenti ereditano il restyling senza modifiche HTML.
+   every existing page inherits the design system with no HTML changes.
    Backup originale: all.foundation.bak.css
    ========================================================================== */
 
