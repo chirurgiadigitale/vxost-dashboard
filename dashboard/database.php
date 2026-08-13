@@ -1,10 +1,10 @@
 <?php
 /**
- * VXOST Dashboard v2, phpMyAdmin dentro il guscio della dashboard
+ * VXOST Dashboard v2, phpMyAdmin inside the dashboard shell
  *
- * phpMyAdmin resta l'applicazione originale, non modificata (cosi' resta
- * aggiornabile): viene incorniciata dall'header e dal footer della dashboard,
- * che restano sempre visibili. Perche' l'iframe funzioni serve
+ * phpMyAdmin stays the original application, untouched, so it can still be
+ * updated: it is framed by the dashboard header and footer, which remain in
+ * view. For the iframe to work it needs
  * $cfg['AllowThirdPartyFraming'] = 'sameorigin'; in phpmyadmin/config.inc.php.
  */
 
@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/includes/layout.php';
 
-/** Etichette della pagina. */
+/** Page strings. */
 function db_t(string $key): string
 {
     static $s = [

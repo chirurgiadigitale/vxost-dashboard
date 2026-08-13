@@ -5,7 +5,7 @@
 		$uri = 'http://';
 	}
 	$uri .= $_SERVER['HTTP_HOST'];
-	header('Location: '.$uri.'/progetti/');
+	header('Location: '.$uri.'/projects/');
 	exit;
 ?>
 Something is wrong with the VXOST installation :-(

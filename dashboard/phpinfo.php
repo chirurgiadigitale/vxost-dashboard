@@ -2,8 +2,8 @@
 /**
  * PHPInfo, VXOST Dashboard v2
  *
- * Incapsula l'output nativo di phpinfo() nel design system della dashboard:
- * l'informazione resta quella originale, cambia solo la presentazione.
+ * Wraps the native phpinfo() output in the dashboard design system. The
+ * information is the original one; only its presentation changes.
  */
 
 declare(strict_types=1);
@@ -15,7 +15,7 @@ ob_start();
 phpinfo();
 $raw = (string) ob_get_clean();
 
-// 2. Estrae il solo contenuto del body e rimuove stile e immagini di default
+// 2. Take the body only, dropping the default styles and images
 if (preg_match('/<body[^>]*>(.*)<\/body>/is', $raw, $matches)) {
     $body = $matches[1];
 } else {
@@ -27,8 +27,8 @@ $body = preg_replace('/<a href="http:\/\/www\.php\.net\/"[^>]*>\s*<\/a>/i', '', 
 
 /**
  * L'output nativo e' un elenco piatto di 96 tabelle: scorrerlo e' scomodo.
- * Ogni sezione <h2> diventa un blocco richiudibile e alimenta il sommario,
- * senza toccare i dati che contiene.
+ * Every <h2> section becomes a collapsible block and feeds the contents
+ * list, without touching the data inside it.
  *
  * @return array{html: string, sections: array<int, array{id: string, title: string}>}
  */
@@ -55,7 +55,7 @@ function group_sections(string $body): array
         $id = 'sec-' . preg_replace('/[^a-z0-9]+/i', '-', strtolower($title));
         $sections[] = ['id' => $id, 'title' => $title];
 
-        // Le prime due sezioni restano aperte: sono quelle che si consultano
+        // The first two stay open: they are the ones people actually read
         $open = $index <= 2 ? ' open' : '';
         $html .= sprintf(
             '<details class="info-section" id="%s"%s data-title="%s">'
@@ -77,7 +77,7 @@ $grouped = group_sections($body);
 $body = $grouped['html'];
 $sections = $grouped['sections'];
 
-// 3. Dati di sintesi per le card di stato
+// 3. Summary figures for the status cards
 $isIt = vxost_lang() === 'it';
 $summary = [
     ($isIt ? 'Versione PHP' : 'PHP version') => PHP_VERSION,
@@ -181,7 +181,7 @@ vxost_header('VXOST, PHPInfo', 'phpinfo');
             <div class="phpinfo"><?php echo $body; ?></div>
 
             <script>
-              /* Sommario e filtro delle sezioni di phpinfo() */
+              /* Contents list and filter for the phpinfo() sections */
               (function () {
                 var sections = Array.prototype.slice.call(document.querySelectorAll('.info-section'));
                 var filter = document.getElementById('info-filter');
@@ -203,7 +203,7 @@ vxost_header('VXOST, PHPInfo', 'phpinfo');
                   sections.forEach(function (s) { s.open = false; });
                 });
 
-                /* Un link del sommario apre la sezione prima di saltarci */
+                /* A link in the contents opens its section before jumping */
                 document.querySelectorAll('.info-toc a').forEach(function (link) {
                   link.addEventListener('click', function () {
                     var target = document.getElementById(link.getAttribute('href').slice(1));

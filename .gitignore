@@ -24,11 +24,11 @@
 
 # 3. The projects folder ships EMPTY: only its landing page is versioned.
 #    Every real project stays private and is never committed.
-!/progetti/
-/progetti/*
-!/progetti/index.php
-!/progetti/README.txt
-!/progetti/.htaccess
+!/projects/
+/projects/*
+!/projects/index.php
+!/projects/README.txt
+!/projects/.htaccess
 
 # -----------------------------------------------------------------------------
 #  Never version, anywhere in the tree

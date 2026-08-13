@@ -1,11 +1,10 @@
 #!/bin/bash
 #
-# Installa il tema "vxost-v2" in phpMyAdmin.
+# Installs the "vxost-v2" theme into phpMyAdmin.
 #
-# Il tema non riscrive phpMyAdmin: parte dal tema predefinito pmahomme e vi
-# aggiunge in coda il foglio di stile della dashboard. Un aggiornamento di
-# phpMyAdmin puo' sovrascrivere la cartella dei temi: in quel caso basta
-# rieseguire questo script.
+# The theme does not rewrite phpMyAdmin: it starts from the stock pmahomme
+# theme and appends the dashboard stylesheet to it. A phpMyAdmin update can
+# overwrite the themes folder, in which case just run this again.
 #
 # Uso:   sudo bash install.sh [percorso-phpmyadmin]
 #
@@ -44,18 +43,18 @@ fi
 echo "phpMyAdmin : $PMA"
 echo "Tema       : $DEST"
 
-# 1. Copia del tema di base, che fornisce icone e struttura
+# 1. Copy the base theme, which brings the icons and the structure
 rm -rf "$DEST"
 cp -R "$BASE" "$DEST"
 
-# 2. Identita' del nuovo tema
+# 2. Identity of the new theme
 cp "$SOURCE/$THEME_NAME/theme.json" "$DEST/theme.json"
 
-# 3. Il foglio della dashboard viene aggiunto in coda, cosi' vince sulle regole
-#    del tema di base senza doverlo modificare.
+# 3. The dashboard stylesheet goes last, so it wins over the base theme's
+#    rules without anyone having to edit them.
 cat "$SOURCE/$THEME_NAME/css/overrides.css" >> "$DEST/css/theme.css"
 
-# 4. Permessi di lettura per il server
+# 4. Read permissions for the server
 chmod -R a+rX "$DEST"
 
 echo

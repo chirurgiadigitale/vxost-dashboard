@@ -21,12 +21,9 @@ fi
 red()  { printf '\033[31m%s\033[0m\n' "$1"; }
 warn() { printf '\033[33m%s\033[0m\n' "$1"; }
 
-# The folder that holds customer work. Both names are accepted while it is
-# being renamed from progetti to projects.
+# The folder that holds customer work.
 PROJECTS_DIR=""
-for candidate in projects progetti; do
-    [ -d "$ROOT/$candidate" ] && { PROJECTS_DIR="$candidate"; break; }
-done
+[ -d "$ROOT/projects" ] && PROJECTS_DIR="projects"
 
 # ---------------------------------------------------------------------------
 # 1. Names of the local projects
@@ -78,18 +75,17 @@ check_pattern 'blowfish_secret[[:space:]]*=[[:space:]]*.[^\x27"]' 'phpMyAdmin se
 check_pattern '(password|passwd|secret|api[_-]?key)[[:space:]]*=[[:space:]]*.[A-Za-z0-9]{6}' 'Possible credential'
 
 # A DocumentRoot pointing at a real folder inside the projects directory
-check_pattern 'DocumentRoot[[:space:]]+"?[^"]*htdocs/(projects|progetti)/[a-z0-9]' 'DocumentRoot of a real project'
+check_pattern 'DocumentRoot[[:space:]]+"?[^"]*htdocs/projects/[a-z0-9]' 'DocumentRoot of a real project'
 
 # ---------------------------------------------------------------------------
 # 3. Files that must never be versioned
 # ---------------------------------------------------------------------------
 for file in $STAGED; do
     case "$file" in
-        projects/*|progetti/*)
+        projects/*)
             # These ship with the distribution, they are not customer work
             case "$file" in
                 projects/index.php|projects/README.txt|projects/.htaccess) ;;
-                progetti/index.php|progetti/README.txt|progetti/.htaccess) ;;
                 *)
                     red "✗ File from the projects folder is staged: $file"
                     FAIL=1

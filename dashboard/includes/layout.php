@@ -1,11 +1,11 @@
 <?php
 /**
- * VXOST Dashboard v2, layout condiviso per le pagine PHP
+ * VXOST Dashboard v2, shared layout for the PHP pages
  *
- * Espone vxost_header() e vxost_footer() cosi' che dashboard, progetti,
- * porte e phpMyAdmin usino la stessa intestazione e lo stesso pie' di pagina,
- * sempre visibili. Le stringhe sono disponibili in italiano e inglese: la
- * lingua viene scelta da ?lang=, dal cookie o dall'header Accept-Language.
+ * Exposes vxost_header() and vxost_footer() so that the dashboard, the
+ * projects page, the ports page and phpMyAdmin all carry the same header and
+ * footer. Strings come in English and Italian; the language is picked from
+ * ?lang=, from the cookie, or from the Accept-Language header.
  */
 
 declare(strict_types=1);
@@ -13,7 +13,8 @@ declare(strict_types=1);
 /**
  * Percorsi e comandi dell'installazione VXOST, rilevati a runtime.
  *
- * La radice si ricava risalendo da questo file (htdocs/dashboard/includes),
+ * The root is worked out by walking up from this file
+ * (htdocs/dashboard/includes),
  * quindi funziona ovunque VXOST sia installato:
  *   macOS   /Applications/VXOST/vxostfiles
  *   Linux   /opt/lampp
@@ -51,7 +52,7 @@ function vxost_env(): array
         'os'       => $os,
         'root'     => $root,
         'htdocs'   => $root . '/htdocs',
-        'projects' => $root . '/htdocs/progetti',
+        'projects' => $root . '/htdocs/projects',
         'httpd'    => $confDir . '/httpd.conf',
         'vhosts'   => $confDir . '/extra/httpd-vhosts.conf',
         'restart'  => $restart,
@@ -59,7 +60,7 @@ function vxost_env(): array
     ];
 }
 
-/** Traduzioni delle pagine strumentali (le altre lingue ricadono su EN). */
+/** Strings for the tool pages. Any other language falls back to English. */
 function vxost_strings(): array
 {
     static $all = [
@@ -109,7 +110,7 @@ function vxost_lang(): string
     return $lang = 'en';
 }
 
-/** Traduce una chiave, con fallback sull'inglese. */
+/** Looks a key up, falling back to English. */
 function t(string $key): string
 {
     $all = vxost_strings();
@@ -123,7 +124,7 @@ function h($value): string
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
-/** Prefisso delle pagine tradotte della dashboard. */
+/** Path prefix for the translated dashboard pages. */
 function vxost_base(): string
 {
     return vxost_lang() === 'it' ? '/dashboard/it/' : '/dashboard/';
@@ -165,9 +166,9 @@ function vxost_icon(string $name, int $size = 18): string
 /**
  * Intestazione completa: <head>, header sticky e apertura di <main>.
  *
- * @param string $title   titolo della pagina
+ * @param string $title   page title
  * @param string $active  voce di menu attiva: dashboard|faq|howto|projects|ports|database|phpinfo
- * @param bool   $full    true per il layout a tutta altezza (pagina database)
+ * @param bool   $full    true for the full-height layout (database page)
  */
 function vxost_header(string $title, string $active = '', bool $full = false): void
 {
@@ -175,10 +176,10 @@ function vxost_header(string $title, string $active = '', bool $full = false): v
     $base = vxost_base();
     $uid  = 'lay' . substr(md5($title), 0, 6);
 
-    // Stesso ordine delle pagine statiche: la navigazione non cambia mai posizione
+    // Same order as the static pages: the navigation never moves
     $items = [
         'dashboard' => [$base . 'index.html',      t('dash'),     'home'],
-        'projects'  => ['/progetti/',              t('projects'), 'folder'],
+        'projects'  => ['/projects/',              t('projects'), 'folder'],
         'database'  => ['/dashboard/database.php', t('database'), 'database'],
         'ports'     => ['/dashboard/ports.php',    t('ports'),    'ports'],
         'phpinfo'   => ['/dashboard/phpinfo.php',  'PHPInfo',     'info'],
@@ -240,11 +241,11 @@ function vxost_header(string $title, string $active = '', bool $full = false): v
 <?php
 }
 
-/** Versione di VXOST e del restyling, mostrate nel footer. */
+/** VXOST and redesign versions, shown in the footer. */
 const VXOST_VERSION = '8.2.4';
 const DASHBOARD_VERSION = '9.26.0';
 
-/** Chiusura di <main> e pie' di pagina identico a quello delle pagine statiche. */
+/** Closes <main> and prints the same footer as the static pages. */
 function vxost_footer(): void
 {
     $base = vxost_base();
@@ -280,7 +281,7 @@ function vxost_footer(): void
           <h4 class="footer-title"><?php echo h(t('nav')); ?></h4>
           <ul class="footer_links footer_links--stack">
             <li><a href="<?php echo h($base); ?>index.html"><?php echo h(t('dash')); ?></a></li>
-            <li><a href="/progetti/"><?php echo h(t('projects')); ?></a></li>
+            <li><a href="/projects/"><?php echo h(t('projects')); ?></a></li>
             <li><a href="/dashboard/database.php"><?php echo h(t('database')); ?></a></li>
             <li><a href="/dashboard/ports.php"><?php echo h(t('ports')); ?></a></li>
             <li><a href="/dashboard/phpinfo.php">PHPInfo</a></li>

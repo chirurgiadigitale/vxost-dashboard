@@ -2,19 +2,20 @@
 /**
  * VXOST Dashboard v2, Porte in ascolto e indirizzi IP
  *
- * Elenca le porte TCP in ascolto sulla macchina, il processo che le occupa e,
- * quando riconoscibile, il progetto a cui appartengono (dal percorso di lavoro
- * del processo). Utile per ritrovare i dev server aperti su localhost:3000,
+ * Lists the TCP ports listening on the machine, the process holding each one
+ * and, where it can be worked out, the project it belongs to, taken from the
+ * process working directory. Useful for finding the dev servers left running
+ * on localhost:3000,
  * :8000, :5173 e simili.
  *
- * Sola lettura: nessun comando modifica lo stato del sistema.
+ * Read only: nothing here changes the state of the system.
  */
 
 declare(strict_types=1);
 
 require __DIR__ . '/includes/layout.php';
 
-/** Etichette della pagina. */
+/** Page strings. */
 function p_t(string $key): string
 {
     static $s = [
@@ -82,8 +83,8 @@ function run(string $cmd): ?string
 }
 
 /**
- * Comando completo e cartella di lavoro di tutti i processi, in due sole
- * chiamate di sistema (una per PID sarebbe decine di fork: troppo lento).
+ * Full command line and working directory for every process, in two system
+ * calls. One call per PID would mean dozens of forks, which is far too slow.
  *
  * @return array<int, array{command: string, cwd: string}>
  */
@@ -95,7 +96,7 @@ function process_table(array $pids = []): array
     }
     $table = [];
 
-    // Riga per riga: "<pid> <comando completo>"
+    // One line each: "<pid> <full command>"
     $ps = run('ps -axo pid=,command=');
     foreach (explode("\n", (string) $ps) as $line) {
         if (preg_match('/^\s*(\d+)\s+(.*)$/', $line, $m)) {
@@ -103,8 +104,8 @@ function process_table(array $pids = []): array
         }
     }
 
-    // Cartelle di lavoro: solo per i PID che interessano, altrimenti lsof
-    // dovrebbe attraversare tutti i processi della macchina (secondi di attesa).
+    // Working directories, only for the PIDs we care about. Otherwise lsof
+    // walks every process on the machine, which takes seconds.
     $pids = array_values(array_unique(array_filter($pids)));
     if ($pids) {
         $list = implode(',', array_map('intval', array_slice($pids, 0, 200)));
@@ -133,27 +134,27 @@ function process_info(int $pid): array
 }
 
 /**
- * Deduce il nome del progetto dal percorso di lavoro o dal comando:
- * la prima cartella sotto htdocs, Sites, www, Projects o simili.
+ * Works out the project name from the working directory or the command: the
+ * first folder under htdocs, Sites, www, Projects or similar.
  */
 function guess_project(string $cwd, string $command): string
 {
     $haystack = $cwd !== '' ? $cwd : $command;
-    $markers = ['/htdocs/progetti/', '/htdocs/', '/Sites/', '/www/', '/Projects/', '/Progetti/', '/dev/'];
+    $markers = ['/htdocs/projects/', '/htdocs/', '/Sites/', '/www/', '/Projects/', '/Progetti/', '/dev/'];
 
     foreach ($markers as $marker) {
         $pos = stripos($haystack, $marker);
         if ($pos !== false) {
             $rest = substr($haystack, $pos + strlen($marker));
             $name = strtok($rest, '/ ');
-            // "htdocs" da solo e' la radice del server, non un progetto
+            // "htdocs" on its own is the server root, not a project
             if (is_string($name) && $name !== '' && $name[0] !== '.' && $name !== 'htdocs') {
                 return $name;
             }
         }
     }
 
-    // Fallback: ultima cartella significativa del percorso di lavoro
+    // Failing that, the last meaningful folder of the working directory
     if ($cwd !== '' && $cwd !== '/') {
         $name = basename($cwd);
         if ($name !== '' && !in_array($name, ['/', 'root', 'bin', 'usr', 'tmp', 'var', 'htdocs'], true)) {
@@ -163,7 +164,7 @@ function guess_project(string $cwd, string $command): string
     return '';
 }
 
-/** Porte note dei servizi di sistema. */
+/** Well-known ports of system services. */
 function well_known(int $port): string
 {
     static $map = [
@@ -177,12 +178,12 @@ function well_known(int $port): string
 }
 
 /**
- * Elenco delle porte TCP in ascolto.
+ * The listening TCP ports.
  *
  * La fonte primaria e' netstat: lsof mostra soltanto i processi dell'utente
- * che esegue PHP, quindi da solo nasconde tutto cio' che gira come root —
- * Apache compreso. lsof resta utile per arricchire le righe con il processo,
- * dove i permessi lo consentono.
+ * running PHP, so on its own it hides everything owned by root, Apache
+ * included. lsof is still useful for filling in the process behind a row,
+ * wherever permissions allow it.
  */
 function listening_ports(): ?array
 {
@@ -193,7 +194,7 @@ function listening_ports(): ?array
         return null;
     }
 
-    // Porte viste da netstat: elenco completo, senza dettaglio di processo
+    // Ports as netstat sees them: the full list, with no process detail
     $fromNetstat = [];
     foreach (explode("\n", (string) $netstat) as $line) {
         if (!str_contains($line, 'LISTEN')) {
@@ -204,9 +205,9 @@ function listening_ports(): ?array
             continue;
         }
 
-        // L'indirizzo locale sta in colonne diverse a seconda del sistema:
-        // BSD/macOS lo mette in posizione 3, Windows in posizione 1. Si cerca
-        // la prima colonna che ha la forma indirizzo + porta.
+        // The local address sits in a different column depending on the
+        // system: BSD and macOS put it third, Windows first. So it is found
+        // by taking the first column shaped like address plus port.
         $m = null;
         foreach ([$cols[3] ?? '', $cols[1] ?? '', $cols[2] ?? ''] as $candidate) {
             if ($candidate !== '' && preg_match('/^(.*)[.:](\d+)$/', $candidate, $found)) {
@@ -230,8 +231,8 @@ function listening_ports(): ?array
         $raw = '';
     }
 
-    // Prima passata: raccoglie i PID, cosi' le cartelle di lavoro si leggono
-    // con una sola invocazione di lsof mirata.
+    // First pass collects the PIDs, so the working directories can be read
+    // with a single targeted lsof call.
     $pids = [];
     foreach (explode("\n", $raw) as $line) {
         $cols = preg_split('/\s+/', trim($line));
@@ -273,7 +274,7 @@ function listening_ports(): ?array
         $path = $info['cwd'];
 
         // Le porte servite da Apache prendono nome e percorso dal VirtualHost:
-        // la cartella di lavoro del processo httpd non dice nulla sul progetto.
+        // the working directory of an httpd process says nothing about the project.
         $vh = vhosts();
         if (isset($vh[$port]) && $vh[$port]['root'] !== '') {
             $project = $vh[$port]['project'] !== '' ? $vh[$port]['project'] : $project;
@@ -295,8 +296,8 @@ function listening_ports(): ?array
         ];
     }
 
-    // Completa con le porte che solo netstat riesce a vedere (servizi di root,
-    // Apache incluso): senza dettaglio di processo, ma con il progetto ricavato
+    // Fill in the ports only netstat can see, the ones owned by root, Apache
+    // among them: no process detail, but the project is still worked out
     // dai VirtualHost.
     $known = [];
     foreach ($ports as $p) {
@@ -329,8 +330,8 @@ function listening_ports(): ?array
 }
 
 /**
- * Progetti raggiungibili senza una porta dedicata, cioe' serviti da Apache
- * sulla porta 80 come sottocartella di htdocs/progetti.
+ * Projects reachable without a port of their own, served by Apache on port 80
+ * as a subfolder of htdocs/projects.
  *
  * @param array<int, array{project: string}> $vh virtual host gia' letti
  * @return array<int, array{name: string, url: string, modified: int}>
@@ -342,7 +343,7 @@ function path_served_projects(array $vh): array
         return [];
     }
 
-    // Nomi gia' coperti da un VirtualHost: non vanno ripetuti
+    // Names already covered by a VirtualHost, not to be listed twice
     $withPort = [];
     foreach ($vh as $entry) {
         if ($entry['project'] !== '') {
@@ -361,7 +362,7 @@ function path_served_projects(array $vh): array
         }
         $out[] = [
             'name'     => $entry,
-            'url'      => '/progetti/' . rawurlencode($entry) . '/',
+            'url'      => '/projects/' . rawurlencode($entry) . '/',
             'modified' => (int) @filemtime($dir),
         ];
     }
@@ -371,9 +372,9 @@ function path_served_projects(array $vh): array
 }
 
 /**
- * Verifica in parallelo quali porte rispondono a una richiesta HTTP.
+ * Checks which ports answer an HTTP request, all at once.
  * Un controllo sequenziale su decine di porte costerebbe secondi: qui i socket
- * sono non bloccanti e vengono attesi tutti insieme.
+ * are non-blocking and waited on together.
  *
  * @param  int[] $ports
  * @return array<int, bool>
@@ -406,7 +407,7 @@ function http_ports(array $ports): array
     $deadline = microtime(true) + 1.8;   // un progetto pesante puo' rispondere in ~1s
 
     while (($pending || $waiting) && microtime(true) < $deadline) {
-        // 1. Socket appena connessi: invia la richiesta
+        // 1. Sockets that just connected: send the request
         if ($pending) {
             $write = $pending;
             $read = $except = null;
@@ -423,7 +424,7 @@ function http_ports(array $ports): array
             }
         }
 
-        // 2. Socket con risposta pronta: leggi solo quelli segnalati
+        // 2. Sockets with an answer ready: read only those flagged
         if ($waiting) {
             $read = $waiting;
             $write = $except = null;
@@ -446,7 +447,7 @@ function http_ports(array $ports): array
     return $result;
 }
 
-/** Indirizzi IP della macchina. */
+/** The machine's IP addresses. */
 function local_ips(): array
 {
     $ips = ['loopback' => ['127.0.0.1', '::1'], 'lan' => []];
@@ -468,8 +469,8 @@ function local_ips(): array
 }
 
 /**
- * Virtual host attivi, indicizzati per porta.
- * I blocchi commentati (#) vengono ignorati: Apache non li carica.
+ * Active virtual hosts, keyed by port.
+ * Commented-out blocks are skipped: Apache does not load them.
  *
  * @return array<int, array{port:int, name:string, root:string, project:string}>
  */
@@ -486,8 +487,8 @@ function vhosts(): array
         return $out;
     }
 
-    // I blocchi commentati restano nel file ma Apache non li carica: li si
-    // legge comunque, per poterli mostrare come "configurato ma non attivo".
+    // Commented blocks stay in the file but Apache ignores them. They are
+    // read anyway, so they can be shown as configured but not active.
     $active = [];
     $disabled = [];
     foreach (explode("\n", (string) file_get_contents($file)) as $line) {
@@ -521,7 +522,7 @@ function vhosts(): array
         }
     }
 
-    // Stessi dati per i blocchi commentati, marcati come non attivi
+    // The same for commented blocks, marked as inactive
     if (preg_match_all('/<VirtualHost\s+([^>]+)>(.*?)<\/VirtualHost>/is', $off, $blocks, PREG_SET_ORDER)) {
         foreach ($blocks as $block) {
             preg_match('/ServerName\s+(\S+)/i', $block[2], $name);
@@ -567,7 +568,7 @@ if ($ports !== null) {
     $vhPorts = vhosts();
 
     foreach ($ports as $p) {
-        // Un VirtualHost e' per definizione un servizio web: non dipende dal probe
+        // A VirtualHost is a web service by definition, whatever the probe says
         if (!empty($isHttp[$p['port']]) || isset($vhPorts[$p['port']])) {
             $web[] = $p;
         } else {
@@ -766,7 +767,7 @@ vxost_header('VXOST, ' . p_t('title'), 'ports');
             <div class="section-head">
               <div>
                 <p class="eyebrow"><?php echo h(p_t('nodedicated')); ?></p>
-                <h2><span class="mono" dir="ltr">localhost/progetti/…</span></h2>
+                <h2><span class="mono" dir="ltr">localhost/projects/…</span></h2>
               </div>
               <p class="muted"><?php echo count($pathProjects); ?></p>
             </div>

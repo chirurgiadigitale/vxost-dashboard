@@ -20,7 +20,12 @@ Options -Indexes
 RedirectMatch 404 /\.git
 
 <IfModule mod_headers.c>
-    # Il contenuto e' locale: nessun referrer verso l'esterno
+    # The content is local: no referrer leaves the machine
     Header set Referrer-Policy "no-referrer"
     Header set X-Content-Type-Options "nosniff"
 </IfModule>
+
+# The projects folder was renamed from progetti to projects. Old bookmarks and
+# links keep working through this redirect rather than landing on a 404.
+# 301 rather than 302: the move is permanent, and browsers should learn it.
+RedirectMatch 301 ^/progetti(/.*)?$ /projects$1

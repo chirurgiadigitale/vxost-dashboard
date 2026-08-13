@@ -95,13 +95,14 @@
     { code: 'ur',    short: 'UR', name: 'اردو' }
   ];
 
-  // Pagine effettivamente tradotte: per le altre si torna alla home della lingua
+  // The pages that actually have translations. Anything else falls back to
+  // the home page of that language
   var TRANSLATED = ['index.html', 'faq.html', 'howto.html',
                     'howto_platform_links.html', 'howto_shared_links.html'];
 
   /**
-   * Lingua della pagina: fa fede l'attributo lang del documento (le pagine PHP
-   * scelgono la lingua lato server), con il percorso come ripiego.
+   * Page language. The document lang attribute is authoritative, since the
+   * PHP pages choose it server side, with the path as a fallback.
    */
   function currentLang() {
     var declared = (document.documentElement.getAttribute('lang') || '').toLowerCase();
@@ -129,14 +130,14 @@
   }
 
   /**
-   * Destinazione del cambio lingua. Le pagine PHP restano dove sono e
-   * ricevono ?lang=; le pagine statiche saltano alla cartella della lingua.
+   * Where switching language leads. PHP pages stay where they are and take
+   * ?lang=; static pages jump to that language's folder.
    */
   function urlForLang(code) {
     var path = window.location.pathname;
     var file = path.split('/').pop() || 'index.html';
 
-    if (/\.php$/.test(file) || path === '/progetti/' || /\/progetti\/$/.test(path)) {
+    if (/\.php$/.test(file) || path === '/projects/' || /\/progetti\/$/.test(path)) {
       return path + '?lang=' + (code === 'it' ? 'it' : 'en');
     }
     if (TRANSLATED.indexOf(file) === -1) file = 'index.html';
@@ -321,7 +322,7 @@
         dd.style.overflow = 'hidden';
 
         function open() {
-          // Chiude gli altri pannelli dello stesso gruppo
+          // Close the other panels in the same group
           Array.prototype.forEach.call(terms, function (other) {
             if (other !== dt) close(other);
           });
@@ -405,7 +406,7 @@
       });
     }
 
-    // Link alternativi per Linux a 64 bit
+    // Alternative links for 64-bit Linux
     if (navigator.platform && navigator.platform.indexOf('Linux') === 0 &&
         navigator.platform.slice(-2) === '64') {
       Array.prototype.forEach.call(document.querySelectorAll('a[data-x64-href]'), function (a) {

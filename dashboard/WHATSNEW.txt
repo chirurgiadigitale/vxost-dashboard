@@ -62,8 +62,8 @@ CONTENT
  3. NEW PAGES
 -------------------------------------------------------------------------------
 
-PROJECTS                          http://localhost/progetti/
-  Lists the folders under htdocs/progetti and detects the technology behind
+PROJECTS                          http://localhost/projects/
+  Lists the folders under htdocs/projects and detects the technology behind
   each one (WordPress, Laravel, Node, Next/Nuxt, Composer, PHP, HTML), looking
   one level deeper as well, since many folders are containers.
   Instant search, filters by technology, grid or list view, alphabetical order,
@@ -187,9 +187,9 @@ Copy the files into the web root, without touching your own projects:
     sudo cp    /tmp/vxost-restyling/.htaccess   /Applications/VXOST/vxostfiles/htdocs/
 
     # projects index: the folder stays yours, only the index page is added
-    sudo mkdir -p /Applications/VXOST/vxostfiles/htdocs/progetti
-    sudo cp /tmp/vxost-restyling/progetti/index.php /Applications/VXOST/vxostfiles/htdocs/progetti/
-    sudo cp /tmp/vxost-restyling/progetti/.htaccess /Applications/VXOST/vxostfiles/htdocs/progetti/
+    sudo mkdir -p /Applications/VXOST/vxostfiles/htdocs/projects
+    sudo cp /tmp/vxost-restyling/projects/index.php /Applications/VXOST/vxostfiles/htdocs/projects/
+    sudo cp /tmp/vxost-restyling/projects/.htaccess /Applications/VXOST/vxostfiles/htdocs/projects/
 
 Fix the permissions (see section 9), then open:
 
@@ -211,11 +211,11 @@ copying the files the permissions must be fixed, or the server answers 403.
     XR=/Applications/VXOST/vxostfiles/htdocs
 
     # owner root, group admin: the arrangement VXOST uses
-    sudo chown -R root:admin $XR/dashboard $XR/progetti/index.php
+    sudo chown -R root:admin $XR/dashboard $XR/projects/index.php
 
     # readable by everyone, writable only by the owner
     sudo chmod -R a+rX $XR/dashboard
-    sudo chmod 644 $XR/progetti/index.php $XR/.htaccess $XR/progetti/.htaccess
+    sudo chmod 644 $XR/projects/index.php $XR/.htaccess $XR/projects/.htaccess
 
     # if you copied the phpMyAdmin theme script
     sudo chmod +x $XR/dashboard/phpmyadmin-theme/install.sh

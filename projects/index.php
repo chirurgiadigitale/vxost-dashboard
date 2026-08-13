@@ -1,13 +1,13 @@
 <?php
 /**
- * VXOST Dashboard v2, Indice dei progetti locali
+ * VXOST Dashboard v2, index of local projects
  *
- * Elenca le cartelle presenti in htdocs/progetti riconoscendone la tecnologia
- * (WordPress, Laravel, Node, statico...) e le collega al VirtualHost che le
- * serve, quando ne esiste uno.
+ * Lists the folders under htdocs/projects, works out what each one is built
+ * with (WordPress, Laravel, Node, plain HTML and so on) and links it to the
+ * VirtualHost that serves it, where there is one.
  *
- * La cartella viaggia vuota nella distribuzione: su una nuova installazione
- * questa pagina mostra semplicemente il suo stato iniziale.
+ * The folder ships empty: on a fresh install this page simply shows its
+ * starting state.
  */
 
 declare(strict_types=1);
@@ -15,20 +15,20 @@ declare(strict_types=1);
 $layout = dirname(__DIR__) . '/dashboard/includes/layout.php';
 if (!is_readable($layout)) {
     http_response_code(500);
-    exit('Layout della dashboard non trovato: ' . htmlspecialchars($layout));
+    exit('Dashboard layout not found: ' . htmlspecialchars($layout));
 }
 require $layout;
 
-/** Etichette della pagina. */
+/** Page strings. */
 function pr_t(string $key): string
 {
     static $s = [
         'en' => [
             'title' => 'Projects', 'eyebrow' => 'Local workspace',
-            'subtitle' => 'Every site and application served from htdocs/progetti',
+            'subtitle' => 'Every site and application served from htdocs/projects',
             'search' => 'Filter projects…', 'open' => 'Open', 'count' => 'projects',
             'empty_t' => 'No project yet',
-            'empty_p' => 'Drop a folder into htdocs/progetti and it will show up here automatically. Each subfolder becomes an entry with its detected technology.',
+            'empty_p' => 'Drop a folder into htdocs/projects and it will show up here automatically. Each subfolder becomes an entry with its detected technology.',
             'files' => 'files', 'modified' => 'updated', 'vhost' => 'Dedicated port',
             'nomatch' => 'No project matches this filter.', 'all' => 'All',
             'view_grid' => 'Grid view', 'view_list' => 'List view',
@@ -37,10 +37,10 @@ function pr_t(string $key): string
         ],
         'it' => [
             'title' => 'Progetti', 'eyebrow' => 'Area di lavoro locale',
-            'subtitle' => 'Tutti i siti e le applicazioni serviti da htdocs/progetti',
+            'subtitle' => 'Tutti i siti e le applicazioni serviti da htdocs/projects',
             'search' => 'Filtra i progetti…', 'open' => 'Apri', 'count' => 'progetti',
             'empty_t' => 'Nessun progetto',
-            'empty_p' => 'Aggiungi una cartella dentro htdocs/progetti e comparirà qui automaticamente, con il rilevamento della tecnologia usata.',
+            'empty_p' => 'Aggiungi una cartella dentro htdocs/projects e comparirà qui automaticamente, con il rilevamento della tecnologia usata.',
             'files' => 'file', 'modified' => 'aggiornato', 'vhost' => 'Porta dedicata',
             'nomatch' => 'Nessun progetto corrisponde al filtro.', 'all' => 'Tutti',
             'view_grid' => 'Vista a griglia', 'view_list' => 'Vista a elenco',
@@ -53,7 +53,7 @@ function pr_t(string $key): string
 }
 
 /**
- * Riconosce la tecnologia di un progetto dai file caratteristici.
+ * Works out what a project is built with, from the files that give it away.
  *
  * @return array{label: string, icon: string, color: string}
  */
@@ -86,9 +86,8 @@ function detect_stack(string $dir): array
 }
 
 /**
- * Riconosce la tecnologia guardando anche un livello piu' in basso: molte
- * cartelle sono contenitori (progetto/versione/) e al primo livello non hanno
- * alcun file caratteristico.
+ * Same, looking one level deeper as well. Plenty of folders are containers,
+ * project/version/, and hold nothing recognisable at the top level.
  *
  * @return array{label: string, icon: string, color: string, nested: bool}
  */
@@ -114,7 +113,7 @@ function detect_stack_deep(string $dir): array
     return ['label' => '—', 'icon' => 'folder', 'color' => '', 'nested' => false];
 }
 
-/** Porte dei VirtualHost, indicizzate per cartella di progetto. */
+/** VirtualHost ports, keyed by project folder. */
 function vhost_ports(): array
 {
     $file = vxost_env()['vhosts'];
@@ -139,7 +138,7 @@ function vhost_ports(): array
                 continue;
             }
             $path = trim($root[1]);
-            $marker = '/htdocs/progetti/';
+            $marker = '/htdocs/projects/';
             $pos = stripos($path, $marker);
             if ($pos !== false) {
                 $name = strtok(substr($path, $pos + strlen($marker)), '/');
@@ -152,7 +151,7 @@ function vhost_ports(): array
     return $map;
 }
 
-/** Elenco dei progetti presenti nella cartella. */
+/** The projects currently in the folder. */
 function scan_projects(string $root): array
 {
     $ports = vhost_ports();
@@ -190,7 +189,7 @@ function scan_projects(string $root): array
 $root = __DIR__;
 $projects = scan_projects($root);
 
-// Elenco delle tecnologie presenti, per i filtri
+// The stacks actually present, for the filter chips
 $stacks = [];
 foreach ($projects as $p) {
     if ($p['stack'] !== '—') {
@@ -213,7 +212,7 @@ vxost_header('VXOST, ' . pr_t('title'), 'projects');
 
       <?php if (!$projects): ?>
 
-      <!-- STATO INIZIALE -->
+      <!-- EMPTY STATE -->
       <section class="section">
         <div class="row">
           <div class="large-8 columns" data-reveal>
@@ -229,7 +228,7 @@ vxost_header('VXOST, ' . pr_t('title'), 'projects');
 
       <?php else: ?>
 
-      <!-- FILTRI -->
+      <!-- FILTERS -->
       <section class="section section--tight">
         <div class="row">
           <div class="large-12 columns" data-reveal>
@@ -271,14 +270,14 @@ vxost_header('VXOST, ' . pr_t('title'), 'projects');
         </div>
       </section>
 
-      <!-- PROGETTI -->
+      <!-- PROJECTS -->
       <section class="section section--tight">
         <div class="row">
           <div class="large-12 columns">
             <div class="bento project-view" id="project-grid" data-view="grid">
               <?php foreach ($projects as $p): ?>
               <a class="card project-card"
-                 href="<?php echo $p['port'] ? 'http://localhost:' . (int) $p['port'] . '/' : '/progetti/' . $p['slug'] . '/'; ?>"
+                 href="<?php echo $p['port'] ? 'http://localhost:' . (int) $p['port'] . '/' : '/projects/' . $p['slug'] . '/'; ?>"
                  data-name="<?php echo h(mb_strtolower($p['name'])); ?>"
                  data-stack="<?php echo h($p['stack']); ?>"
                  <?php echo $p['port'] ? 'target="_blank" rel="noopener"' : ''; ?>>
@@ -311,7 +310,7 @@ vxost_header('VXOST, ' . pr_t('title'), 'projects');
       </section>
 
       <script>
-        /* Filtro dei progetti: ricerca testuale + tecnologia, tutto lato client */
+        /* Project filter: text and stack, entirely client side */
         (function () {
           var input = document.getElementById('project-filter');
           var cards = Array.prototype.slice.call(document.querySelectorAll('#project-grid .project-card'));
@@ -347,7 +346,7 @@ vxost_header('VXOST, ' . pr_t('title'), 'projects');
             });
           });
 
-          /* Vista a griglia o a elenco, ricordata tra una visita e l'altra */
+          /* Grid or list, remembered between visits */
           var VIEW_KEY = 'vxost-projects-view';
           var grid = document.getElementById('project-grid');
           var viewButtons = Array.prototype.slice.call(document.querySelectorAll('.view-btn'));
@@ -373,7 +372,7 @@ vxost_header('VXOST, ' . pr_t('title'), 'projects');
             if (saved === 'list') setView('list');
           } catch (e) { /* noop */ }
 
-          // "/" mette a fuoco il campo di ricerca
+          // "/" jumps to the search field
           document.addEventListener('keydown', function (e) {
             if (e.key === '/' && document.activeElement !== input) {
               e.preventDefault();
