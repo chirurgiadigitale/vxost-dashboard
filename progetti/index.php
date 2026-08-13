@@ -1,6 +1,6 @@
 <?php
 /**
- * XAMPP Dashboard v2 — Indice dei progetti locali
+ * VXOST Dashboard v2, Indice dei progetti locali
  *
  * Elenca le cartelle presenti in htdocs/progetti riconoscendone la tecnologia
  * (WordPress, Laravel, Node, statico...) e le collega al VirtualHost che le
@@ -48,7 +48,7 @@ function pr_t(string $key): string
             'sort_az' => 'A → Z', 'sort_date' => 'Più recenti',
         ],
     ];
-    $lang = xampp_lang();
+    $lang = vxost_lang();
     return $s[$lang][$key] ?? $s['en'][$key] ?? $key;
 }
 
@@ -117,7 +117,7 @@ function detect_stack_deep(string $dir): array
 /** Porte dei VirtualHost, indicizzate per cartella di progetto. */
 function vhost_ports(): array
 {
-    $file = xampp_env()['vhosts'];
+    $file = vxost_env()['vhosts'];
     if (!is_readable($file)) {
         return [];
     }
@@ -199,7 +199,7 @@ foreach ($projects as $p) {
 }
 ksort($stacks);
 
-xampp_header('XAMPP — ' . pr_t('title'), 'projects');
+vxost_header('VXOST, ' . pr_t('title'), 'projects');
 ?>
 
       <section class="hero">
@@ -218,7 +218,7 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
         <div class="row">
           <div class="large-8 columns" data-reveal>
             <div class="card empty-state">
-              <span class="card-icon"><?php echo xampp_icon('folder', 22); ?></span>
+              <span class="card-icon"><?php echo vxost_icon('folder', 22); ?></span>
               <h3><?php echo h(pr_t('empty_t')); ?></h3>
               <p><?php echo h(pr_t('empty_p')); ?></p>
               <p class="mono muted" dir="ltr" style="margin-top:var(--s-3)"><?php echo h($root); ?></p>
@@ -236,7 +236,7 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
             <div class="toolbar">
               <label class="search-field">
                 <span class="visually-hidden"><?php echo h(pr_t('search')); ?></span>
-                <?php echo xampp_icon('search'); ?>
+                <?php echo vxost_icon('search'); ?>
                 <input type="search" id="project-filter" placeholder="<?php echo h(pr_t('search')); ?>"
                        autocomplete="off" spellcheck="false">
               </label>
@@ -283,7 +283,7 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
                  data-stack="<?php echo h($p['stack']); ?>"
                  <?php echo $p['port'] ? 'target="_blank" rel="noopener"' : ''; ?>>
                 <span class="card-icon<?php echo $p['color'] ? ' card-icon--' . h($p['color']) : ''; ?>">
-                  <?php echo xampp_icon($p['icon'], 22); ?>
+                  <?php echo vxost_icon($p['icon'], 22); ?>
                 </span>
                 <span class="project-main">
                   <h3><?php echo h($p['name']); ?></h3>
@@ -301,7 +301,7 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
                   <?php endif; ?>
                   <span class="project-files"><?php echo (int) $p['files']; ?> <?php echo h(pr_t('files')); ?></span>
                 </span>
-                <span class="card-link"><?php echo h(pr_t('open')); ?> <?php echo xampp_icon('arrow', 16); ?></span>
+                <span class="card-link"><?php echo h(pr_t('open')); ?> <?php echo vxost_icon('arrow', 16); ?></span>
               </a>
               <?php endforeach; ?>
             </div>
@@ -348,7 +348,7 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
           });
 
           /* Vista a griglia o a elenco, ricordata tra una visita e l'altra */
-          var VIEW_KEY = 'xampp-projects-view';
+          var VIEW_KEY = 'vxost-projects-view';
           var grid = document.getElementById('project-grid');
           var viewButtons = Array.prototype.slice.call(document.querySelectorAll('.view-btn'));
 
@@ -385,4 +385,4 @@ xampp_header('XAMPP — ' . pr_t('title'), 'projects');
 
       <?php endif; ?>
 
-<?php xampp_footer(); ?>
+<?php vxost_footer(); ?>

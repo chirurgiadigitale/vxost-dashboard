@@ -1,8 +1,8 @@
 <?php
 /**
- * XAMPP Dashboard v2 — layout condiviso per le pagine PHP
+ * VXOST Dashboard v2, layout condiviso per le pagine PHP
  *
- * Espone xampp_header() e xampp_footer() cosi' che dashboard, progetti,
+ * Espone vxost_header() e vxost_footer() cosi' che dashboard, progetti,
  * porte e phpMyAdmin usino la stessa intestazione e lo stesso pie' di pagina,
  * sempre visibili. Le stringhe sono disponibili in italiano e inglese: la
  * lingua viene scelta da ?lang=, dal cookie o dall'header Accept-Language.
@@ -11,18 +11,18 @@
 declare(strict_types=1);
 
 /**
- * Percorsi e comandi dell'installazione XAMPP, rilevati a runtime.
+ * Percorsi e comandi dell'installazione VXOST, rilevati a runtime.
  *
  * La radice si ricava risalendo da questo file (htdocs/dashboard/includes),
- * quindi funziona ovunque XAMPP sia installato:
- *   macOS   /Applications/XAMPP/xamppfiles
+ * quindi funziona ovunque VXOST sia installato:
+ *   macOS   /Applications/VXOST/vxostfiles
  *   Linux   /opt/lampp
- *   Windows C:\xampp
+ *   Windows C:\vxost
  *
  * @return array{os: string, root: string, htdocs: string, projects: string,
  *               httpd: string, vhosts: string, restart: string, security: string}
  */
-function xampp_env(): array
+function vxost_env(): array
 {
     static $env = null;
     if ($env !== null) {
@@ -37,14 +37,14 @@ function xampp_env(): array
     $confDir = $windows ? $root . '/apache/conf' : $root . '/etc';
 
     $restart = match ($os) {
-        'windows' => 'Riavvia Apache dal Control Panel di XAMPP',
+        'windows' => 'Riavvia Apache dal Control Panel di VXOST',
         'linux'   => 'sudo ' . $root . '/lampp restartapache',
-        default   => 'sudo ' . $root . '/xampp restartapache',
+        default   => 'sudo ' . $root . '/vxost restartapache',
     };
     $security = match ($os) {
-        'windows' => 'Imposta le password dal Control Panel di XAMPP',
+        'windows' => 'Imposta le password dal Control Panel di VXOST',
         'linux'   => 'sudo ' . $root . '/lampp security',
-        default   => 'sudo ' . $root . '/xampp security',
+        default   => 'sudo ' . $root . '/vxost security',
     };
 
     return $env = [
@@ -60,7 +60,7 @@ function xampp_env(): array
 }
 
 /** Traduzioni delle pagine strumentali (le altre lingue ricadono su EN). */
-function xampp_strings(): array
+function vxost_strings(): array
 {
     static $all = [
         'en' => [
@@ -68,36 +68,36 @@ function xampp_strings(): array
             'howto' => 'HOW-TO Guides', 'projects' => 'Projects', 'ports' => 'Ports & IPs',
             'database' => 'Database', 'nav' => 'Navigation', 'project' => 'Project',
             'top' => 'Back to top',
-            'license' => 'Apache Friends — XAMPP is released under the GNU General Public License.',
+            'license' => 'Equipe Digitale, VXOST is released under the GNU General Public License.',
         ],
         'it' => [
             'skip' => 'Vai al contenuto', 'dash' => 'Dashboard', 'faq' => 'Domande frequenti',
             'howto' => 'Guide HOW-TO', 'projects' => 'Progetti', 'ports' => 'Porte e IP',
             'database' => 'Database', 'nav' => 'Navigazione', 'project' => 'Progetto',
             'top' => 'Torna su',
-            'license' => 'Apache Friends — XAMPP è distribuito con licenza GNU General Public License.',
+            'license' => 'Equipe Digitale, VXOST è distribuito con licenza GNU General Public License.',
         ],
     ];
     return $all;
 }
 
 /** Lingua attiva: parametro esplicito, poi cookie, poi browser, poi inglese. */
-function xampp_lang(): string
+function vxost_lang(): string
 {
     static $lang = null;
     if ($lang !== null) {
         return $lang;
     }
 
-    $available = array_keys(xampp_strings());
+    $available = array_keys(vxost_strings());
 
     if (isset($_GET['lang']) && in_array($_GET['lang'], $available, true)) {
         $lang = $_GET['lang'];
-        setcookie('xampp_lang', $lang, time() + 31536000, '/');
+        setcookie('vxost_lang', $lang, time() + 31536000, '/');
         return $lang;
     }
-    if (isset($_COOKIE['xampp_lang']) && in_array($_COOKIE['xampp_lang'], $available, true)) {
-        return $lang = $_COOKIE['xampp_lang'];
+    if (isset($_COOKIE['vxost_lang']) && in_array($_COOKIE['vxost_lang'], $available, true)) {
+        return $lang = $_COOKIE['vxost_lang'];
     }
 
     $accept = strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
@@ -112,8 +112,8 @@ function xampp_lang(): string
 /** Traduce una chiave, con fallback sull'inglese. */
 function t(string $key): string
 {
-    $all = xampp_strings();
-    $lang = xampp_lang();
+    $all = vxost_strings();
+    $lang = vxost_lang();
     return $all[$lang][$key] ?? $all['en'][$key] ?? $key;
 }
 
@@ -124,13 +124,13 @@ function h($value): string
 }
 
 /** Prefisso delle pagine tradotte della dashboard. */
-function xampp_base(): string
+function vxost_base(): string
 {
-    return xampp_lang() === 'it' ? '/dashboard/it/' : '/dashboard/';
+    return vxost_lang() === 'it' ? '/dashboard/it/' : '/dashboard/';
 }
 
 /** Icone SVG condivise (stroke 1.6, viewBox 24). */
-function xampp_icon(string $name, int $size = 18): string
+function vxost_icon(string $name, int $size = 18): string
 {
     static $paths = [
         'home'     => '<path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path d="M9.5 20.5v-6h5v6"/>',
@@ -169,10 +169,10 @@ function xampp_icon(string $name, int $size = 18): string
  * @param string $active  voce di menu attiva: dashboard|faq|howto|projects|ports|database|phpinfo
  * @param bool   $full    true per il layout a tutta altezza (pagina database)
  */
-function xampp_header(string $title, string $active = '', bool $full = false): void
+function vxost_header(string $title, string $active = '', bool $full = false): void
 {
-    $lang = xampp_lang();
-    $base = xampp_base();
+    $lang = vxost_lang();
+    $base = vxost_base();
     $uid  = 'lay' . substr(md5($title), 0, 6);
 
     // Stesso ordine delle pagine statiche: la navigazione non cambia mai posizione
@@ -213,8 +213,8 @@ function xampp_header(string $title, string $active = '', bool $full = false): v
         <ul class="title-area">
           <li class="name">
             <h1><a class="has-mark" href="<?php echo h($base); ?>index.html">
-              <img class="brand-mark" src="/dashboard/images/xampp-logo.svg" width="30" height="30" alt="XAMPP" />
-              <span class="brand-text">XAMPP <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -227,7 +227,7 @@ function xampp_header(string $title, string $active = '', bool $full = false): v
             <?php foreach ($items as $key => [$href, $label, $icon]): ?>
             <li class="item<?php echo $key === $active ? ' active' : ''; ?>">
               <a href="<?php echo h($href); ?>"<?php echo $key === $active ? ' aria-current="page"' : ''; ?>>
-                <?php echo xampp_icon($icon); ?><?php echo h($label); ?>
+                <?php echo vxost_icon($icon); ?><?php echo h($label); ?>
               </a>
             </li>
             <?php endforeach; ?>
@@ -240,25 +240,25 @@ function xampp_header(string $title, string $active = '', bool $full = false): v
 <?php
 }
 
-/** Versione di XAMPP e del restyling, mostrate nel footer. */
-const XAMPP_VERSION = '8.2.4';
+/** Versione di VXOST e del restyling, mostrate nel footer. */
+const VXOST_VERSION = '8.2.4';
 const DASHBOARD_VERSION = '9.26.0';
 
 /** Chiusura di <main> e pie' di pagina identico a quello delle pagine statiche. */
-function xampp_footer(): void
+function vxost_footer(): void
 {
-    $base = xampp_base();
-    $isIt = xampp_lang() === 'it';
+    $base = vxost_base();
+    $isIt = vxost_lang() === 'it';
 
     $about = $isIt
         ? 'Una distribuzione Apache gratuita che installa un server web completo sul tuo computer: Apache, il database MariaDB, PHP e Perl, pronti per sviluppare e collaudare in locale senza toccare un server di produzione.'
         : 'A free Apache distribution that installs a complete web server on your computer: Apache, the MariaDB database, PHP and Perl, ready to develop and test locally without touching a production server.';
 
     $credits = $isIt
-        ? 'Questa versione di XAMPP è stata risviluppata e rielaborata stilisticamente e strutturalmente dallo staff di %s nel luglio 2026. Sperando di dare un contributo significativo a questo bellissimo progetto open source.'
-        : 'This version of XAMPP was redeveloped and reworked, both visually and structurally, by the %s team in July 2026. In the hope of making a meaningful contribution to this beautiful open source project.';
+        ? 'Questa versione di VXOST è stata risviluppata e rielaborata stilisticamente e strutturalmente dallo staff di %s nel luglio 2026. Sperando di dare un contributo significativo a questo bellissimo progetto open source.'
+        : 'This version of VXOST was redeveloped and reworked, both visually and structurally, by the %s team in July 2026. In the hope of making a meaningful contribution to this beautiful open source project.';
 
-    $cd = '<a href="https://www.chirurgiadigitale.it" target="_blank" rel="noopener">Chirurgia Digitale</a>';
+    $cd = '<a href="https://www.equipedigitale.it" target="_blank" rel="noopener">Equipe Digitale</a>';
     ?>
     </main>
 
@@ -266,13 +266,12 @@ function xampp_footer(): void
       <div class="row footer-main">
         <div class="large-3 columns footer-brand">
           <p class="footer-logo">
-            <img src="/dashboard/images/xampp-logo.svg" width="26" height="26" alt="" />
-            <span>XAMPP</span>
+            <img src="/dashboard/images/vxost-logo.svg" width="26" height="26" alt="" />
+            <span>VXOST</span>
           </p>
           <p class="muted">Apache · MariaDB · PHP · Perl</p>
           <ul class="social">
-            <li class="twitter"><a href="https://twitter.com/apachefriends" aria-label="Twitter">Twitter</a></li>
-            <li class="facebook"><a href="https://www.facebook.com/we.are.xampp" aria-label="Facebook">Facebook</a></li>
+            <li class="github"><a href="https://github.com/chirurgiadigitale/vxost" aria-label="GitHub">GitHub</a></li>
           </ul>
         </div>
 
@@ -292,22 +291,22 @@ function xampp_footer(): void
         <div class="large-2 columns">
           <h4 class="footer-title"><?php echo h(t('project')); ?></h4>
           <ul class="footer_links footer_links--stack">
-            <li><a href="https://www.apachefriends.org/" target="_blank" rel="noopener">Apache Friends</a></li>
-            <li><a href="https://github.com/ApacheFriends/xampp-build" target="_blank" rel="noopener">GitHub · xampp-build</a></li>
-            <li><a href="https://github.com/ApacheFriends" target="_blank" rel="noopener">GitHub · Apache Friends</a></li>
-            <li><a href="https://github.com/topics/xampp" target="_blank" rel="noopener">GitHub · topic xampp</a></li>
+            <li><a href="https://www.vxost.com/" target="_blank" rel="noopener">VXOST</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost" target="_blank" rel="noopener">GitHub · vxost-build</a></li>
+            <li><a href="https://github.com/chirurgiadigitale" target="_blank" rel="noopener">GitHub · VXOST</a></li>
+            <li><a href="https://github.com/topics/vxost" target="_blank" rel="noopener">GitHub · topic vxost</a></li>
             <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
             <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
-            <li><a href="https://community.apachefriends.org" target="_blank" rel="noopener">Community forum</a></li>
-            <li><a href="https://www.apachefriends.org/blog.html" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost/issues" target="_blank" rel="noopener">Community forum</a></li>
+            <li><a href="https://www.vxost.com/blog.html" target="_blank" rel="noopener">Blog</a></li>
           </ul>
         </div>
 
         <div class="large-3 columns footer-about">
-          <h4 class="footer-title"><?php echo $isIt ? "Cos'è XAMPP" : 'What XAMPP is'; ?></h4>
+          <h4 class="footer-title"><?php echo $isIt ? "Cos'è VXOST" : 'What VXOST is'; ?></h4>
           <p class="muted"><?php echo h($about); ?></p>
           <p class="footer-version">
-            <span>XAMPP <?php echo XAMPP_VERSION; ?></span> ·
+            <span>VXOST <?php echo VXOST_VERSION; ?></span> ·
             <strong>v<?php echo DASHBOARD_VERSION; ?></strong>
             <span><?php echo $isIt ? 'restyling' : 'restyling'; ?></span>
           </p>

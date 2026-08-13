@@ -1,6 +1,6 @@
 <?php
 /**
- * XAMPP Dashboard v2 — Porte in ascolto e indirizzi IP
+ * VXOST Dashboard v2, Porte in ascolto e indirizzi IP
  *
  * Elenca le porte TCP in ascolto sulla macchina, il processo che le occupa e,
  * quando riconoscibile, il progetto a cui appartengono (dal percorso di lavoro
@@ -31,7 +31,7 @@ function p_t(string $key): string
             'loopback' => 'Loopback', 'lan' => 'Local network', 'count' => 'listening ports',
             'auto' => 'Auto refresh every 30s',
             'howto_t' => 'How to open a new port',
-            'howto_p' => 'A port is opened in two steps: Apache must listen on it, and a VirtualHost must say which folder to serve. Both files live in the XAMPP configuration folder.',
+            'howto_p' => 'A port is opened in two steps: Apache must listen on it, and a VirtualHost must say which folder to serve. Both files live in the VXOST configuration folder.',
             'step1' => 'Add the port to httpd.conf',
             'step2' => 'Add the VirtualHost in extra/httpd-vhosts.conf',
             'step3' => 'Restart Apache and open the address',
@@ -53,7 +53,7 @@ function p_t(string $key): string
             'loopback' => 'Loopback', 'lan' => 'Rete locale', 'count' => 'porte in ascolto',
             'auto' => 'Aggiornamento automatico ogni 30s',
             'howto_t' => 'Come si apre una nuova porta',
-            'howto_p' => 'Aprire una porta richiede due passaggi: Apache deve mettersi in ascolto su quella porta e un VirtualHost deve indicare quale cartella servire. Entrambi i file stanno nella cartella di configurazione di XAMPP.',
+            'howto_p' => 'Aprire una porta richiede due passaggi: Apache deve mettersi in ascolto su quella porta e un VirtualHost deve indicare quale cartella servire. Entrambi i file stanno nella cartella di configurazione di VXOST.',
             'step1' => 'Aggiungi la porta in httpd.conf',
             'step2' => 'Aggiungi il VirtualHost in extra/httpd-vhosts.conf',
             'step3' => 'Riavvia Apache e apri l\'indirizzo',
@@ -63,7 +63,7 @@ function p_t(string $key): string
             'nodedicated_p' => 'Sono serviti da Apache sulla porta 80, come sottocartella della radice web: non hanno bisogno di un VirtualHost, basta l\'indirizzo.',
         ],
     ];
-    $lang = xampp_lang();
+    $lang = vxost_lang();
     return $s[$lang][$key] ?? $s['en'][$key] ?? $key;
 }
 
@@ -337,7 +337,7 @@ function listening_ports(): ?array
  */
 function path_served_projects(array $vh): array
 {
-    $base = xampp_env()['projects'];
+    $base = vxost_env()['projects'];
     if (!is_dir($base)) {
         return [];
     }
@@ -481,7 +481,7 @@ function vhosts(): array
     }
     $out = [];
 
-    $file = xampp_env()['vhosts'];
+    $file = vxost_env()['vhosts'];
     if (!is_readable($file)) {
         return $out;
     }
@@ -576,7 +576,7 @@ if ($ports !== null) {
     }
 }
 
-xampp_header('XAMPP — ' . p_t('title'), 'ports');
+vxost_header('VXOST, ' . p_t('title'), 'ports');
 ?>
 
       <section class="hero">
@@ -586,7 +586,7 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
             <h1><?php echo h(p_t('title')); ?> <span><?php echo h(p_t('subtitle')); ?></span></h1>
             <div class="hero-actions">
               <a class="btn btn--primary" href="?ts=<?php echo time(); ?>">
-                <?php echo xampp_icon('refresh'); ?><?php echo h(p_t('refresh')); ?>
+                <?php echo vxost_icon('refresh'); ?><?php echo h(p_t('refresh')); ?>
               </a>
               <span class="badge badge--ok">
                 <span class="dot dot--pulse"></span>
@@ -675,7 +675,7 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
                   <p class="mono port-path" dir="ltr" title="<?php echo h($p['cwd']); ?>"><?php echo h($p['cwd']); ?></p>
                   <?php endif; ?>
                 </div>
-                <span class="card-link"><?php echo h(p_t('open')); ?> <?php echo xampp_icon('external', 16); ?></span>
+                <span class="card-link"><?php echo h(p_t('open')); ?> <?php echo vxost_icon('external', 16); ?></span>
               </a>
               <?php endforeach; ?>
             </div>
@@ -740,7 +740,7 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
               <?php foreach ($vh as $v): ?>
               <a class="card<?php echo $v['enabled'] ? '' : ' card--off'; ?>"
                  href="http://<?php echo h($v['name']); ?>:<?php echo (int) $v['port']; ?>/" target="_blank" rel="noopener">
-                <span class="card-icon card-icon--violet"><?php echo xampp_icon('globe', 22); ?></span>
+                <span class="card-icon card-icon--violet"><?php echo vxost_icon('globe', 22); ?></span>
                 <h3><?php echo h($v['project'] !== '' ? $v['project'] : $v['name']); ?>
                   <?php if (!$v['enabled']): ?><span class="badge badge--warn"><?php echo h(p_t('disabled')); ?></span><?php endif; ?>
                 </h3>
@@ -749,7 +749,7 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
                 <?php if ($v['modified']): ?>
                 <p class="muted" style="font-size:.78rem"><?php echo h(p_t('modified')); ?> <?php echo date('d/m/Y H:i', $v['modified']); ?></p>
                 <?php endif; ?>
-                <span class="card-link"><?php echo h(p_t('open')); ?> <?php echo xampp_icon('external', 16); ?></span>
+                <span class="card-link"><?php echo h(p_t('open')); ?> <?php echo vxost_icon('external', 16); ?></span>
               </a>
               <?php endforeach; ?>
             </div>
@@ -775,12 +775,12 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
             <div class="bento howto-grid">
               <?php foreach ($pathProjects as $p): ?>
               <a class="card" href="<?php echo h($p['url']); ?>" target="_blank" rel="noopener">
-                <span class="card-icon"><?php echo xampp_icon('folder', 20); ?></span>
+                <span class="card-icon"><?php echo vxost_icon('folder', 20); ?></span>
                 <h3><?php echo h($p['name']); ?></h3>
                 <?php if ($p['modified']): ?>
                 <span class="badge"><?php echo date('d/m/Y', $p['modified']); ?></span>
                 <?php endif; ?>
-                <span class="card-link"><?php echo xampp_icon('external', 16); ?></span>
+                <span class="card-link"><?php echo vxost_icon('external', 16); ?></span>
               </a>
               <?php endforeach; ?>
             </div>
@@ -804,16 +804,16 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
             <ol class="steps">
               <li>
                 <strong><?php echo h(p_t('step1')); ?></strong>
-                <p class="mono muted" dir="ltr"><?php echo h(xampp_env()['httpd']); ?></p>
+                <p class="mono muted" dir="ltr"><?php echo h(vxost_env()['httpd']); ?></p>
                 <pre dir="ltr">Listen 4010</pre>
               </li>
               <li>
                 <strong><?php echo h(p_t('step2')); ?></strong>
-                <p class="mono muted" dir="ltr"><?php echo h(xampp_env()['vhosts']); ?></p>
+                <p class="mono muted" dir="ltr"><?php echo h(vxost_env()['vhosts']); ?></p>
                 <pre dir="ltr">&lt;VirtualHost *:4010&gt;
-    DocumentRoot "<?php echo h(xampp_env()['projects']); ?>/nome-progetto"
+    DocumentRoot "<?php echo h(vxost_env()['projects']); ?>/nome-progetto"
     ServerName localhost
-    &lt;Directory "<?php echo h(xampp_env()['projects']); ?>/nome-progetto"&gt;
+    &lt;Directory "<?php echo h(vxost_env()['projects']); ?>/nome-progetto"&gt;
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
@@ -822,7 +822,7 @@ xampp_header('XAMPP — ' . p_t('title'), 'ports');
               </li>
               <li>
                 <strong><?php echo h(p_t('step3')); ?></strong>
-                <pre dir="ltr"><?php echo h(xampp_env()['restart']); ?>
+                <pre dir="ltr"><?php echo h(vxost_env()['restart']); ?>
 
 http://localhost:4010   →   http://127.0.0.1:4010<?php
                 foreach (array_keys($ips['lan']) as $lanIp) {
@@ -836,10 +836,10 @@ http://localhost:4010   →   http://127.0.0.1:4010<?php
 
           <div class="large-4 columns" data-reveal data-reveal-delay="100">
             <div class="card">
-              <span class="card-icon card-icon--cyan"><?php echo xampp_icon('ports', 22); ?></span>
+              <span class="card-icon card-icon--cyan"><?php echo vxost_icon('ports', 22); ?></span>
               <h3><?php echo h(p_t('conf')); ?></h3>
               <?php
-              $files = [xampp_env()['httpd'], xampp_env()['vhosts']];
+              $files = [vxost_env()['httpd'], vxost_env()['vhosts']];
               foreach ($files as $file):
                   $time = is_readable($file) ? (int) @filemtime($file) : 0;
               ?>
@@ -853,4 +853,4 @@ http://localhost:4010   →   http://127.0.0.1:4010<?php
         </div>
       </section>
 
-<?php xampp_footer(); ?>
+<?php vxost_footer(); ?>

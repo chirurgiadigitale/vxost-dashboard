@@ -24,14 +24,18 @@
   </head>
 
   <body class="docs docs_deploy-git-app">
+<svg class="brand-gradient-defs" aria-hidden="true" focusable="false" width="0" height="0"><defs>
+<linearGradient id="vxost-icon-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#C79BFF"/><stop offset=".38" stop-color="#FD3BFC"/><stop offset=".72" stop-color="#FC6D5F"/><stop offset="1" stop-color="#FA8406"/></linearGradient>
+<linearGradient id="vxost-icon-grad-light" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0E05D0"/><stop offset=".3" stop-color="#5A15C9"/><stop offset=".6" stop-color="#A81BA7"/><stop offset=".82" stop-color="#B03A1E"/><stop offset="1" stop-color="#7E4207"/></linearGradient>
+</defs></svg>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="header contain-to-grid">
       <nav class="top-bar" data-topbar>
         <ul class="title-area">
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/index.html">
-              <img class="brand-mark" src="/dashboard/images/xampp-logo.svg" width="30" height="30" alt="XAMPP" />
-              <span class="brand-text">XAMPP <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -75,14 +79,14 @@
     <article class="asciidoctor">
       <h1>Deploy an Application Using Git</h1>
 <div class="paragraph">
-<p><a href="http://git-scm.com/">Git</a> is a popular distributed version control system. As you work with XAMPP, you might often find yourself needing to download and install applications or code libraries from a developer&#8217;s public git repository.</p>
+<p><a href="http://git-scm.com/">Git</a> is a popular distributed version control system. As you work with VXOST, you might often find yourself needing to download and install applications or code libraries from a developer&#8217;s public git repository.</p>
 </div>
 <div class="paragraph">
-<p>This guide walks you through the process, showing you how to use a git client to transfer code from a public online git repository to your XAMPP server. As an example, this guide assumes that you wish to download the latest version of <a href="http://www.slimframework.com/">Slim</a>, a popular PHP micro-framework for Web application development that also has its own Github repository.
+<p>This guide walks you through the process, showing you how to use a git client to transfer code from a public online git repository to your VXOST server. As an example, this guide assumes that you wish to download the latest version of <a href="http://www.slimframework.com/">Slim</a>, a popular PHP micro-framework for Web application development that also has its own Github repository.
 NOTE: This guide uses the command-line git client for Mac OS X. If you don&#8217;t already have this, you can install it easily by running the command <em>brew install git</em> from a terminal.</p>
 </div>
 <div class="paragraph">
-<p>To download files with git, you must first ensure that you have privileges to write to the <em>htdocs/</em> subdirectory of the XAMPP installation directory (typically, <em>/Applications/XAMPP</em>). Follow these steps:</p>
+<p>To download files with git, you must first ensure that you have privileges to write to the <em>htdocs/</em> subdirectory of the VXOST installation directory (typically, <em>/Applications/VXOST</em>). Follow these steps:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -109,7 +113,7 @@ NOTE: This guide uses the command-line git client for Mac OS X. If you don&#8217
 <p>Change the ownership and permissions of the <em>htdocs/</em> subdirectory so that it is writable by the the new <em>gitusers</em> group.</p>
 <div class="literalblock">
 <div class="content">
-<pre>cd /Applications/XAMPP/xamppfiles</pre>
+<pre>cd /Applications/VXOST/vxostfiles</pre>
 </div>
 </div>
 <div class="literalblock">
@@ -134,7 +138,7 @@ NOTE: This guide uses the command-line git client for Mac OS X. If you don&#8217
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you&#8217;re using XAMPP in a single-user scenario and there will only be one user downloading files via git, you can skip creating a new group and instead simply transfer full ownership of the <em>htdocs/</em> directory to that user. To do this, use a command like <em>chown susan:susan htdocs</em>.
+If you&#8217;re using VXOST in a single-user scenario and there will only be one user downloading files via git, you can skip creating a new group and instead simply transfer full ownership of the <em>htdocs/</em> directory to that user. To do this, use a command like <em>chown susan:susan htdocs</em>.
 </td>
 </tr>
 </table>
@@ -166,7 +170,7 @@ If you&#8217;re using XAMPP in a single-user scenario and there will only be one
 <p>Open a new terminal.</p>
 </li>
 <li>
-<p>Change to the <em>htdocs/</em> subdirectory of your XAMPP installation directory (typically, <em>/Applications/XAMPP</em>). Use the following command to clone the remote repository, remembering to replace the clone URL in the example below with the URL you obtained in the first step.</p>
+<p>Change to the <em>htdocs/</em> subdirectory of your VXOST installation directory (typically, <em>/Applications/VXOST</em>). Use the following command to clone the remote repository, remembering to replace the clone URL in the example below with the URL you obtained in the first step.</p>
 <div class="literalblock">
 <div class="content">
 <pre>git clone https://github.com/slimphp/Slim.git</pre>
@@ -216,13 +220,12 @@ You can use the git command-line client to create a new branch of the codebase s
       <div class="row footer-main">
         <div class="large-3 columns footer-brand">
           <p class="footer-logo">
-            <img src="/dashboard/images/xampp-logo.svg" width="26" height="26" alt="" />
-            <span>XAMPP</span>
+            <img src="/dashboard/images/vxost-logo.svg" width="26" height="26" alt="" />
+            <span>VXOST</span>
           </p>
           <p class="muted">Apache · MariaDB · PHP · Perl</p>
           <ul class="social">
-            <li class="twitter"><a href="https://twitter.com/apachefriends" aria-label="Twitter">Twitter</a></li>
-            <li class="facebook"><a href="https://www.facebook.com/we.are.xampp" aria-label="Facebook">Facebook</a></li>
+            <li class="github"><a href="https://github.com/chirurgiadigitale/vxost" aria-label="GitHub">GitHub</a></li>
           </ul>
         </div>
 
@@ -242,34 +245,34 @@ You can use the git command-line client to create a new branch of the codebase s
         <div class="large-2 columns">
           <h4 class="footer-title">Project</h4>
           <ul class="footer_links footer_links--stack">
-            <li><a href="https://www.apachefriends.org/" target="_blank" rel="noopener">Apache Friends</a></li>
-            <li><a href="https://github.com/ApacheFriends/xampp-build" target="_blank" rel="noopener">GitHub · xampp-build</a></li>
-            <li><a href="https://github.com/ApacheFriends" target="_blank" rel="noopener">GitHub · Apache Friends</a></li>
-            <li><a href="https://github.com/topics/xampp" target="_blank" rel="noopener">GitHub · topic xampp</a></li>
+            <li><a href="https://www.vxost.com/" target="_blank" rel="noopener">VXOST</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost" target="_blank" rel="noopener">GitHub · vxost-build</a></li>
+            <li><a href="https://github.com/chirurgiadigitale" target="_blank" rel="noopener">GitHub · VXOST</a></li>
+            <li><a href="https://github.com/topics/vxost" target="_blank" rel="noopener">GitHub · topic vxost</a></li>
             <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
             <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
-            <li><a href="https://community.apachefriends.org" target="_blank" rel="noopener">Community forum</a></li>
-            <li><a href="https://www.apachefriends.org/blog.html" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost/issues" target="_blank" rel="noopener">Community forum</a></li>
+            <li><a href="https://www.vxost.com/blog.html" target="_blank" rel="noopener">Blog</a></li>
           </ul>
         </div>
 
         <div class="large-3 columns footer-about">
-          <h4 class="footer-title">What XAMPP is</h4>
+          <h4 class="footer-title">What VXOST is</h4>
           <p class="muted">A free Apache distribution that installs a complete web server on your computer: Apache, the MariaDB database, PHP and Perl, ready to develop and test locally without touching a production server.</p>
           <p class="footer-version">
-            <span>XAMPP 8.2.4</span> · <strong>v9.26.0</strong> <span>restyling</span>
+            <span>VXOST 8.2.4</span> · <strong>v9.26.0</strong> <span>restyling</span>
           </p>
             <a href="/dashboard/WHATSNEW.txt" target="_blank" rel="noopener" style="display:inline-block;margin-top:var(--s-2);font-size:.78rem">Release notes ↗</a>
         </div>
 
         <div class="large-2 columns footer-credits">
           <h4 class="footer-title">Credits</h4>
-          <p class="muted">This version of XAMPP was redeveloped and reworked, both visually and structurally, by the <a href="https://www.chirurgiadigitale.it" target="_blank" rel="noopener">Chirurgia Digitale</a> team in July 2026. In the hope of making a meaningful contribution to this beautiful open source project.</p>
+          <p class="muted">This version of VXOST was redeveloped and reworked, both visually and structurally, by the <a href="https://www.equipedigitale.it" target="_blank" rel="noopener">Equipe Digitale</a> team in July 2026. In the hope of making a meaningful contribution to this beautiful open source project.</p>
         </div>
       </div>
 
       <div class="row footer-bottom">
-        <p class="footer_copyright">© <span data-year>2026</span> Apache Friends — XAMPP is released under the GNU General Public License.</p>
+        <p class="footer_copyright">© <span data-year>2026</span> Equipe Digitale, VXOST is released under the GNU General Public License.</p>
         <a class="footer-top" href="#main">Back to top ↑</a>
       </div>
     </footer>

@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>XAMPP — Ambiente di sviluppo locale</title>
+    <title>VXOST, Ambiente di sviluppo locale</title>
 
-    <meta name="description" content="XAMPP è una distribuzione Apache facile da installare che include MariaDB, PHP e Perl." />
-    <meta name="keywords" content="xampp, apache, php, perl, mariadb, open source distribution" />
+    <meta name="description" content="VXOST è una distribuzione Apache facile da installare che include MariaDB, PHP e Perl." />
+    <meta name="keywords" content="vxost, apache, php, perl, mariadb, open source distribution" />
 
     <link href="/dashboard/stylesheets/normalize.css" rel="stylesheet" type="text/css" /><link href="/dashboard/stylesheets/all.css" rel="stylesheet" type="text/css" />
     <meta name="color-scheme" content="dark light" />
@@ -19,6 +19,10 @@
   </head>
 
   <body class="it it_index index">
+<svg class="brand-gradient-defs" aria-hidden="true" focusable="false" width="0" height="0"><defs>
+<linearGradient id="vxost-icon-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#C79BFF"/><stop offset=".38" stop-color="#FD3BFC"/><stop offset=".72" stop-color="#FC6D5F"/><stop offset="1" stop-color="#FA8406"/></linearGradient>
+<linearGradient id="vxost-icon-grad-light" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0E05D0"/><stop offset=".3" stop-color="#5A15C9"/><stop offset=".6" stop-color="#A81BA7"/><stop offset=".82" stop-color="#B03A1E"/><stop offset="1" stop-color="#7E4207"/></linearGradient>
+</defs></svg>
     <a class="skip-link" href="#main">Vai al contenuto</a>
 
     <header class="header contain-to-grid">
@@ -26,8 +30,8 @@
         <ul class="title-area">
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/it/index.html">
-              <img class="brand-mark" src="/dashboard/images/xampp-logo.svg" width="30" height="30" alt="XAMPP" />
-              <span class="brand-text">XAMPP <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -56,8 +60,8 @@
         <div class="row">
           <div class="large-7 columns" data-reveal>
             <p class="eyebrow">Ambiente di sviluppo locale</p>
-            <h1>XAMPP <span>Apache · MariaDB · PHP · Perl — in esecuzione su questa macchina</span></h1>
-            <p class="hero-lead">XAMPP è stato installato correttamente su questo sistema: tutto ciò che serve per sviluppare, testare ed eseguire il debug delle applicazioni PHP in locale è già attivo.</p>
+            <h1>VXOST <span>Apache · MariaDB · PHP · Perl, in esecuzione su questa macchina</span></h1>
+            <p class="hero-lead">VXOST è stato installato correttamente su questo sistema: tutto ciò che serve per sviluppare, testare ed eseguire il debug delle applicazioni PHP in locale è già attivo.</p>
             <div class="hero-actions">
               <a class="btn btn--primary" href="/phpmyadmin/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Apri phpMyAdmin</a>
               <a class="btn btn--ghost" href="/progetti/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h3.2c.6 0 1.1.3 1.5.7l1 1.3h7.3A2.5 2.5 0 0 1 21 10.5v7A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>Vai ai progetti</a>
@@ -65,15 +69,15 @@
           </div>
 
           <div class="large-5 columns" data-reveal data-reveal-delay="120">
-            <div class="terminal" role="img" aria-label="XAMPP stack status">
-              <div class="terminal-bar"><i></i><i></i><i></i><em>~/xamppfiles</em></div>
-              <pre class="terminal-body" dir="ltr"><span class="t-prompt">$</span> xampp status
+            <div class="terminal" role="img" aria-label="VXOST stack status">
+              <div class="terminal-bar"><i></i><i></i><i></i><em>~/vxostfiles</em></div>
+              <pre class="terminal-body" dir="ltr"><span class="t-prompt">$</span> vxost status
 <span class="t-key">Apache</span>      <span class="t-dim">…</span> running   <span class="t-dim">:80 · :443</span>
 <span class="t-key">MariaDB</span>     <span class="t-dim">…</span> running   <span class="t-dim">:3306</span>
 <span class="t-key">ProFTPD</span>     <span class="t-dim">…</span> ready     <span class="t-dim">:21</span>
 
 <span class="t-prompt">$</span> php -v
-PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v4.2.4</span>
+PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli), Zend Engine v4.2.4</span>
 
 <span class="t-prompt">$</span> _</pre>
             </div>
@@ -154,7 +158,7 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
               <div class="card">
                 <span class="card-icon card-icon--cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2.5"/><path d="M8 21h8M12 18v3M7.5 9l2 2-2 2M12 13h4"/></svg></span>
                 <h3>Pannello di controllo</h3>
-                <p>Avvia il pannello di controllo XAMPP (<span class="mono">manager-osx</span>) per verificare lo stato dei server.</p>
+                <p>Avvia il pannello di controllo VXOST (<span class="mono">manager-osx</span>) per verificare lo stato dei server.</p>
                 <span class="badge"><span class="dot" style="color:var(--text-muted)"></span> Applicazione desktop</span>
               </div>
             </div>
@@ -204,8 +208,8 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
           <div class="large-7 columns" data-reveal>
             <div class="admonitionblock warning">
               <h3 style="font-size:1.05rem">Solo per lo sviluppo</h3>
-              <p>XAMPP non è inteso per la produzione ma solo per ambienti di sviluppo: la configurazione è volutamente aperta per agevolare il lavoro in locale, ma risulta insicura se l'installazione viene resa accessibile ad altri.</p>
-              <p class="muted" style="margin-bottom:0">Esegui <span class="mono" dir="ltr">sudo /Applications/XAMPP/xamppfiles/xampp security</span> per mettere in sicurezza l'installazione.</p>
+              <p>VXOST non è inteso per la produzione ma solo per ambienti di sviluppo: la configurazione è volutamente aperta per agevolare il lavoro in locale, ma risulta insicura se l'installazione viene resa accessibile ad altri.</p>
+              <p class="muted" style="margin-bottom:0">Esegui <span class="mono" dir="ltr">sudo /Applications/VXOST/vxostfiles/vxost security</span> per mettere in sicurezza l'installazione.</p>
             </div>
           </div>
 
@@ -213,7 +217,7 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
             <div class="card">
               <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 19v-1.5a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3V19"/><circle cx="9.5" cy="8" r="3.2"/><path d="M21 19v-1.5a3 3 0 0 0-2.2-2.9M15.5 5.1a3.2 3.2 0 0 1 0 5.8"/></svg></span>
               <h3>Comunità</h3>
-              <p>XAMPP è in uso da circa 10 anni ed ha alle sue spalle un'enorme community. Anche tu puoi farne parte partecipando ai nostri <a href="https://community.apachefriends.org">Forum</a>, cliccando mi piace nella nostra pagina <a href="https://www.facebook.com/we.are.xampp">Facebook</a>, oppure seguendo i nostri post su <a href="https://twitter.com/apachefriends">Twitter</a>.</p>
+              <p>VXOST è in uso dal 2015 e ha alle spalle una grande comunità. Puoi farne parte su <a href="https://github.com/chirurgiadigitale/vxost">GitHub</a>, dove vive il codice: segnala un problema, proponi una modifica o semplicemente leggi come funziona.</p>
             </div>
           </div>
         </div>
@@ -302,13 +306,12 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
       <div class="row footer-main">
         <div class="large-3 columns footer-brand">
           <p class="footer-logo">
-            <img src="/dashboard/images/xampp-logo.svg" width="26" height="26" alt="" />
-            <span>XAMPP</span>
+            <img src="/dashboard/images/vxost-logo.svg" width="26" height="26" alt="" />
+            <span>VXOST</span>
           </p>
           <p class="muted">Apache · MariaDB · PHP · Perl</p>
           <ul class="social">
-            <li class="twitter"><a href="https://twitter.com/apachefriends" aria-label="Twitter">Twitter</a></li>
-            <li class="facebook"><a href="https://www.facebook.com/we.are.xampp" aria-label="Facebook">Facebook</a></li>
+            <li class="github"><a href="https://github.com/chirurgiadigitale/vxost" aria-label="GitHub">GitHub</a></li>
           </ul>
         </div>
 
@@ -329,34 +332,34 @@ PHP <span class="t-key">8.2.4</span> <span class="t-dim">(cli) — Zend Engine v
         <div class="large-2 columns">
           <h4 class="footer-title">Progetto</h4>
           <ul class="footer_links footer_links--stack">
-            <li><a href="https://www.apachefriends.org/" target="_blank" rel="noopener">Apache Friends</a></li>
-            <li><a href="https://github.com/ApacheFriends/xampp-build" target="_blank" rel="noopener">GitHub · xampp-build</a></li>
-            <li><a href="https://github.com/ApacheFriends" target="_blank" rel="noopener">GitHub · Apache Friends</a></li>
-            <li><a href="https://github.com/topics/xampp" target="_blank" rel="noopener">GitHub · topic xampp</a></li>
+            <li><a href="https://www.vxost.com/" target="_blank" rel="noopener">VXOST</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost" target="_blank" rel="noopener">GitHub · vxost-build</a></li>
+            <li><a href="https://github.com/chirurgiadigitale" target="_blank" rel="noopener">GitHub · VXOST</a></li>
+            <li><a href="https://github.com/topics/vxost" target="_blank" rel="noopener">GitHub · topic vxost</a></li>
             <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
             <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
-            <li><a href="https://community.apachefriends.org" target="_blank" rel="noopener">Community forum</a></li>
-            <li><a href="https://www.apachefriends.org/blog.html" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost/issues" target="_blank" rel="noopener">Community forum</a></li>
+            <li><a href="https://www.vxost.com/blog.html" target="_blank" rel="noopener">Blog</a></li>
           </ul>
         </div>
 
         <div class="large-3 columns footer-about">
-          <h4 class="footer-title">Cos'è XAMPP</h4>
+          <h4 class="footer-title">Cos'è VXOST</h4>
           <p class="muted">Una distribuzione Apache gratuita che installa un server web completo sul tuo computer: Apache, il database MariaDB, PHP e Perl, pronti per sviluppare e collaudare in locale senza toccare un server di produzione.</p>
           <p class="footer-version">
-            <span>XAMPP 8.2.4</span> · <strong>v9.26.0</strong> <span>restyling</span>
+            <span>VXOST 8.2.4</span> · <strong>v9.26.0</strong> <span>restyling</span>
           </p>
             <a href="/dashboard/WHATSNEW.txt" target="_blank" rel="noopener" style="display:inline-block;margin-top:var(--s-2);font-size:.78rem">Note di versione ↗</a>
         </div>
 
         <div class="large-2 columns footer-credits">
           <h4 class="footer-title">Crediti</h4>
-          <p class="muted">Questa versione di XAMPP è stata risviluppata e rielaborata stilisticamente e strutturalmente dallo staff di <a href="https://www.chirurgiadigitale.it" target="_blank" rel="noopener">Chirurgia Digitale</a> nel luglio 2026. Sperando di dare un contributo significativo a questo bellissimo progetto open source.</p>
+          <p class="muted">Questa versione di VXOST è stata risviluppata e rielaborata stilisticamente e strutturalmente dallo staff di <a href="https://www.equipedigitale.it" target="_blank" rel="noopener">Equipe Digitale</a> nel luglio 2026. Sperando di dare un contributo significativo a questo bellissimo progetto open source.</p>
         </div>
       </div>
 
       <div class="row footer-bottom">
-        <p class="footer_copyright">© <span data-year>2026</span> Apache Friends — XAMPP è distribuito con licenza GNU General Public License.</p>
+        <p class="footer_copyright">© <span data-year>2026</span> Equipe Digitale, VXOST è distribuito con licenza GNU General Public License.</p>
         <a class="footer-top" href="#main">Torna su ↑</a>
       </div>
     </footer>

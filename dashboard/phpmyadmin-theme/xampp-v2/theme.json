@@ -1,8 +1,0 @@
-{
-    "name": "xampp-v2",
-    "version": "9.26.0",
-    "description": "XAMPP Dashboard v2 — dark theme built around the official XAMPP orange",
-    "author": "Chirurgia Digitale",
-    "url": "https://www.chirurgiadigitale.it",
-    "supports": ["5.0", "5.1", "5.2"]
-}

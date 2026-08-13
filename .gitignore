@@ -1,8 +1,8 @@
 # =============================================================================
-#  XAMPP restyling — whitelist policy
+#  VXOST restyling, whitelist policy
 #
 #  Everything is ignored by default; only the files that belong to the
-#  distributable XAMPP web root are explicitly allowed back in.
+#  distributable VXOST web root are explicitly allowed back in.
 #  This keeps private customer projects, credentials and local data out of the
 #  public repository by construction, not by convention.
 # =============================================================================
@@ -10,10 +10,11 @@
 # 1. Ignore everything at the root
 /*
 
-# 2. Allow only what ships with XAMPP
+# 2. Allow only what ships with VXOST
 !/.gitignore
 !/.htaccess
 !/.githooks/
+!/LICENSE
 !/dashboard/
 !/img/
 !/index.php
@@ -38,9 +39,13 @@
 .claude*
 CLAUDE.md
 
-# Markdown notes: nessuno, tranne il README che presenta il progetto su GitHub
+# Markdown notes: none, except the README that presents the project on GitHub
+# and the list of bundled licences, which has to ship with the distribution.
+# These exceptions must stay AFTER the *.md rule: with git the last matching
+# rule wins, so listing them earlier would have no effect.
 *.md
 !/README.md
+!/THIRD-PARTY-LICENSES.md
 
 # Secrets and environment
 .env
@@ -77,7 +82,7 @@ Thumbs.db
 *.log
 
 # -----------------------------------------------------------------------------
-#  MySQL / MariaDB data — the distribution ships with empty databases
+#  MySQL / MariaDB data, the distribution ships with empty databases
 # -----------------------------------------------------------------------------
 mysql/
 var/mysql/

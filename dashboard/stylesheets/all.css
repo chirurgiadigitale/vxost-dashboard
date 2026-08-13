@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* ==========================================================================
-   XAMPP Dashboard — Design System "Neon Stack"
+   VXOST Dashboard, Design System "Neon Stack"
    Stile: Dark Mode (OLED) tecnologico, mobile-first, 100% SVG / zero immagini.
    Nota: sostituisce il vecchio Foundation 4. Le classi legacy (row, columns,
    top-bar, hero, accordion, asciidoctor, footer) restano supportate cosi'
@@ -30,18 +30,37 @@
   --border:        rgba(148, 163, 184, 0.16);
   --border-strong: rgba(148, 163, 184, 0.30);
 
-  /* Accenti semantici — tutti derivati dall'arancione ufficiale XAMPP #FB7A24.
-     Contrasto verificato su --bg: 7.40:1 (AAA) per l'accento, mai sotto 4.5:1. */
-  --accent:        #FB7A24;   /* arancione ufficiale: CTA, stato attivo   7.40:1 */
-  --accent-ink:    #1A0A00;   /* testo sopra l'accento                    7.28:1 */
-  --cyan:          #FFB35C;   /* ambra chiara: dati e database           11.09:1 */
-  --violet:        #FF6B3D;   /* corallo: codice e tooling                6.95:1 */
-  --amber:         #FFC15E;   /* oro: avvisi                             12.21:1 */
-  --danger:        #E5341C;   /* rosso caldo: errori                      4.53:1 */
+  /* Accenti semantici, presi dal gradiente ufficiale VXOST, campionati dal
+     file di marchio: blu #0E05D0 -> viola #6619E3 -> magenta #FD3BFC ->
+     corallo #FC6D5F -> arancione #FA8406.
+     Il magenta del marchio arriva a 6.75:1 su --bg, sotto la soglia AAA che il
+     resto del sistema rispetta: l'accento e' schiarito di un soffio fino a
+     7.02:1. A occhio e' lo stesso colore, ma il testo resta leggibile. */
+  --accent:        #FD47FD;   /* magenta VXOST: CTA, stato attivo         7.02:1 */
+  --accent-ink:    #0A0510;   /* testo sopra l'accento: NERO, non bianco  7.19:1 */
+  --cyan:          #C79BFF;   /* lilla: dati e database                   8.95:1 */
+  --violet:        #FC8A7E;   /* corallo: codice e tooling                8.49:1 */
+  --amber:         #FA8406;   /* arancione VXOST: avvisi                  7.83:1 */
+  --danger:        #FF5C5C;   /* rosso: errori                            6.49:1 */
+
+  /* Gradiente di marchio, decorativo soltanto: sfondi, bordi, glow, icone.
+     Mai sotto un testo: nessun colore singolo tiene il contrasto lungo tutta
+     la scala. Per il testo si usa --accent. */
+  --brand-blue:    #0E05D0;
+  --brand-violet:  #6619E3;
+  --brand-magenta: #FD3BFC;
+  --brand-coral:   #FC6D5F;
+  --brand-orange:  #FA8406;
+  --brand-gradient: linear-gradient(45deg,
+                      var(--brand-blue)    0%,
+                      var(--brand-violet) 26%,
+                      var(--brand-magenta) 55%,
+                      var(--brand-coral)  78%,
+                      var(--brand-orange) 100%);
 
   /* Glow */
-  --glow-accent:   0 0 0 1px rgba(251, 122, 36, .35), 0 8px 30px -8px rgba(251, 122, 36, .45);
-  --glow-cyan:     0 0 0 1px rgba(255, 179, 92, .35), 0 8px 30px -8px rgba(255, 179, 92, .40);
+  --glow-accent:   0 0 0 1px rgba(253, 71, 253, .35), 0 8px 30px -8px rgba(253, 71, 253, .45);
+  --glow-cyan:     0 0 0 1px rgba(199, 155, 255, .35), 0 8px 30px -8px rgba(199, 155, 255, .40);
 
   /* Raggi */
   --r-xs: 6px;
@@ -51,7 +70,7 @@
   --r-xl: 28px;
   --r-pill: 999px;
 
-  /* Spaziature — scala 4px */
+  /* Spaziature, scala 4px */
   --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
   --s-5: 24px;  --s-6: 32px;  --s-7: 48px;  --s-8: 64px;  --s-9: 96px;
 
@@ -79,7 +98,7 @@
   color-scheme: dark;
 }
 
-/* Tema chiaro — attivo su richiesta esplicita (bottone in navbar) */
+/* Tema chiaro, attivo su richiesta esplicita (bottone in navbar) */
 :root[data-theme="light"] {
   --bg:            #F4F7FC;
   --bg-elev:       #FFFFFF;
@@ -91,13 +110,16 @@
   --text-muted:    #5A6B85;
   --border:        rgba(15, 23, 42, 0.12);
   --border-strong: rgba(15, 23, 42, 0.24);
-  /* Stesse tinte, scurite per restare leggibili su fondo chiaro (tutte ≥ 5.4:1) */
-  --accent:        #A8480B;
+  /* Stesse tinte, scurite per restare leggibili su fondo chiaro (tutte ≥ 5.6:1).
+     Il magenta su fondo chiaro non regge a nessuna profondita' utile: l'accento
+     scende lungo il gradiente fino al viola, che e' il vicino piu' prossimo. */
+  --accent:        #5A15C9;   /* viola VXOST                              8.20:1 */
   --accent-ink:    #FFFFFF;
-  --cyan:          #8A4A08;
-  --violet:        #A8380F;
-  --amber:         #7A4E10;
-  --danger:        #A3200D;
+  --cyan:          #6B21B8;   /* viola-lilla: dati                        7.72:1 */
+  --violet:        #B03A1E;   /* corallo scuro: codice                    5.64:1 */
+  --amber:         #7E4207;   /* arancione scuro: avvisi                  7.33:1 */
+  --danger:        #A3200D;   /* rosso: errori                            7.06:1 */
+  /* Il gradiente resta identico: e' decorativo e non porta testo. */
   --sh-1: 0 1px 2px rgba(15, 23, 42, .08);
   --sh-2: 0 8px 24px -10px rgba(15, 23, 42, .22);
   --sh-3: 0 24px 60px -24px rgba(15, 23, 42, .28);
@@ -154,8 +176,8 @@ body::after {
   z-index: var(--z-bg);
   pointer-events: none;
   background:
-    radial-gradient(45% 55% at 18% 0%, rgba(251, 122, 36, .20), transparent 70%),
-    radial-gradient(40% 50% at 78% 8%, rgba(255, 179, 92, .16), transparent 70%),
+    radial-gradient(45% 55% at 18% 0%, rgba(253, 71, 253, .20), transparent 70%),
+    radial-gradient(40% 50% at 78% 8%, rgba(199, 155, 255, .16), transparent 70%),
     radial-gradient(35% 45% at 50% 0%, rgba(255, 107, 61, .14), transparent 70%);
   filter: blur(10px);
 }
@@ -239,7 +261,7 @@ blockquote {
   border-radius: var(--r-xs);
 }
 
-::selection { background: rgba(251, 122, 36, .30); color: var(--text); }
+::selection { background: rgba(253, 71, 253, .30); color: var(--text); }
 
 /* Scrollbar coerente col tema */
 * { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
@@ -267,7 +289,7 @@ blockquote {
 .skip-link:focus { left: 0; color: var(--accent-ink); }
 
 /* --------------------------------------------------------------------------
-   3. LAYOUT — griglia 12 colonne compatibile con il markup legacy
+   3. LAYOUT, griglia 12 colonne compatibile con il markup legacy
    -------------------------------------------------------------------------- */
 .wrapper {
   position: relative;
@@ -408,7 +430,7 @@ blockquote {
   flex: none;
   border-radius: 9px;
   background: linear-gradient(135deg, var(--accent), var(--cyan) 55%, var(--violet));
-  box-shadow: 0 0 0 1px var(--border), 0 6px 18px -8px rgba(251, 122, 36, .8);
+  box-shadow: 0 0 0 1px var(--border), 0 6px 18px -8px rgba(253, 71, 253, .8);
 }
 /* Se la pagina fornisce gia' un marchio SVG inline, il segnaposto CSS sparisce */
 .title-area .name h1 a.has-mark::before { display: none; }
@@ -645,8 +667,8 @@ blockquote {
   color: var(--text-muted);
 }
 
-/* Logo legacy (immagine SVG XAMPP nelle pagine non ancora ricostruite) */
-.hero h1 img { width: 52px; height: auto; filter: drop-shadow(0 6px 18px rgba(251, 122, 36, .35)); }
+/* Logo legacy (immagine SVG VXOST nelle pagine non ancora ricostruite) */
+.hero h1 img { width: 52px; height: auto; filter: drop-shadow(0 6px 18px rgba(253, 71, 253, .35)); }
 
 .hero-lead {
   font-size: clamp(1rem, .95rem + .3vw, 1.15rem);
@@ -694,7 +716,7 @@ blockquote {
 .btn--primary:hover {
   color: var(--accent-ink);
   background: color-mix(in srgb, var(--accent) 88%, white);
-  box-shadow: 0 0 0 1px rgba(251, 122, 36, .5), 0 14px 34px -10px rgba(251, 122, 36, .6);
+  box-shadow: 0 0 0 1px rgba(253, 71, 253, .5), 0 14px 34px -10px rgba(253, 71, 253, .6);
 }
 
 .btn--ghost {
@@ -948,7 +970,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 }
 .terminal-bar i:nth-child(1) { background: #FF5F57; }
 .terminal-bar i:nth-child(2) { background: #FEBC2E; }
-.terminal-bar i:nth-child(3) { background: #FB7A24; }
+.terminal-bar i:nth-child(3) { background: #FD47FD; }
 .terminal-bar em {
   margin-left: auto;
   font-style: normal;
@@ -1434,13 +1456,11 @@ ul.social a::before {
   -webkit-mask-position: center;
   mask-position: center;
 }
-ul.social li.twitter a::before {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.9 2H22l-7 8 8.2 12h-6.4l-5-7.3L5.9 22H2.8l7.5-8.6L2.4 2h6.6l4.5 6.7L18.9 2Zm-1.1 18h1.7L7.3 3.8H5.4L17.8 20Z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.9 2H22l-7 8 8.2 12h-6.4l-5-7.3L5.9 22H2.8l7.5-8.6L2.4 2h6.6l4.5 6.7L18.9 2Zm-1.1 18h1.7L7.3 3.8H5.4L17.8 20Z'/%3E%3C/svg%3E");
-}
-ul.social li.facebook a::before {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.25-1.5 1.55-1.5h1.65V4.6c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.45-4 4.1v2.3H7.6V14h2.7v8h3.2Z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.25-1.5 1.55-1.5h1.65V4.6c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.45-4 4.1v2.3H7.6V14h2.7v8h3.2Z'/%3E%3C/svg%3E");
+/* Un solo canale: gli account social del progetto sono chiusi, il codice sta
+   su GitHub ed e' li' che si segnala un problema o si propone una modifica. */
+ul.social li.github a::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.34.85 0 1.7.12 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.34.85 0 1.7.12 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10Z'/%3E%3C/svg%3E");
 }
 
 .footer img { opacity: .6; filter: grayscale(1); vertical-align: middle; }
@@ -1527,7 +1547,7 @@ ul.social li.facebook a::before {
 .view-btn:hover { color: var(--text); background: var(--surface-2); }
 .view-btn.is-active { color: var(--accent-ink); background: var(--accent); }
 
-/* Card progetto — vista a griglia */
+/* Card progetto, vista a griglia */
 .project-card .project-meta {
   display: flex;
   flex-wrap: wrap;
@@ -1621,7 +1641,7 @@ ul.social li.facebook a::before {
 .steps p { margin: 0 0 var(--s-2); font-size: .8rem; }
 .steps pre { margin: 0; }
 
-/* Marchio ufficiale XAMPP */
+/* Marchio ufficiale VXOST */
 .brand-mark { display: block; width: 30px; height: 30px; flex: none; }
 .footer-logo img { display: block; }
 
@@ -1781,3 +1801,32 @@ ul.social li.facebook a::before {
   .card, article.asciidoctor { border: 1px solid #ccc; box-shadow: none; }
   a { color: #000; text-decoration: underline; }
 }
+
+/* --------------------------------------------------------------------------
+   14. ICONE IN GRADIENTE DI MARCHIO
+   --------------------------------------------------------------------------
+   Le icone decorative portano il gradiente ufficiale invece di una tinta
+   piatta. Il gradiente e' dichiarato una sola volta per pagina, nello <svg>
+   .brand-gradient-defs subito dopo <body>, e qui viene solo referenziato: gli
+   SVG in linea restano con stroke="currentColor" e non sono stati toccati,
+   sono 1240 e modificarli uno per uno sarebbe stato ingestibile.
+
+   Due varianti, non una: sul fondo scuro il blu del marchio sta a 1.74:1 e
+   sparisce, sul fondo chiaro spariscono magenta e arancione (2.5:1). Ogni
+   tema usa la meta' di scala che regge sul proprio fondo.
+
+   Restano escluse le icone di servizio, barra di navigazione, pulsanti,
+   briciole: li' l'icona deve seguire il colore del testo che accompagna, e un
+   gradiente la staccherebbe dall'etichetta.
+   -------------------------------------------------------------------------- */
+
+.card-icon svg [stroke],
+.card-icon svg { stroke: url(#vxost-icon-grad); }
+
+:root[data-theme="light"] .card-icon svg [stroke],
+:root[data-theme="light"] .card-icon svg { stroke: url(#vxost-icon-grad-light); }
+
+/* Il contenitore conserva la sua tinta per bordo e sfondo: e' quella che
+   distingue le quattro categorie di scheda, e il gradiente e' uguale per
+   tutte. */
+.card-icon svg { color: inherit; }

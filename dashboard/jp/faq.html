@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Use title if it's in the page YAML frontmatter -->
-    <title>XAMPP FAQs for Mac OS X</title>
+    <title>VXOST FAQs for Mac OS X</title>
 
-    <meta name="description" content="Instructions on how to install XAMPP for OSX distributions." />
+    <meta name="description" content="Instructions on how to install VXOST for OSX distributions." />
     
 
     <link href="/dashboard/stylesheets/normalize.css" rel="stylesheet" type="text/css" /><link href="/dashboard/stylesheets/all.css" rel="stylesheet" type="text/css" />
@@ -24,14 +24,18 @@
   </head>
 
   <body class="jp jp_faq">
+<svg class="brand-gradient-defs" aria-hidden="true" focusable="false" width="0" height="0"><defs>
+<linearGradient id="vxost-icon-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#C79BFF"/><stop offset=".38" stop-color="#FD3BFC"/><stop offset=".72" stop-color="#FC6D5F"/><stop offset="1" stop-color="#FA8406"/></linearGradient>
+<linearGradient id="vxost-icon-grad-light" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0E05D0"/><stop offset=".3" stop-color="#5A15C9"/><stop offset=".6" stop-color="#A81BA7"/><stop offset=".82" stop-color="#B03A1E"/><stop offset="1" stop-color="#7E4207"/></linearGradient>
+</defs></svg>
     <a class="skip-link" href="#main">コンテンツへ移動</a>
     <header class="header contain-to-grid">
       <nav class="top-bar" data-topbar>
         <ul class="title-area">
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/jp/index.html">
-              <img class="brand-mark" src="/dashboard/images/xampp-logo.svg" width="30" height="30" alt="XAMPP" />
-              <span class="brand-text">XAMPP <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -68,65 +72,65 @@
     <div class="large-12 columns">
     <dl class="accordion">
     
-      <dt>XAMPP for OS X と XAMPP-VM の違いは何ですか？</dt>
+      <dt>VXOST for OS X と VXOST-VM の違いは何ですか？</dt>
       <dd>
         <p>
         <ul>
-          <li>XAMPP for OS X is a native installer for OS X. It installs Apache, PHP and other XAMPP components directly on your OS X system, in the /Applications/XAMPP folder.</li>
-          <li>XAMPP-VM is a virtual machine for OS X. It includes Apache, PHP and other XAMPP components and runs them in a Linux-based virtual machine on your OS X system.</li>
+          <li>VXOST for OS X is a native installer for OS X. It installs Apache, PHP and other VXOST components directly on your OS X system, in the /Applications/VXOST folder.</li>
+          <li>VXOST-VM is a virtual machine for OS X. It includes Apache, PHP and other VXOST components and runs them in a Linux-based virtual machine on your OS X system.</li>
         </ul>
         </p>
-        <p>For more information, refer to the blog post at <a href="https://www.apachefriends.org/blog/new_xampp_20170628.html">https://www.apachefriends.org/blog/new_xampp_20170628.html</a>.</p>.
+        <p>For more information, refer to the blog post at <a href="https://www.vxost.com/blog/new_vxost_20170628.html">https://www.vxost.com/blog/new_vxost_20170628.html</a>.</p>.
         <p class="muted" style="font-size:.8rem;margin-top:var(--s-3)"><span class="badge badge--lang">EN</span> 回答は英語のみです。</p>
       </dd> 
     
-      <dt>Mac OS XにXAMPPをインストールするにはどうしたらよいですか？</dt>
+      <dt>Mac OS XにVXOSTをインストールするにはどうしたらよいですか？</dt>
       <dd>
-      <p>以下のようにしてXAMPPをインストールします。</p>
+      <p>以下のようにしてVXOSTをインストールします。</p>
       <ul>
         <li>DMGイメージデータを開きます。</li>
         <li>画像をダブルクリックしてインストールを開始してください。</li></ul>
-      <p>以上です。XAMPPが /Applications/XAMPPディレクトリにインストールされました。</p>
+      <p>以上です。VXOSTが /Applications/VXOSTディレクトリにインストールされました。</p>
       </dd>
-      <dt>XAMPP には MySQL と MariaDB のどちらが含まれますか？</dt>
+      <dt>VXOST には MySQL と MariaDB のどちらが含まれますか？</dt>
       <dd>
-        <p>Since XAMPP 5.5.30 and 5.6.14, XAMPP ships MariaDB instead of MySQL. The commands and tools are the same for both.</p>
+        <p>Since VXOST 5.5.30 and 5.6.14, VXOST ships MariaDB instead of MySQL. The commands and tools are the same for both.</p>
         <p class="muted" style="font-size:.8rem;margin-top:var(--s-3)"><span class="badge badge--lang">EN</span> 回答は英語のみです。</p>
       </dd>
-      <dt>XAMPP の起動方法</dt>
+      <dt>VXOST の起動方法</dt>
       <dd>
-      <p>XAMPPを開始するには、XAMPPコントロールを開いて、Apache、MySQLそしてProFPTDを開始します。XAMPPコントロールの名前は"manager-osx"です。</p>      
+      <p>VXOSTを開始するには、VXOSTコントロールを開いて、Apache、MySQLそしてProFPTDを開始します。VXOSTコントロールの名前は"manager-osx"です。</p>      
       </dd>
-      <dt>どのように私はXAMPPを停止するのですか？</dt>
+      <dt>どのように私はVXOSTを停止するのですか？</dt>
       <dd>
-      <p>XAMPPを停止するにはXAMPPコントロールを開き、サーバーを停止します。XAMPPコントロールの名前は"manager-osx"です。</p>      
+      <p>VXOSTを停止するにはVXOSTコントロールを開き、サーバーを停止します。VXOSTコントロールの名前は"manager-osx"です。</p>      
       </dd>
       <dt>どのようにすれば、システムが正常に動いていることを確認できますか？ </dt>
       <dd>
       <p>ウェブブラウザで次のURLにアクセスしてください。</p>
       <p><code>http://localhost</code></p>
 
-      <p>You should see the XAMPP start page, as shown below.</p>
-        <img src="/dashboard/images/screenshots/xampp-macosx-start.jpg" />    
+      <p>You should see the VXOST start page, as shown below.</p>
+        <img src="/dashboard/images/screenshots/vxost-macosx-start.jpg" />    
       </dd>
-      <dt>XAMPPを実際の運用で使用することはできますか？</dt>
-      <dd><p>XAMPPは製品運用の手段ではなく、開発環境です。開発者の思った通りに何でもできるよう可能な限りオープンに設定されているのがXAMPPです。これは開発環境には素晴らしい事ですが、製品としては致命的です。</p>
-      <p>XAMPPのセキュリティ上の脆弱性を以下に示します。</p>
+      <dt>VXOSTを実際の運用で使用することはできますか？</dt>
+      <dd><p>VXOSTは製品運用の手段ではなく、開発環境です。開発者の思った通りに何でもできるよう可能な限りオープンに設定されているのがVXOSTです。これは開発環境には素晴らしい事ですが、製品としては致命的です。</p>
+      <p>VXOSTのセキュリティ上の脆弱性を以下に示します。</p>
       <ol>
         <li>MySQL の管理者 ID (root) にパスワードが設定されていません。                </li>
         <li>MySQL デーモンは、ネットワークを介してアクセス可能です。</li>
         <li>ProFTPD uses the password "lampp" for user "daemon".</li>
       </ol>
       <p>セキュリティ脆弱性を修正するために、次のコマンドを実行してください:</p>
-      <p><code>sudo /Applications/XAMPP/xamppfiles/xampp security</code></p>
-      <p>XAMPPのインストールを安全にするためのセキュリティーチェックが開始されます。</p></dd>
+      <p><code>sudo /Applications/VXOST/vxostfiles/vxost security</code></p>
+      <p>VXOSTのインストールを安全にするためのセキュリティーチェックが開始されます。</p></dd>
 
-      <dt>XAMPPを開始したときに出るエラーは何ですか？</dt>
+      <dt>VXOSTを開始したときに出るエラーは何ですか？</dt>
       <dd>
-        <p>XAMPP の起動中に、エラーメッセージがいくつか表示されるかもしれません。</p>
+        <p>VXOST の起動中に、エラーメッセージがいくつか表示されるかもしれません。</p>
         <p><code>LAMPP-Apache is already running.<br />
             An Apache daemon is already running.</code></p>
-        <p>Apache インスタンスが既に実行中であるために、LAMPP 起動スクリプトは XAMPP-Apache を起動しませんでした。XAMPP を正常に起動するためには、これを終了する必要があります。</p>
+        <p>Apache インスタンスが既に実行中であるために、LAMPP 起動スクリプトは VXOST-Apache を起動しませんでした。VXOST を正常に起動するためには、これを終了する必要があります。</p>
         <p><code>LAMPP-MySQL is already running.<br />
             A MySQL daemon is already running.</code></p>
         <p>この問題は多くの場合、上の項目と同じ理由で発生します。LAMPPサーバーのスタートアップスクリプトは、MySQLのプロセスがすでに起動している場合、動作しません。LAMPPサーバーを起動するには、まず既に起動しているプロセスを終了する必要があります。</p>
@@ -135,55 +139,55 @@
       <dt>Apache が起動しません。どうすればよいですか？</dt>
       <dd>
         <p>このエラーには複数の原因が考えられます。Apacheはいくつかの条件下でこのエラーを発生させます。エラー要因を特定するには、いくつかの調査を行う必要があります。</p>
-        <p><code>tail -2 /Applications/XAMPP/logs/error_log</code></p>
-        <p>エラーメッセージが表示された場合は、ヘルプページ <a href="https://community.apachefriends.org" target="_blank" rel="noopener">our community pages</a> を参照してください。</p>
+        <p><code>tail -2 /Applications/VXOST/logs/error_log</code></p>
+        <p>エラーメッセージが表示された場合は、ヘルプページ <a href="https://github.com/chirurgiadigitale/vxost/issues" target="_blank" rel="noopener">our community pages</a> を参照してください。</p>
         <p class="muted" style="font-size:.8rem;margin-top:var(--s-3)"><span class="badge badge--lang">EN</span> 回答は英語のみです。</p>
       </dd>
 
-      <dt>XAMPPのインストールをさらに安全に行うにはどうしたらよいですか？</dt>
+      <dt>VXOSTのインストールをさらに安全に行うにはどうしたらよいですか？</dt>
       <dd>
-        <p>デフォルトの設定では、XAMPPはパスワードが設定されていません。そして、他人がアクセスする環境で、この設定のままXAMPPを実行するのはお勧めできません。</p>
+        <p>デフォルトの設定では、VXOSTはパスワードが設定されていません。そして、他人がアクセスする環境で、この設定のままVXOSTを実行するのはお勧めできません。</p>
         <p>セキュリティチェックを開始するために、rootユーザとして次のコマンドを実行してください。</p>
-        <p><code>sudo /Applications/XAMPP/xamppfiles/xampp security</code></p>
+        <p><code>sudo /Applications/VXOST/vxostfiles/vxost security</code></p>
         <p>画面に次のようなダイアログが表示されます。</p>
         <p><code>
-XAMPP: Quick security check...</br>
-XAMPP: MySQL is accessable via network.</br>
-XAMPP: Normaly that's not recommended. Do you want me to turn it off? [yes] yes</br>
-XAMPP: Turned off.</br>
-XAMPP: Stopping MySQL...</br>
-XAMPP: Starting MySQL...</br>
-XAMPP: The MySQL/phpMyAdmin user pma has no password set!!!</br>
-XAMPP: Do you want to set a password? [yes] yes</br>
-XAMPP: Password: ******</br>
-XAMPP: Password (again): ******</br>
-XAMPP: Setting new MySQL pma password.</br>
-XAMPP: Setting phpMyAdmin's pma password to the new one.</br>
-XAMPP: MySQL has no root passwort set!!!</br>
-XAMPP: Do you want to set a password? [yes] yes</br>
-XAMPP: Write the passworde somewhere down to make sure you won't forget it!!!</br>
-XAMPP: Password: ******</br>
-XAMPP: Password (again): ******</br>
-XAMPP: Setting new MySQL root password.</br>
-XAMPP: Setting phpMyAdmin's root password to the new one.</br>
-XAMPP: The FTP password for user 'nobody' is still set to 'lampp'.</br>
-XAMPP: Do you want to change the password? [yes] yes</br>
-XAMPP: Password: ******</br>
-XAMPP: Password (again): ******</br>
-XAMPP: Reload ProFTPD...</br>
-XAMPP: Done.</br>
+VXOST: Quick security check...</br>
+VXOST: MySQL is accessable via network.</br>
+VXOST: Normaly that's not recommended. Do you want me to turn it off? [yes] yes</br>
+VXOST: Turned off.</br>
+VXOST: Stopping MySQL...</br>
+VXOST: Starting MySQL...</br>
+VXOST: The MySQL/phpMyAdmin user pma has no password set!!!</br>
+VXOST: Do you want to set a password? [yes] yes</br>
+VXOST: Password: ******</br>
+VXOST: Password (again): ******</br>
+VXOST: Setting new MySQL pma password.</br>
+VXOST: Setting phpMyAdmin's pma password to the new one.</br>
+VXOST: MySQL has no root passwort set!!!</br>
+VXOST: Do you want to set a password? [yes] yes</br>
+VXOST: Write the passworde somewhere down to make sure you won't forget it!!!</br>
+VXOST: Password: ******</br>
+VXOST: Password (again): ******</br>
+VXOST: Setting new MySQL root password.</br>
+VXOST: Setting phpMyAdmin's root password to the new one.</br>
+VXOST: The FTP password for user 'nobody' is still set to 'lampp'.</br>
+VXOST: Do you want to change the password? [yes] yes</br>
+VXOST: Password: ******</br>
+VXOST: Password (again): ******</br>
+VXOST: Reload ProFTPD...</br>
+VXOST: Done.</br>
   </code></p>
-        <p>(1)パスワードを設定すると、XAMPPのデモページ(http://localhost/xampp/)を保護できるでしょう。ユーザ名は 'lampp'に設定されています。</p>
-        <p>このコマンドを実行した後は、XAMPPのインストールはより安全になるでしょう。</p>
+        <p>(1)パスワードを設定すると、VXOSTのデモページ(http://localhost/vxost/)を保護できるでしょう。ユーザ名は 'lampp'に設定されています。</p>
+        <p>このコマンドを実行した後は、VXOSTのインストールはより安全になるでしょう。</p>
       </dd>
 
       <dt>OCI8/Oracle extensionをPHPで有効化するにはどのようにしたらよいですか？</dt>
       <dd>
         <p>PHPでOCI8/Oracle extensionを有効化するには、以下のコマンドを実行してください。</p>
-        <p><code>sudo /Applications/XAMPP/xamppfiles/lampp oci8</code></p>
+        <p><code>sudo /Applications/VXOST/vxostfiles/lampp oci8</code></p>
         <p>次のようなダイアログが表示されます。</p>
         <p><code>Please enter the path to your Oracle or Instant Client installation:</br>
-[/Applications/XAMPP/xamppfiles/lib/instantclient-11.2.0.3.0] </br>
+[/Applications/VXOST/vxostfiles/lib/instantclient-11.2.0.3.0] </br>
 installing symlinks...</br>
 patching php.ini...</br>
 OCI8 add-on activation likely successful.</br>
@@ -194,46 +198,46 @@ LAMPP: Starting Apache with SSL...</code></p>
 
       <dt>phpMyAdmin への外部からのアクセスを許可するには？</dt>
       <dd>
-        <p>In the basic configuration of XAMPP, phpMyAdmin is accessible only from the same host that XAMPP is running on, at http://127.0.0.1 or http://localhost.</p>
+        <p>In the basic configuration of VXOST, phpMyAdmin is accessible only from the same host that VXOST is running on, at http://127.0.0.1 or http://localhost.</p>
         <p>IMPORTANT: Enabling external access for phpMyAdmin in production environments is a significant security risk. You are strongly advised to only allow access from localhost. A remote attacker could take advantage of any existing vulnerability for executing code or for modifying your data.</p>
         <p>To enable remote access to phpMyAdmin, follow these steps:</p>
         <ul>
-          <li>Edit the xamppfiles/etc/extra/httpd-xampp.conf file in your XAMPP installation directory.</li>
+          <li>Edit the vxostfiles/etc/extra/httpd-vxost.conf file in your VXOST installation directory.</li>
           <li>Within this file, find the lines below. 
             <p><code>
-                Alias /phpmyadmin "/Applications/XAMPP/xamppfiles/phpmyadmin"
-                &lt;Directory "/Applications/XAMPP/xamppfiles/phpmyadmin"&gt;
+                Alias /phpmyadmin "/Applications/VXOST/vxostfiles/phpmyadmin"
+                &lt;Directory "/Applications/VXOST/vxostfiles/phpmyadmin"&gt;
                   AllowOverride AuthConfig
                   Require local
             </code></p>
           </li>
           <li>Then replace 'Require local' with 'Require all granted'.</li>
             <p><code>
-                Alias /phpmyadmin "/Applications/XAMPP/xamppfiles/phpmyadmin"
-                &lt;Directory "/Applications/XAMPP/xamppfiles/phpmyadmin"&gt;
+                Alias /phpmyadmin "/Applications/VXOST/vxostfiles/phpmyadmin"
+                &lt;Directory "/Applications/VXOST/vxostfiles/phpmyadmin"&gt;
                   AllowOverride AuthConfig
                   Require all granted
             </code></p>
-          <li>Restart the Apache server using the XAMPP control panel.</li>
+          <li>Restart the Apache server using the VXOST control panel.</li>
         </ul>
         <p class="muted" style="font-size:.8rem;margin-top:var(--s-3)"><span class="badge badge--lang">EN</span> 回答は英語のみです。</p>
       </dd>
 
-      <dt>XAMPP の主な設定ファイルはどこにありますか？</dt>
+      <dt>VXOST の主な設定ファイルはどこにありますか？</dt>
       <dd>
-        <p>The main XAMPP configuration files are located as follows:</p>
+        <p>The main VXOST configuration files are located as follows:</p>
         <ul>
-          <li>Apache configuration file: /Applications/XAMPP/xamppfiles/etc/httpd.conf, /Applications/XAMPP/xamppfiles/etc/extra/httpd-xampp.conf</li>
-          <li>PHP configuration file: /Applications/XAMPP/xamppfiles/etc/php.ini</li>
-          <li>MySQL configuration file: /Applications/XAMPP/xamppfiles/etc/my.cnf</li>
-          <li>ProFTPD configuration file: /Applications/XAMPP/xamppfiles/etc/proftpd.conf</li>
+          <li>Apache configuration file: /Applications/VXOST/vxostfiles/etc/httpd.conf, /Applications/VXOST/vxostfiles/etc/extra/httpd-vxost.conf</li>
+          <li>PHP configuration file: /Applications/VXOST/vxostfiles/etc/php.ini</li>
+          <li>MySQL configuration file: /Applications/VXOST/vxostfiles/etc/my.cnf</li>
+          <li>ProFTPD configuration file: /Applications/VXOST/vxostfiles/etc/proftpd.conf</li>
         </ul>
         <p class="muted" style="font-size:.8rem;margin-top:var(--s-3)"><span class="badge badge--lang">EN</span> 回答は英語のみです。</p>
       </dd>
 
-      <dt>XAMPP でメールを送信するには？</dt>
+      <dt>VXOST でメールを送信するには？</dt>
       <dd>
-        <p>To send email with XAMPP, use the PEAR Mail and Net_SMTP packages, which allow you to send email using an external SMTP account (such as a Gmail account). Follow these steps:</p>
+        <p>To send email with VXOST, use the PEAR Mail and Net_SMTP packages, which allow you to send email using an external SMTP account (such as a Gmail account). Follow these steps:</p>
         <ul>
           <li>Install the Mail and Net_SMTP PEAR modules:
           <code>
@@ -289,35 +293,35 @@ LAMPP: Starting Apache with SSL...</code></p>
         <p class="muted" style="font-size:.8rem;margin-top:var(--s-3)"><span class="badge badge--lang">EN</span> 回答は英語のみです。</p>
       </dd>
       
-      <dt>どのようにすれば、XAMPPのバックアップと復元を行えますか？</dt>
+      <dt>どのようにすれば、VXOSTのバックアップと復元を行えますか？</dt>
       <dd>
         <p><strong>警告　</strong> バックアップと復元の機能は現在開発中のため、動作は保証されません。</p>
         <p>次のようにしてバックアップを作成することができます：</p>
-        <p><code>sudo /Applications/XAMPP/xamppfiles/xampp backup</code></p>
+        <p><code>sudo /Applications/VXOST/vxostfiles/vxost backup</code></p>
         <p>または</p>
-        <p><code>sudo /Applications/XAMPP/xamppfiles/xampp backup secret</code></p>
+        <p><code>sudo /Applications/VXOST/vxostfiles/vxost backup secret</code></p>
         <p>"seceret"をあなたのパスワードに置き換えてください。実行すると、次のように表示されます：</p>
         <p><code>Backing up databases...</br>
 Backing up configuration, log and htdocs files...</br>
 Calculating checksums...</br>
 Building final backup file...</br>
 Backup finished.</br>
-Take care of /Applications/XAMPP/xamppfiles/backup/xampp-backup-22-01-14.sh</code></p>
+Take care of /Applications/VXOST/vxostfiles/backup/vxost-backup-22-01-14.sh</code></p>
 
-        <p>The file /Applications/XAMPP/xamppfiles/backup/xampp-backup-22-01-14.sh (in the example above) contains your backup data. Move or copy this file to a safe place.</p>
+        <p>The file /Applications/VXOST/vxostfiles/backup/vxost-backup-22-01-14.sh (in the example above) contains your backup data. Move or copy this file to a safe place.</p>
 
-        <p>バックアップ先の環境には、バックアップ元と同じバージョンのXAMPPをインストールしてください。</p>
-        <p><code>sudo sh xampp-backup-22-01-14.sh</code></p>
+        <p>バックアップ先の環境には、バックアップ元と同じバージョンのVXOSTをインストールしてください。</p>
+        <p><code>sudo sh vxost-backup-22-01-14.sh</code></p>
         <p>You should see something like this:</p>
         <p><code>Checking integrity of files...</br>
 Restoring configuration, log and htdocs files...</br>
 Checking versions...</br>
-Installed: XAMPP 1.4.2</br>
-Backup from: XAMPP 1.4.2</br>
+Installed: VXOST 1.4.2</br>
+Backup from: VXOST 1.4.2</br>
 Restoring MySQL databases...</br>
 Restoring MySQL user databases...</br>
 Backup complete. Have fun!</br>
-You may need to restart XAMPP to complete the restore.</br>
+You may need to restart VXOST to complete the restore.</br>
   </code></p>
         <p>That's all. Keep in mind that it's a beta feature.</p>
       </dd>
@@ -332,13 +336,12 @@ You may need to restart XAMPP to complete the restore.</br>
       <div class="row footer-main">
         <div class="large-3 columns footer-brand">
           <p class="footer-logo">
-            <img src="/dashboard/images/xampp-logo.svg" width="26" height="26" alt="" />
-            <span>XAMPP</span>
+            <img src="/dashboard/images/vxost-logo.svg" width="26" height="26" alt="" />
+            <span>VXOST</span>
           </p>
           <p class="muted">Apache · MariaDB · PHP · Perl</p>
           <ul class="social">
-            <li class="twitter"><a href="https://twitter.com/apachefriends" aria-label="Twitter">Twitter</a></li>
-            <li class="facebook"><a href="https://www.facebook.com/we.are.xampp" aria-label="Facebook">Facebook</a></li>
+            <li class="github"><a href="https://github.com/chirurgiadigitale/vxost" aria-label="GitHub">GitHub</a></li>
           </ul>
         </div>
 
@@ -358,34 +361,34 @@ You may need to restart XAMPP to complete the restore.</br>
         <div class="large-2 columns">
           <h4 class="footer-title">プロジェクト</h4>
           <ul class="footer_links footer_links--stack">
-            <li><a href="https://www.apachefriends.org/" target="_blank" rel="noopener">Apache Friends</a></li>
-            <li><a href="https://github.com/ApacheFriends/xampp-build" target="_blank" rel="noopener">GitHub · xampp-build</a></li>
-            <li><a href="https://github.com/ApacheFriends" target="_blank" rel="noopener">GitHub · Apache Friends</a></li>
-            <li><a href="https://github.com/topics/xampp" target="_blank" rel="noopener">GitHub · topic xampp</a></li>
+            <li><a href="https://www.vxost.com/" target="_blank" rel="noopener">VXOST</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost" target="_blank" rel="noopener">GitHub · vxost-build</a></li>
+            <li><a href="https://github.com/chirurgiadigitale" target="_blank" rel="noopener">GitHub · VXOST</a></li>
+            <li><a href="https://github.com/topics/vxost" target="_blank" rel="noopener">GitHub · topic vxost</a></li>
             <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
             <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
-            <li><a href="https://community.apachefriends.org" target="_blank" rel="noopener">Community forum</a></li>
-            <li><a href="https://www.apachefriends.org/blog.html" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost/issues" target="_blank" rel="noopener">Community forum</a></li>
+            <li><a href="https://www.vxost.com/blog.html" target="_blank" rel="noopener">Blog</a></li>
           </ul>
         </div>
 
         <div class="large-3 columns footer-about">
-          <h4 class="footer-title">XAMPP とは</h4>
+          <h4 class="footer-title">VXOST とは</h4>
           <p class="muted">コンピューターに完全な Web サーバーを導入する無料の Apache ディストリビューションです。Apache、MariaDB データベース、PHP、Perl がそろい、ローカルでの開発とテストにすぐ使えます。</p>
           <p class="footer-version">
-            <span>XAMPP 8.2.4</span> · <strong>v9.26.0</strong> <span>リスタイル</span>
+            <span>VXOST 8.2.4</span> · <strong>v9.26.0</strong> <span>リスタイル</span>
           </p>
             <a href="/dashboard/WHATSNEW.txt" target="_blank" rel="noopener" style="display:inline-block;margin-top:var(--s-2);font-size:.78rem">リリースノート ↗</a>
         </div>
 
         <div class="large-2 columns footer-credits">
           <h4 class="footer-title">クレジット</h4>
-          <p class="muted">このバージョンの XAMPP は、2026 年 7 月に <a href="https://www.chirurgiadigitale.it" target="_blank" rel="noopener">Chirurgia Digitale</a> のチームによってデザインと構造の両面から再開発されました。この素晴らしいオープンソースプロジェクトへの貢献となることを願って。</p>
+          <p class="muted">このバージョンの VXOST は、2026 年 7 月に <a href="https://www.equipedigitale.it" target="_blank" rel="noopener">Equipe Digitale</a> のチームによってデザインと構造の両面から再開発されました。この素晴らしいオープンソースプロジェクトへの貢献となることを願って。</p>
         </div>
       </div>
 
       <div class="row footer-bottom">
-        <p class="footer_copyright">© <span data-year>2026</span> Apache Friends — XAMPP is released under the GNU General Public License.</p>
+        <p class="footer_copyright">© <span data-year>2026</span> Equipe Digitale, VXOST is released under the GNU General Public License.</p>
         <a class="footer-top" href="#main">トップへ戻る ↑</a>
       </div>
     </footer>

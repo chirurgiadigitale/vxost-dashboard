@@ -1,8 +1,8 @@
-# XAMPP Dashboard v2
+# VXOST Dashboard v2
 
-A complete restyling of the XAMPP for macOS web root: the dashboard, the
+A complete restyling of the VXOST for macOS web root: the dashboard, the
 documentation pages and three new tools, all sharing one dark, developer
-oriented design system built around the official XAMPP orange.
+oriented design system built around the official VXOST orange.
 
 No design framework, no CSS or JS dependency, no external request at runtime.
 Every icon is inline SVG or a CSS mask.
@@ -23,17 +23,17 @@ Every icon is inline SVG or a CSS mask.
 
 ## Design system
 
-Colours derive from the official XAMPP orange `#FB7A24`, taken from the logo
+Colours are taken from the official VXOST gradient, sampled off the brand
 artwork. Every pair was checked against WCAG contrast ratios before being
 used:
 
 | Token | Dark | Ratio | Light | Purpose |
 |-------|------|-------|-------|---------|
-| `--accent` | `#FB7A24` | 7.40:1 AAA | `#A8480B` | actions, active state |
-| `--cyan` | `#FFB35C` | 11.09:1 AAA | `#8A4A08` | data and databases |
-| `--violet` | `#FF6B3D` | 6.95:1 AA | `#A8380F` | code and tooling |
-| `--amber` | `#FFC15E` | 12.21:1 AAA | `#7A4E10` | advisory blocks |
-| `--danger` | `#E5341C` | 4.53:1 AA | `#A3200D` | failures |
+| `--accent` | `#FD47FD` | 7.02:1 AAA | `#5A15C9` | actions, active state |
+| `--cyan` | `#C79BFF` | 8.95:1 AAA | `#6B21B8` | data and databases |
+| `--violet` | `#FC8A7E` | 8.49:1 AAA | `#B03A1E` | code and tooling |
+| `--amber` | `#FA8406` | 7.83:1 AAA | `#7E4207` | advisory blocks |
+| `--danger` | `#FF5C5C` | 6.49:1 AA  | `#A3200D` | failures |
 
 Dark theme is the default; the light theme is a token override, switched from
 the navigation bar and remembered in `localStorage`.
@@ -58,7 +58,7 @@ says so with an `EN` badge.
 
 ## Installing
 
-Copy the contents of this repository over `xamppfiles/htdocs`, keeping your own
+Copy the contents of this repository over `vxostfiles/htdocs`, keeping your own
 `progetti/` folder. The pages are served as they are, no build step.
 
 To let `database.php` embed phpMyAdmin, allow same origin framing:
@@ -67,7 +67,7 @@ To let `database.php` embed phpMyAdmin, allow same origin framing:
 $cfg['AllowThirdPartyFraming'] = 'sameorigin';
 ```
 
-in `xamppfiles/phpmyadmin/config.inc.php`.
+in `vxostfiles/phpmyadmin/config.inc.php`.
 
 ## Privacy of the local environment
 
@@ -76,7 +76,7 @@ This build ships **empty**: no projects, no databases, no port configuration.
 `.gitignore` uses a whitelist: everything is ignored, and only the files that
 belong to the distribution are allowed back in. `.githooks/pre-commit` refuses
 any commit that would carry project names, private addresses, dumps or
-credentials — enable it with:
+credentials, enable it with:
 
 ```
 git config core.hooksPath .githooks
@@ -84,5 +84,5 @@ git config core.hooksPath .githooks
 
 ## Licence
 
-XAMPP and its documentation belong to Apache Friends and keep their original
+VXOST and its documentation belong to VXOST and keep their original
 licence (GNU GPL). This restyling follows the same terms.

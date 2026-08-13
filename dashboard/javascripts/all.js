@@ -1,5 +1,5 @@
 /* ==========================================================================
-   XAMPP Dashboard — UI runtime (vanilla JS, zero dipendenze)
+   VXOST Dashboard, UI runtime (vanilla JS, zero dipendenze)
    Sostituisce jQuery 1.10 + Foundation 4. Backup: all.foundation.bak.js
    Funzioni:
      1. Tema chiaro/scuro persistente
@@ -12,11 +12,11 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'xampp-dashboard-theme';
+  var STORAGE_KEY = 'vxost-dashboard-theme';
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------------------------------------------------------------------
-     Icone SVG (stroke 1.6, viewBox 24) — famiglia unica per tutta la UI
+     Icone SVG (stroke 1.6, viewBox 24), famiglia unica per tutta la UI
      --------------------------------------------------------------------- */
   var ICONS = {
     faq:      '<path d="M12 17h.01M9.1 9a3 3 0 1 1 4.2 2.7c-.8.4-1.3 1.1-1.3 2"/><circle cx="12" cy="12" r="9"/>',
@@ -192,7 +192,7 @@
         li.className = 'is-current';
       }
       a.addEventListener('click', function () {
-        try { localStorage.setItem('xampp-dashboard-lang', l.code); } catch (e) { /* noop */ }
+        try { localStorage.setItem('vxost-dashboard-lang', l.code); } catch (e) { /* noop */ }
       });
       li.appendChild(a);
       list.appendChild(li);

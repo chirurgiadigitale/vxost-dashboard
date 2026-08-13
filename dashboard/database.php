@@ -1,6 +1,6 @@
 <?php
 /**
- * XAMPP Dashboard v2 — phpMyAdmin dentro il guscio della dashboard
+ * VXOST Dashboard v2, phpMyAdmin dentro il guscio della dashboard
  *
  * phpMyAdmin resta l'applicazione originale, non modificata (cosi' resta
  * aggiornabile): viene incorniciata dall'header e dal footer della dashboard,
@@ -37,7 +37,7 @@ function db_t(string $key): string
             'offline_p' => 'Il server non ha risposto su /phpmyadmin/. Verifica che Apache sia avviato e che phpMyAdmin sia installato.',
         ],
     ];
-    $lang = xampp_lang();
+    $lang = vxost_lang();
     return $s[$lang][$key] ?? $s['en'][$key] ?? $key;
 }
 
@@ -71,7 +71,7 @@ function pma_status(): array
 
 $status = pma_status();
 
-xampp_header('XAMPP — ' . db_t('title'), 'database', $status['online'] && $status['framable']);
+vxost_header('VXOST, ' . db_t('title'), 'database', $status['online'] && $status['framable']);
 ?>
 
       <?php if ($status['online'] && $status['framable']): ?>
@@ -82,10 +82,10 @@ xampp_header('XAMPP — ' . db_t('title'), 'database', $status['online'] && $sta
           <span class="muted mono" dir="ltr">localhost:3306</span>
           <div class="embed-bar__actions">
             <button type="button" class="btn btn--ghost btn--sm" id="pma-reload">
-              <?php echo xampp_icon('refresh', 16); ?><?php echo h(db_t('reload')); ?>
+              <?php echo vxost_icon('refresh', 16); ?><?php echo h(db_t('reload')); ?>
             </button>
             <a class="btn btn--ghost btn--sm" href="/phpmyadmin/" target="_blank" rel="noopener">
-              <?php echo xampp_icon('external', 16); ?><?php echo h(db_t('fullscreen')); ?>
+              <?php echo vxost_icon('external', 16); ?><?php echo h(db_t('fullscreen')); ?>
             </a>
           </div>
         </div>
@@ -129,7 +129,7 @@ xampp_header('XAMPP — ' . db_t('title'), 'database', $status['online'] && $sta
             <?php endif; ?>
 
             <a class="btn btn--primary" href="/phpmyadmin/" target="_blank" rel="noopener">
-              <?php echo xampp_icon('external', 18); ?><?php echo h(db_t('open')); ?>
+              <?php echo vxost_icon('external', 18); ?><?php echo h(db_t('open')); ?>
             </a>
           </div>
         </div>
@@ -137,4 +137,4 @@ xampp_header('XAMPP — ' . db_t('title'), 'database', $status['online'] && $sta
 
       <?php endif; ?>
 
-<?php xampp_footer(); ?>
+<?php vxost_footer(); ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * PHPInfo — XAMPP Dashboard v2
+ * PHPInfo, VXOST Dashboard v2
  *
  * Incapsula l'output nativo di phpinfo() nel design system della dashboard:
  * l'informazione resta quella originale, cambia solo la presentazione.
@@ -78,7 +78,7 @@ $body = $grouped['html'];
 $sections = $grouped['sections'];
 
 // 3. Dati di sintesi per le card di stato
-$isIt = xampp_lang() === 'it';
+$isIt = vxost_lang() === 'it';
 $summary = [
     ($isIt ? 'Versione PHP' : 'PHP version') => PHP_VERSION,
     'Zend Engine'                            => zend_version(),
@@ -92,7 +92,7 @@ $summary = [
 $extensions = get_loaded_extensions();
 sort($extensions, SORT_NATURAL | SORT_FLAG_CASE);
 
-xampp_header('XAMPP — PHPInfo', 'phpinfo');
+vxost_header('VXOST, PHPInfo', 'phpinfo');
 ?>
 
       <section class="hero">
@@ -216,4 +216,4 @@ xampp_header('XAMPP — PHPInfo', 'phpinfo');
         </div>
       </section>
 
-<?php xampp_footer(); ?>
+<?php vxost_footer(); ?>

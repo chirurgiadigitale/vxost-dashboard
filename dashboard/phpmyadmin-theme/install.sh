@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Installa il tema "xampp-v2" in phpMyAdmin.
+# Installa il tema "vxost-v2" in phpMyAdmin.
 #
 # Il tema non riscrive phpMyAdmin: parte dal tema predefinito pmahomme e vi
 # aggiunge in coda il foglio di stile della dashboard. Un aggiornamento di
@@ -12,17 +12,17 @@
 set -euo pipefail
 
 SOURCE="$(cd "$(dirname "$0")" && pwd)"
-THEME_NAME="xampp-v2"
+THEME_NAME="vxost-v2"
 
 # Percorso di phpMyAdmin: argomento esplicito, altrimenti si prova a dedurlo
 if [ $# -ge 1 ]; then
     PMA="$1"
 else
     for candidate in \
-        "/Applications/XAMPP/xamppfiles/phpmyadmin" \
+        "/Applications/VXOST/vxostfiles/phpmyadmin" \
         "/opt/lampp/phpmyadmin" \
         "/opt/lampp/phpMyAdmin" \
-        "C:/xampp/phpMyAdmin"
+        "C:/vxost/phpMyAdmin"
     do
         if [ -d "$candidate" ]; then PMA="$candidate"; break; fi
     done

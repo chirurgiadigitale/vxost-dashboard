@@ -24,14 +24,18 @@
   </head>
 
   <body class="docs docs_create-framework-project-zf1">
+<svg class="brand-gradient-defs" aria-hidden="true" focusable="false" width="0" height="0"><defs>
+<linearGradient id="vxost-icon-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#C79BFF"/><stop offset=".38" stop-color="#FD3BFC"/><stop offset=".72" stop-color="#FC6D5F"/><stop offset="1" stop-color="#FA8406"/></linearGradient>
+<linearGradient id="vxost-icon-grad-light" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0E05D0"/><stop offset=".3" stop-color="#5A15C9"/><stop offset=".6" stop-color="#A81BA7"/><stop offset=".82" stop-color="#B03A1E"/><stop offset="1" stop-color="#7E4207"/></linearGradient>
+</defs></svg>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="header contain-to-grid">
       <nav class="top-bar" data-topbar>
         <ul class="title-area">
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/index.html">
-              <img class="brand-mark" src="/dashboard/images/xampp-logo.svg" width="30" height="30" alt="XAMPP" />
-              <span class="brand-text">XAMPP <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -75,7 +79,7 @@
     <article class="asciidoctor">
       <h1>Start a New Zend Framework 1 Project</h1>
 <div class="paragraph">
-<p>XAMPP makes it easy to start developing with PHP, and <a href="http://framework.zend.com/">Zend Framework</a> is one of the most popular PHP development frameworks. This guide walks you through the process of initializing a new Zend Framework 1 project with XAMPP.</p>
+<p>VXOST makes it easy to start developing with PHP, and <a href="http://framework.zend.com/">Zend Framework</a> is one of the most popular PHP development frameworks. This guide walks you through the process of initializing a new Zend Framework 1 project with VXOST.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -95,10 +99,10 @@ This guide assumes that the new Zend Framework application will be accessible at
 <p>Open a new terminal and ensure you are logged in as an administrator.</p>
 </li>
 <li>
-<p>Within your XAMPP installation directory (usually <em>/Applications/XAMPP/xamppfiles/</em>), create a new directory named <em>apps/</em> (if it doesn&#8217;t already exist). Then, within this new <em>apps/</em> directory, create a directory to hold your Zend Framework application and its related XAMPP configuration files. In this case, call the directory <em>myapp/</em>.</p>
+<p>Within your VXOST installation directory (usually <em>/Applications/VXOST/vxostfiles/</em>), create a new directory named <em>apps/</em> (if it doesn&#8217;t already exist). Then, within this new <em>apps/</em> directory, create a directory to hold your Zend Framework application and its related VXOST configuration files. In this case, call the directory <em>myapp/</em>.</p>
 <div class="literalblock">
 <div class="content">
-<pre>cd /Applications/XAMPP/xamppfiles/
+<pre>cd /Applications/VXOST/vxostfiles/
 mkdir apps
 mkdir apps/myapp</pre>
 </div>
@@ -111,7 +115,7 @@ mkdir apps/myapp</pre>
 <p>Extract the contents of the archive to the <em>myapp\</em> directory. This will produce a <em>ZendFramework-[x.y]-minimal.zip\</em> subdirectory in the <em>myapp\</em> directory. Rename this newly-created subdirectory to <em>htdocs</em>.</p>
 <div class="literalblock">
 <div class="content">
-<pre>cd /Applications/XAMPP/xamppfiles/apps/myapp
+<pre>cd /Applications/VXOST/vxostfiles/apps/myapp
 tar -xzf /tmp/ZendFramework*.tar.gz
 mv ZendFramework* htdocs</pre>
 </div>
@@ -133,7 +137,7 @@ This new <em>htdocs</em> directory will be the main working directory for your Z
 <p>Next, within the <em>myapp/</em> directory, create a new <em>conf/</em> subdirectory.</p>
 <div class="literalblock">
 <div class="content">
-<pre>cd /Applications/XAMPP/xamppfiles/apps/myapp
+<pre>cd /Applications/VXOST/vxostfiles/apps/myapp
 mkdir conf</pre>
 </div>
 </div>
@@ -143,9 +147,9 @@ mkdir conf</pre>
 <p>Within the new <em>conf/</em> subdirectory, use your text editor to create and populate a file named <em>httpd-prefix.conf</em> with the following content:</p>
 <div class="literalblock">
 <div class="content">
-<pre>Alias /myapp/ "/Applications/XAMPP/xamppfiles/apps/myapp/htdocs/public/"
-Alias /myapp "/Applications/XAMPP/xamppfiles/apps/myapp/htdocs/public"
-Include "/Applications/XAMPP/xamppfiles/apps/myapp/conf/httpd-app.conf"</pre>
+<pre>Alias /myapp/ "/Applications/VXOST/vxostfiles/apps/myapp/htdocs/public/"
+Alias /myapp "/Applications/VXOST/vxostfiles/apps/myapp/htdocs/public"
+Include "/Applications/VXOST/vxostfiles/apps/myapp/conf/httpd-app.conf"</pre>
 </div>
 </div>
 </li>
@@ -153,7 +157,7 @@ Include "/Applications/XAMPP/xamppfiles/apps/myapp/conf/httpd-app.conf"</pre>
 <p>Within the <em>conf/</em> subdirectory, also create and populate a file named <em>httpd-app.conf</em> with the following content:</p>
 <div class="literalblock">
 <div class="content">
-<pre>&lt;Directory /Applications/XAMPP/xamppfiles/apps/myapp/htdocs/public&gt;
+<pre>&lt;Directory /Applications/VXOST/vxostfiles/apps/myapp/htdocs/public&gt;
    Options +FollowSymLinks
    AllowOverride All
    Require all granted
@@ -165,10 +169,10 @@ Include "/Applications/XAMPP/xamppfiles/apps/myapp/conf/httpd-app.conf"</pre>
 </div>
 </li>
 <li>
-<p>Edit the <em>httpd-xampp.conf</em> file in the <em>etc/extra/</em> subdirectory of your XAMPP installation directory and add the following line at the end to include the <em>httpd-prefix.conf</em> created earlier.</p>
+<p>Edit the <em>httpd-vxost.conf</em> file in the <em>etc/extra/</em> subdirectory of your VXOST installation directory and add the following line at the end to include the <em>httpd-prefix.conf</em> created earlier.</p>
 <div class="literalblock">
 <div class="content">
-<pre>Include "/Applications/XAMPP/xamppfiles/apps/myapp/conf/httpd-prefix.conf"</pre>
+<pre>Include "/Applications/VXOST/vxostfiles/apps/myapp/conf/httpd-prefix.conf"</pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -188,7 +192,7 @@ Remember to update the above file and directory paths so that they&#8217;re vali
 <p>Change to the <em>myapp/htdocs/</em> directory and run the following commands to create a new stub project.</p>
 <div class="literalblock">
 <div class="content">
-<pre>/Applications/XAMPP/bin/php bin/zf.php create project .</pre>
+<pre>/Applications/VXOST/bin/php bin/zf.php create project .</pre>
 </div>
 </div>
 </li>
@@ -201,7 +205,7 @@ Remember to update the above file and directory paths so that they&#8217;re vali
 </div>
 </li>
 <li>
-<p>Restart the Apache server using the XAMPP control panel.</p>
+<p>Restart the Apache server using the VXOST control panel.</p>
 </li>
 </ol>
 </div>
@@ -226,13 +230,12 @@ Remember to update the above file and directory paths so that they&#8217;re vali
       <div class="row footer-main">
         <div class="large-3 columns footer-brand">
           <p class="footer-logo">
-            <img src="/dashboard/images/xampp-logo.svg" width="26" height="26" alt="" />
-            <span>XAMPP</span>
+            <img src="/dashboard/images/vxost-logo.svg" width="26" height="26" alt="" />
+            <span>VXOST</span>
           </p>
           <p class="muted">Apache · MariaDB · PHP · Perl</p>
           <ul class="social">
-            <li class="twitter"><a href="https://twitter.com/apachefriends" aria-label="Twitter">Twitter</a></li>
-            <li class="facebook"><a href="https://www.facebook.com/we.are.xampp" aria-label="Facebook">Facebook</a></li>
+            <li class="github"><a href="https://github.com/chirurgiadigitale/vxost" aria-label="GitHub">GitHub</a></li>
           </ul>
         </div>
 
@@ -252,34 +255,34 @@ Remember to update the above file and directory paths so that they&#8217;re vali
         <div class="large-2 columns">
           <h4 class="footer-title">Project</h4>
           <ul class="footer_links footer_links--stack">
-            <li><a href="https://www.apachefriends.org/" target="_blank" rel="noopener">Apache Friends</a></li>
-            <li><a href="https://github.com/ApacheFriends/xampp-build" target="_blank" rel="noopener">GitHub · xampp-build</a></li>
-            <li><a href="https://github.com/ApacheFriends" target="_blank" rel="noopener">GitHub · Apache Friends</a></li>
-            <li><a href="https://github.com/topics/xampp" target="_blank" rel="noopener">GitHub · topic xampp</a></li>
+            <li><a href="https://www.vxost.com/" target="_blank" rel="noopener">VXOST</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost" target="_blank" rel="noopener">GitHub · vxost-build</a></li>
+            <li><a href="https://github.com/chirurgiadigitale" target="_blank" rel="noopener">GitHub · VXOST</a></li>
+            <li><a href="https://github.com/topics/vxost" target="_blank" rel="noopener">GitHub · topic vxost</a></li>
             <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
             <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
-            <li><a href="https://community.apachefriends.org" target="_blank" rel="noopener">Community forum</a></li>
-            <li><a href="https://www.apachefriends.org/blog.html" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost/issues" target="_blank" rel="noopener">Community forum</a></li>
+            <li><a href="https://www.vxost.com/blog.html" target="_blank" rel="noopener">Blog</a></li>
           </ul>
         </div>
 
         <div class="large-3 columns footer-about">
-          <h4 class="footer-title">What XAMPP is</h4>
+          <h4 class="footer-title">What VXOST is</h4>
           <p class="muted">A free Apache distribution that installs a complete web server on your computer: Apache, the MariaDB database, PHP and Perl, ready to develop and test locally without touching a production server.</p>
           <p class="footer-version">
-            <span>XAMPP 8.2.4</span> · <strong>v9.26.0</strong> <span>restyling</span>
+            <span>VXOST 8.2.4</span> · <strong>v9.26.0</strong> <span>restyling</span>
           </p>
             <a href="/dashboard/WHATSNEW.txt" target="_blank" rel="noopener" style="display:inline-block;margin-top:var(--s-2);font-size:.78rem">Release notes ↗</a>
         </div>
 
         <div class="large-2 columns footer-credits">
           <h4 class="footer-title">Credits</h4>
-          <p class="muted">This version of XAMPP was redeveloped and reworked, both visually and structurally, by the <a href="https://www.chirurgiadigitale.it" target="_blank" rel="noopener">Chirurgia Digitale</a> team in July 2026. In the hope of making a meaningful contribution to this beautiful open source project.</p>
+          <p class="muted">This version of VXOST was redeveloped and reworked, both visually and structurally, by the <a href="https://www.equipedigitale.it" target="_blank" rel="noopener">Equipe Digitale</a> team in July 2026. In the hope of making a meaningful contribution to this beautiful open source project.</p>
         </div>
       </div>
 
       <div class="row footer-bottom">
-        <p class="footer_copyright">© <span data-year>2026</span> Apache Friends — XAMPP is released under the GNU General Public License.</p>
+        <p class="footer_copyright">© <span data-year>2026</span> Equipe Digitale, VXOST is released under the GNU General Public License.</p>
         <a class="footer-top" href="#main">Back to top ↑</a>
       </div>
     </footer>

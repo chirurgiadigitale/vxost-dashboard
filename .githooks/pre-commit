@@ -1,12 +1,12 @@
 #!/bin/bash
 #
-# Blocca il commit se stanno per finire nel repo dati locali o privati.
-# Attivazione:  git config core.hooksPath .githooks
+# Blocks a commit that is about to take local or private data into the repo.
+# To enable:  git config core.hooksPath .githooks
 #
-# Controlla tre cose:
-#   1. nomi delle cartelle presenti in progetti/ (i lavori dei clienti)
-#   2. indirizzi IP privati, direttive Listen, DocumentRoot con percorsi reali
-#   3. file che non devono mai essere versionati (dump, chiavi, credenziali)
+# It checks three things:
+#   1. names of the folders inside the projects directory (customer work)
+#   2. private IP addresses, Listen directives, DocumentRoot with real paths
+#   3. files that must never be versioned (dumps, keys, credentials)
 
 set -u
 
@@ -21,26 +21,34 @@ fi
 red()  { printf '\033[31m%s\033[0m\n' "$1"; }
 warn() { printf '\033[33m%s\033[0m\n' "$1"; }
 
+# The folder that holds customer work. Both names are accepted while it is
+# being renamed from progetti to projects.
+PROJECTS_DIR=""
+for candidate in projects progetti; do
+    [ -d "$ROOT/$candidate" ] && { PROJECTS_DIR="$candidate"; break; }
+done
+
 # ---------------------------------------------------------------------------
-# 1. Nomi dei progetti locali
+# 1. Names of the local projects
 # ---------------------------------------------------------------------------
-if [ -d "$ROOT/progetti" ]; then
-    for dir in "$ROOT"/progetti/*/; do
+if [ -n "$PROJECTS_DIR" ]; then
+    for dir in "$ROOT/$PROJECTS_DIR"/*/; do
         [ -d "$dir" ] || continue
         name=$(basename "$dir")
-        # ignora nomi troppo corti o generici: darebbero falsi positivi
+        # skip names that are too short or too generic: they would raise
+        # false positives
         case "$name" in
             ?|??|???|????|public|src|app|web|test|v4|Theme) continue ;;
         esac
-        # Gli URL verso domini pubblici non sono percorsi locali: un nome di
-        # progetto che coincide con un dominio (es. i credits di un'agenzia)
-        # non deve bloccare il commit. Conta il nome come percorso o stringa.
+        # URLs pointing at public domains are not local paths: a project name
+        # that happens to match a domain (an agency credit, for instance) must
+        # not block the commit. The name counts as a path or a bare string.
         hits=$(git diff --cached -U0 \
             | grep '^+' | grep -v '^+++' \
             | sed -E 's#https?://[^"'"'"' )]+##g' \
             | grep -i -- "$name" || true)
         if [ -n "$hits" ]; then
-            red "✗ Il nome del progetto '$name' compare nelle modifiche in stage:"
+            red "✗ The project name '$name' appears in the staged changes:"
             printf '%s\n' "$hits" | head -2 | cut -c1-100 | sed 's/^/    /'
             FAIL=1
         fi
@@ -48,7 +56,7 @@ if [ -d "$ROOT/progetti" ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# 2. Dati di configurazione locale
+# 2. Local configuration data
 # ---------------------------------------------------------------------------
 DIFF=$(git diff --cached -U0 | grep '^+' | grep -v '^+++' || true)
 
@@ -57,42 +65,43 @@ check_pattern() {
     local found
     found=$(printf '%s\n' "$DIFF" | grep -E -- "$pattern" || true)
     if [ -n "$found" ]; then
-        red "✗ $label rilevato:"
+        red "✗ $label found:"
         printf '%s\n' "$found" | head -3 | sed 's/^/    /'
         FAIL=1
     fi
 }
 
-check_pattern '\b192\.168\.[0-9]+\.[0-9]+' 'Indirizzo IP di rete locale'
-check_pattern '\b10\.[0-9]+\.[0-9]+\.[0-9]+' 'Indirizzo IP privato'
-check_pattern '\b172\.(1[6-9]|2[0-9]|3[01])\.[0-9]+\.[0-9]+' 'Indirizzo IP privato'
-check_pattern 'blowfish_secret[[:space:]]*=[[:space:]]*.[^\x27"]' 'Segreto di phpMyAdmin'
-check_pattern '(password|passwd|secret|api[_-]?key)[[:space:]]*=[[:space:]]*.[A-Za-z0-9]{6}' 'Possibile credenziale'
+check_pattern '\b192\.168\.[0-9]+\.[0-9]+' 'Local network IP address'
+check_pattern '\b10\.[0-9]+\.[0-9]+\.[0-9]+' 'Private IP address'
+check_pattern '\b172\.(1[6-9]|2[0-9]|3[01])\.[0-9]+\.[0-9]+' 'Private IP address'
+check_pattern 'blowfish_secret[[:space:]]*=[[:space:]]*.[^\x27"]' 'phpMyAdmin secret'
+check_pattern '(password|passwd|secret|api[_-]?key)[[:space:]]*=[[:space:]]*.[A-Za-z0-9]{6}' 'Possible credential'
 
-# DocumentRoot che punta a una cartella reale dentro progetti/
-check_pattern 'DocumentRoot[[:space:]]+"?[^"]*htdocs/progetti/[a-z0-9]' 'DocumentRoot di un progetto reale'
+# A DocumentRoot pointing at a real folder inside the projects directory
+check_pattern 'DocumentRoot[[:space:]]+"?[^"]*htdocs/(projects|progetti)/[a-z0-9]' 'DocumentRoot of a real project'
 
 # ---------------------------------------------------------------------------
-# 3. File che non vanno mai versionati
+# 3. Files that must never be versioned
 # ---------------------------------------------------------------------------
 for file in $STAGED; do
     case "$file" in
-        progetti/*)
-            # Fanno parte della distribuzione, non sono lavoro di un cliente
+        projects/*|progetti/*)
+            # These ship with the distribution, they are not customer work
             case "$file" in
+                projects/index.php|projects/README.txt|projects/.htaccess) ;;
                 progetti/index.php|progetti/README.txt|progetti/.htaccess) ;;
                 *)
-                    red "✗ File dalla cartella progetti in stage: $file"
+                    red "✗ File from the projects folder is staged: $file"
                     FAIL=1
                     ;;
             esac
             ;;
         *.sql|*.sqlite|*.sqlite3|*.db|*.dump|*credentials*|*.pem|*.key|.env|.env.*)
-            red "✗ File sensibile in stage: $file"
+            red "✗ Sensitive file staged: $file"
             FAIL=1
             ;;
         */.DS_Store|.DS_Store)
-            red "✗ .DS_Store in stage: $file"
+            red "✗ .DS_Store staged: $file"
             FAIL=1
             ;;
     esac
@@ -100,8 +109,8 @@ done
 
 if [ "$FAIL" -ne 0 ]; then
     echo
-    warn "Commit interrotto: rimuovi i dati locali dallo stage prima di procedere."
-    warn "Per forzare consapevolmente:  git commit --no-verify"
+    warn "Commit stopped: remove the local data from the stage before going on."
+    warn "To override deliberately:  git commit --no-verify"
     exit 1
 fi
 

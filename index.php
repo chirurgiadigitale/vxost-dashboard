@@ -8,4 +8,4 @@
 	header('Location: '.$uri.'/progetti/');
 	exit;
 ?>
-Something is wrong with the XAMPP installation :-(
+Something is wrong with the VXOST installation :-(
