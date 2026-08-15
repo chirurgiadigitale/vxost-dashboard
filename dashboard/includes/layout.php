@@ -215,7 +215,7 @@ function vxost_header(string $title, string $active = '', bool $full = false): v
           <li class="name">
             <h1><a class="has-mark" href="<?php echo h($base); ?>index.html">
               <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
-              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">virtualhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">

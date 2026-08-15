@@ -79,7 +79,7 @@ vxost_header('VXOST, ' . db_t('title'), 'database', $status['online'] && $status
       <div class="embed-bar">
         <div class="embed-bar__inner">
           <span class="badge badge--ok"><span class="dot dot--pulse"></span> phpMyAdmin</span>
-          <span class="muted mono" dir="ltr">localhost:3306</span>
+          <span class="muted mono" dir="ltr">127.0.0.1:3306</span>
           <div class="embed-bar__actions">
             <button type="button" class="btn btn--ghost btn--sm" id="pma-reload">
               <?php echo vxost_icon('refresh', 16); ?><?php echo h(db_t('reload')); ?>

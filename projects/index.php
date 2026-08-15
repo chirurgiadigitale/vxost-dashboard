@@ -277,7 +277,7 @@ vxost_header('VXOST, ' . pr_t('title'), 'projects');
             <div class="bento project-view" id="project-grid" data-view="grid">
               <?php foreach ($projects as $p): ?>
               <a class="card project-card"
-                 href="<?php echo $p['port'] ? 'http://localhost:' . (int) $p['port'] . '/' : '/projects/' . $p['slug'] . '/'; ?>"
+                 href="<?php echo $p['port'] ? 'http://virtualhost:' . (int) $p['port'] . '/' : '/projects/' . $p['slug'] . '/'; ?>"
                  data-name="<?php echo h(mb_strtolower($p['name'])); ?>"
                  data-stack="<?php echo h($p['stack']); ?>"
                  <?php echo $p['port'] ? 'target="_blank" rel="noopener"' : ''; ?>>

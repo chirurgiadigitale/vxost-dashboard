@@ -35,7 +35,7 @@
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/index.html">
               <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
-              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">virtualhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -97,7 +97,7 @@ Virtual hosts created in this manner will not be accessible from other systems, 
 </table>
 </div>
 <div class="paragraph">
-<p>This guide walks you through the process of setting up wildcard virtual hosts with VXOST, such that requests for <em>subdomain.localhost</em> are automatically served by the <em>subdomain/</em> directory of the main server document root. Follow the steps below:</p>
+<p>This guide walks you through the process of setting up wildcard virtual hosts with VXOST, such that requests for <em>subdomain.virtualhost</em> are automatically served by the <em>subdomain/</em> directory of the main server document root. Follow the steps below:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -130,10 +130,10 @@ Virtual hosts created in this manner will not be accessible from other systems, 
 <pre>UseCanonicalName Off
 &lt;VirtualHost *:80&gt;
        DocumentRoot "/Applications/VXOST/vxostfiles/htdocs/"
-       ServerName localhost
+       ServerName virtualhost
 &lt;/VirtualHost&gt;
 &lt;VirtualHost *:80&gt;
-       ServerAlias *.localhost
+       ServerAlias *.virtualhost
        VirtualDocumentRoot "/Applications/VXOST/vxostfiles/htdocs/%1/"
 &lt;/VirtualHost&gt;</pre>
 </div>
@@ -147,7 +147,7 @@ Virtual hosts created in this manner will not be accessible from other systems, 
 </div>
 </div>
 <div class="paragraph">
-<p>In this configuration, the first virtual host block configures how requests are handled by default. The second block configures wildcard virtual hosting for subdomains, such that requests for <em>subdomain.localhost</em> are automatically served by the <em>subdomain/</em> directory of the <em>/Applications/VXOST/htdocs/</em> directory. In particular, notice the %1 placeholder, which matches the subdomain name from the request URL.</p>
+<p>In this configuration, the first virtual host block configures how requests are handled by default. The second block configures wildcard virtual hosting for subdomains, such that requests for <em>subdomain.virtualhost</em> are automatically served by the <em>subdomain/</em> directory of the <em>/Applications/VXOST/htdocs/</em> directory. In particular, notice the %1 placeholder, which matches the subdomain name from the request URL.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -170,7 +170,7 @@ Virtual hosts created in this manner will not be accessible from other systems, 
 &lt;html&gt;
  &lt;head&gt;&lt;/head&gt;
  &lt;body&gt;
-  &lt;h1&gt;Welcome to app01.localhost!&lt;/h1&gt;
+  &lt;h1&gt;Welcome to app01.virtualhost!&lt;/h1&gt;
  &lt;/body&gt;
 &lt;/html&gt;</pre>
 </div>
@@ -181,7 +181,7 @@ Virtual hosts created in this manner will not be accessible from other systems, 
 &lt;html&gt;
  &lt;head&gt;&lt;/head&gt;
  &lt;body&gt;
-  &lt;h1&gt;Hello from app02.localhost!&lt;/h1&gt;
+  &lt;h1&gt;Hello from app02.virtualhost!&lt;/h1&gt;
  &lt;/body&gt;
 &lt;/html&gt;</pre>
 </div>
@@ -191,7 +191,7 @@ Virtual hosts created in this manner will not be accessible from other systems, 
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>127.0.0.1           app01.localhost   app02.localhost</pre>
+<pre>127.0.0.1           app01.virtualhost   app02.virtualhost</pre>
 </div>
 </div>
 <div class="imageblock">
@@ -206,13 +206,13 @@ Virtual hosts created in this manner will not be accessible from other systems, 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Instead of performing this step for each new subdomain, use a local DNS server like dnsmasq to automatically resolve requests for <em>*.localhost</em> to the local IP address. <a href="http://www.thekelleys.org.uk/dnsmasq/doc.html">Find out more about dnsmasq</a>, and <a href="http://stackoverflow.com/questions/22313142/wildcard-subdomains-with-dnsmasq">read this Stack Overflow thread for information on how to configure wildcard subdomains with dnsmasq</a>.
+Instead of performing this step for each new subdomain, use a local DNS server like dnsmasq to automatically resolve requests for <em>*.virtualhost</em> to the local IP address. <a href="http://www.thekelleys.org.uk/dnsmasq/doc.html">Find out more about dnsmasq</a>, and <a href="http://stackoverflow.com/questions/22313142/wildcard-subdomains-with-dnsmasq">read this Stack Overflow thread for information on how to configure wildcard subdomains with dnsmasq</a>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>At this point, you should be able to enter the URLs <a href="http://app01.localhost" class="bare">http://app01.localhost</a> or <a href="http://app02.localhost" class="bare">http://app02.localhost</a> in your browser&#8217;s address bar, and you should then see the corresponding HTML page.</p>
+<p>At this point, you should be able to enter the URLs <a href="http://app01.virtualhost" class="bare">http://app01.virtualhost</a> or <a href="http://app02.virtualhost" class="bare">http://app02.virtualhost</a> in your browser&#8217;s address bar, and you should then see the corresponding HTML page.</p>
 </div>
 <div class="imageblock">
 <div class="content">

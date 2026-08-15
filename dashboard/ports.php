@@ -5,7 +5,7 @@
  * Lists the TCP ports listening on the machine, the process holding each one
  * and, where it can be worked out, the project it belongs to, taken from the
  * process working directory. Useful for finding the dev servers left running
- * on localhost:3000,
+ * on virtualhost:3000,
  * :8000, :5173 e simili.
  *
  * Read only: nothing here changes the state of the system.
@@ -36,7 +36,7 @@ function p_t(string $key): string
             'step1' => 'Add the port to httpd.conf',
             'step2' => 'Add the VirtualHost in extra/httpd-vhosts.conf',
             'step3' => 'Restart Apache and open the address',
-            'aliases' => 'localhost and 127.0.0.1 are the same machine: localhost is the name, 127.0.0.1 the loopback address it resolves to. Both reach the ports below. Use the LAN address to open the site from another device on the same network.',
+            'aliases' => 'virtualhost and 127.0.0.1 are the same machine: virtualhost is the name, 127.0.0.1 the loopback address it resolves to. Both reach the ports below. Use the LAN address to open the site from another device on the same network.',
             'modified' => 'Modified', 'never' => 'unknown', 'conf' => 'Configuration files',
             'disabled' => 'not active', 'nodedicated' => 'Projects without a dedicated port',
             'nodedicated_p' => 'These are served by Apache on port 80, as a subfolder of the web root. They do not need a VirtualHost: the address is enough.',
@@ -58,7 +58,7 @@ function p_t(string $key): string
             'step1' => 'Aggiungi la porta in httpd.conf',
             'step2' => 'Aggiungi il VirtualHost in extra/httpd-vhosts.conf',
             'step3' => 'Riavvia Apache e apri l\'indirizzo',
-            'aliases' => 'localhost e 127.0.0.1 sono la stessa macchina: localhost è il nome, 127.0.0.1 l\'indirizzo di loopback a cui viene risolto. Entrambi raggiungono le porte qui sotto. Usa invece l\'indirizzo di rete locale per aprire il sito da un altro dispositivo collegato alla stessa rete.',
+            'aliases' => 'virtualhost e 127.0.0.1 sono la stessa macchina: virtualhost è il nome, 127.0.0.1 l\'indirizzo di loopback a cui viene risolto. Entrambi raggiungono le porte qui sotto. Usa invece l\'indirizzo di rete locale per aprire il sito da un altro dispositivo collegato alla stessa rete.',
             'modified' => 'Modificato', 'never' => 'sconosciuto', 'conf' => 'File di configurazione',
             'disabled' => 'non attivo', 'nodedicated' => 'Progetti senza porta dedicata',
             'nodedicated_p' => 'Sono serviti da Apache sulla porta 80, come sottocartella della radice web: non hanno bisogno di un VirtualHost, basta l\'indirizzo.',
@@ -401,7 +401,7 @@ function http_ports(array $ports): array
         return $result;
     }
 
-    $request = "HEAD / HTTP/1.0\r\nHost: localhost\r\nConnection: close\r\n\r\n";
+    $request = "HEAD / HTTP/1.0\r\nHost: virtualhost\r\nConnection: close\r\n\r\n";
     $pending = $sockets;   // in attesa di connessione + invio
     $waiting = [];         // richiesta inviata, in attesa di risposta
     $deadline = microtime(true) + 1.8;   // un progetto pesante puo' rispondere in ~1s
@@ -513,7 +513,7 @@ function vhosts(): array
             $docroot = trim($root[1] ?? '');
             $out[$port] = [
                 'port'     => $port,
-                'name'     => $name[1] ?? 'localhost',
+                'name'     => $name[1] ?? 'virtualhost',
                 'root'     => $docroot,
                 'project'  => guess_project($docroot, ''),
                 'modified' => is_dir($docroot) ? (int) @filemtime($docroot) : 0,
@@ -538,7 +538,7 @@ function vhosts(): array
             $docroot = trim($root[1] ?? '');
             $out[$port] = [
                 'port'     => $port,
-                'name'     => $name[1] ?? 'localhost',
+                'name'     => $name[1] ?? 'virtualhost',
                 'root'     => $docroot,
                 'project'  => guess_project($docroot, ''),
                 'modified' => is_dir($docroot) ? (int) @filemtime($docroot) : 0,
@@ -662,7 +662,7 @@ vxost_header('VXOST, ' . p_t('title'), 'ports');
             <?php else: ?>
             <div class="bento bento--2">
               <?php foreach ($web as $p): ?>
-              <a class="card port-card" href="http://localhost:<?php echo (int) $p['port']; ?>/" target="_blank" rel="noopener">
+              <a class="card port-card" href="http://virtualhost:<?php echo (int) $p['port']; ?>/" target="_blank" rel="noopener">
                 <span class="port-number mono"><?php echo (int) $p['port']; ?></span>
                 <div class="port-body">
                   <h3><?php echo h($p['project'] !== '' ? $p['project'] : ($p['service'] !== '' ? $p['service'] : $p['command'])); ?></h3>
@@ -767,7 +767,7 @@ vxost_header('VXOST, ' . p_t('title'), 'ports');
             <div class="section-head">
               <div>
                 <p class="eyebrow"><?php echo h(p_t('nodedicated')); ?></p>
-                <h2><span class="mono" dir="ltr">localhost/projects/…</span></h2>
+                <h2><span class="mono" dir="ltr">virtualhost/projects/…</span></h2>
               </div>
               <p class="muted"><?php echo count($pathProjects); ?></p>
             </div>
@@ -813,7 +813,7 @@ vxost_header('VXOST, ' . p_t('title'), 'ports');
                 <p class="mono muted" dir="ltr"><?php echo h(vxost_env()['vhosts']); ?></p>
                 <pre dir="ltr">&lt;VirtualHost *:4010&gt;
     DocumentRoot "<?php echo h(vxost_env()['projects']); ?>/nome-progetto"
-    ServerName localhost
+    ServerName virtualhost
     &lt;Directory "<?php echo h(vxost_env()['projects']); ?>/nome-progetto"&gt;
         Options Indexes FollowSymLinks
         AllowOverride All
@@ -825,7 +825,7 @@ vxost_header('VXOST, ' . p_t('title'), 'ports');
                 <strong><?php echo h(p_t('step3')); ?></strong>
                 <pre dir="ltr"><?php echo h(vxost_env()['restart']); ?>
 
-http://localhost:4010   →   http://127.0.0.1:4010<?php
+http://virtualhost:4010   →   http://127.0.0.1:4010<?php
                 foreach (array_keys($ips['lan']) as $lanIp) {
                     echo "\n" . str_pad('', 24) . '→   http://' . h($lanIp) . ':4010';
                     break;

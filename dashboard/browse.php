@@ -122,7 +122,7 @@ if ($target === null) {
 $entries = br_entries($target['path']);
 $uri     = $target['uri'];
 $crumbs  = array_values(array_filter(explode('/', trim($uri, '/'))));
-$here    = $crumbs ? end($crumbs) : 'localhost';
+$here    = $crumbs ? end($crumbs) : 'virtualhost';
 
 vxost_header(h($here) . ', VXOST', 'projects');
 ?>

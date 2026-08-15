@@ -35,7 +35,7 @@
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/tr/index.html">
               <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
-              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">virtualhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -108,7 +108,7 @@
       <dt>Herşeyin çalıştığını nasıl test edebilirim?</dt>
       <dd>
       <p>Web tarayıcınıza şu URL'yi girin:</p>
-      <p><code>http://localhost</code></p>
+      <p><code>http://virtualhost</code></p>
 
       <p>You should see the VXOST start page, as shown below.</p>
         <img src="/dashboard/images/screenshots/vxost-macosx-start.jpg" />    
@@ -177,7 +177,7 @@ VXOST: Password (again): ******</br>
 VXOST: Reload ProFTPD...</br>
 VXOST: Done.</br>
   </code></p>
-        <p>(1) Bir şifre belirlemek, bu şifreyi kullanan  VXOST demo sayfalarını (http://localhost/vxost/) koruyacaktır. Kullanıcı adı 'lampp' !</p>
+        <p>(1) Bir şifre belirlemek, bu şifreyi kullanan  VXOST demo sayfalarını (http://virtualhost/vxost/) koruyacaktır. Kullanıcı adı 'lampp' !</p>
         <p>Bu komutu çağırdıktan sonra VXOST yüklemeniz daha güvenli olacaktır.</p>
       </dd>
 
@@ -198,8 +198,8 @@ LAMPP: Starting Apache with SSL...</code></p>
 
       <dt>phpMyAdmin'e dışarıdan erişimi nasıl açarım?</dt>
       <dd>
-        <p>In the basic configuration of VXOST, phpMyAdmin is accessible only from the same host that VXOST is running on, at http://127.0.0.1 or http://localhost.</p>
-        <p>IMPORTANT: Enabling external access for phpMyAdmin in production environments is a significant security risk. You are strongly advised to only allow access from localhost. A remote attacker could take advantage of any existing vulnerability for executing code or for modifying your data.</p>
+        <p>In the basic configuration of VXOST, phpMyAdmin is accessible only from the same host that VXOST is running on, at http://127.0.0.1 or http://virtualhost.</p>
+        <p>IMPORTANT: Enabling external access for phpMyAdmin in production environments is a significant security risk. You are strongly advised to only allow access from this machine. A remote attacker could take advantage of any existing vulnerability for executing code or for modifying your data.</p>
         <p>To enable remote access to phpMyAdmin, follow these steps:</p>
         <ul>
           <li>Edit the vxostfiles/etc/extra/httpd-vxost.conf file in your VXOST installation directory.</li>

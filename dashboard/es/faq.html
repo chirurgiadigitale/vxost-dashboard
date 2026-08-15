@@ -35,7 +35,7 @@
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/es/index.html">
               <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
-              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">virtualhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -108,7 +108,7 @@
       <dt>¿Cómo compruebo que todo ha ido bien?</dt>
       <dd>
       <p>Escribe la siguiente URL en tu navegador:</p>
-      <p><code>http://localhost</code></p>
+      <p><code>http://virtualhost</code></p>
 
       <p>You should see the VXOST start page, as shown below.</p>
         <img src="/dashboard/images/screenshots/vxost-macosx-start.jpg" />    
@@ -177,7 +177,7 @@ VXOST: Password (again): ******</br>
 VXOST: Reload ProFTPD...</br>
 VXOST: Done.</br>
   </code></p>
-        <p>(1) Establecer una contraseña protegerá las páginas de ejemplo de VXOST (http://localhost/vxost/) usando esta contraseña. ¡El nombre de usuario es 'lampp'!</p>
+        <p>(1) Establecer una contraseña protegerá las páginas de ejemplo de VXOST (http://virtualhost/vxost/) usando esta contraseña. ¡El nombre de usuario es 'lampp'!</p>
         <p>Tras ejecutar este comando tu instalación de VXOST debería ser más segura.</p>
       </dd>
 
@@ -198,7 +198,7 @@ LAMPP: Starting Apache with SSL...</code></p>
 
       <dt>¿Cómo habilitar el accesso a phpMyAdmin desde fuera?</dt>
       <dd>
-        <p>En la configuración básica de VXOST, phpMyAdmin es accessible sólo desde la máquina donde está instalada en http://127.0.0.1 o http://localhost.</p>
+        <p>En la configuración básica de VXOST, phpMyAdmin es accessible sólo desde la máquina donde está instalada en http://127.0.0.1 o http://virtualhost.</p>
         <p>IMPORTANTE: Habilitar el accesso de phpMyAdmin para usuarios externos no está recomendado para entornos de producción. Un atacante podría usar cualquier vulnerabilidad de la aplicación para ejecutar código o modificar datos.</p>
         <p>Para habilitar el acceso remote a phpMyAdmin, sigue estos pasos:</p>
         <ul>

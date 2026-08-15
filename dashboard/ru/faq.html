@@ -35,7 +35,7 @@
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/ru/index.html">
               <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
-              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">virtualhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -107,7 +107,7 @@
       <dt>Как мне проверить, что всё сработало?</dt>
       <dd>
       <p>Введите следующую URL в веб браузер:</p>
-      <p><code>http://localhost</code></p>
+      <p><code>http://virtualhost</code></p>
 
       <p>You should see the VXOST start page, as shown below.</p>
         <img src="/dashboard/images/screenshots/vxost-macosx-start.jpg" />    
@@ -176,7 +176,7 @@ VXOST: Password (again): ******</br>
 VXOST: Reload ProFTPD...</br>
 VXOST: Done.</br>
   </code></p>
-        <p>(1) Установка пароля защитит демонстративные страницы VXOST (http://localhost/vxost/) использующие этот пароль. Имя пользователя 'lampp'!</p>
+        <p>(1) Установка пароля защитит демонстративные страницы VXOST (http://virtualhost/vxost/) использующие этот пароль. Имя пользователя 'lampp'!</p>
         <p>После вызова этой команды ваша установка VXOST должна быть более безопасной.</p>
       </dd>
 
@@ -197,8 +197,8 @@ LAMPP: Starting Apache with SSL...</code></p>
 
       <dt>Как мне включить доступ к phpMyAdmin извне?</dt>
       <dd>
-        <p>В базовой конфигурации VXOST phpMyAdmin доступен только с того же хоста, на котором запущен VXOST, по адресу <a href="http://127.0.0.1">http://127.0.0.1</a> или <a href="http://localhost">http://localhost</a>.</p>
-        <p>ВАЖНО: Включение внешнего доступа для phpMyAdmin в производственных средах представляет собой значительный риск для безопасности. Вам настоятельно рекомендуется разрешать доступ только с localhost. Удаленный злоумышленник может воспользоваться любой существующей уязвимостью для выполнения кода или изменения ваших данных.</p>
+        <p>В базовой конфигурации VXOST phpMyAdmin доступен только с того же хоста, на котором запущен VXOST, по адресу <a href="http://127.0.0.1">http://127.0.0.1</a> или <a href="http://virtualhost">http://virtualhost</a>.</p>
+        <p>ВАЖНО: Включение внешнего доступа для phpMyAdmin в производственных средах представляет собой значительный риск для безопасности. Вам настоятельно рекомендуется разрешать доступ только с этой машины. Удаленный злоумышленник может воспользоваться любой существующей уязвимостью для выполнения кода или изменения ваших данных.</p>
         <p>Чтобы включить удалённый доступ к phpMyAdmin, следуйте шагам ниже:</p>
         <ul>
           <li>Edit the vxostfiles/etc/extra/httpd-vxost.conf file in your VXOST installation directory.</li>

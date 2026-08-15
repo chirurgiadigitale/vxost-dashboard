@@ -35,7 +35,7 @@
           <li class="name">
             <h1><a class="has-mark" href="/dashboard/index.html">
               <img class="brand-mark" src="/dashboard/images/vxost-logo.svg" width="30" height="30" alt="VXOST" />
-              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">localhost</span></span>
+              <span class="brand-text">VXOST <span class="muted mono" style="font-weight:400;font-size:.78rem">virtualhost</span></span>
             </a></h1>
           </li>
           <li class="toggle-topbar menu-icon">
@@ -192,7 +192,7 @@ unset($db);</pre>
 <p>The first line of code creates a new SQLite3 object, using the <em>mydb.sq3</em> database file you created earlier. Then, the object&#8217;s <em>query()</em> method is used to execute a SELECT query on the database, and the result object&#8217;s <em>fetchArray()</em> method is used to iterate over the result set. Adding the SQLITE3_ASSOC parameter to the <em>fetchArray()</em> method tells PHP to return the results as an associative array, making it easy to access individual fields of the result set and display them on a Web page.</p>
 </div>
 <div class="paragraph">
-<p>Once done, save your changes and ensure that your Apache server is running. Then, browse to <a href="http://localhost/sqlite.php" class="bare">http://localhost/sqlite.php</a> to execute the script. You should see something like this:</p>
+<p>Once done, save your changes and ensure that your Apache server is running. Then, browse to <a href="http://virtualhost/sqlite.php" class="bare">http://virtualhost/sqlite.php</a> to execute the script. You should see something like this:</p>
 </div>
 <div class="imageblock">
 <div class="content">

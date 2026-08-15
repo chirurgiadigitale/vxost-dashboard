@@ -62,7 +62,7 @@ CONTENT
  3. NEW PAGES
 -------------------------------------------------------------------------------
 
-PROJECTS                          http://localhost/projects/
+PROJECTS                          http://virtualhost/projects/
   Lists the folders under htdocs/projects and detects the technology behind
   each one (WordPress, Laravel, Node, Next/Nuxt, Composer, PHP, HTML), looking
   one level deeper as well, since many folders are containers.
@@ -71,20 +71,20 @@ PROJECTS                          http://localhost/projects/
   exists.
   On a fresh install the folder is empty and the page explains that.
 
-PORTS & IPS                       http://localhost/dashboard/ports.php
+PORTS & IPS                       http://virtualhost/dashboard/ports.php
   Lists the listening TCP ports, the process holding each one and the project
   it belongs to, resolved from the VirtualHost configuration or from the
   process working directory.
-  Shows the addresses of the machine, explains the difference between localhost
+  Shows the addresses of the machine, explains the difference between virtualhost
   and 127.0.0.1, lists the virtual hosts including the disabled ones, shows the
   projects that have no dedicated port, and documents how to open a new one.
 
-DATABASE                          http://localhost/dashboard/database.php
+DATABASE                          http://virtualhost/dashboard/database.php
   phpMyAdmin framed by the dashboard, with the navigation bar and the footer
   always visible. phpMyAdmin stays the original application, so it keeps
   updating normally. See section 12.
 
-PHPINFO                           http://localhost/dashboard/phpinfo.php
+PHPINFO                           http://virtualhost/dashboard/phpinfo.php
   The native phpinfo() output with a runtime summary, the list of loaded
   extensions and 58 collapsible sections, with a table of contents and a
   filter.
@@ -193,7 +193,7 @@ Copy the files into the web root, without touching your own projects:
 
 Fix the permissions (see section 9), then open:
 
-    http://localhost/dashboard/
+    http://virtualhost/dashboard/
 
 Nothing needs building: these are pages served as they are.
 
@@ -222,7 +222,7 @@ copying the files the permissions must be fixed, or the server answers 403.
 
 Check:
 
-    curl -o /dev/null -w "%{http_code}\n" http://localhost/dashboard/
+    curl -o /dev/null -w "%{http_code}\n" http://virtualhost/dashboard/
 
 It must answer 200. A 403 almost always means a parent folder is not readable:
 check with
@@ -312,7 +312,7 @@ If a phpMyAdmin update overwrites the themes folder, just run the script again.
 
 PREVIEW BEFORE INSTALLING
 
-    http://localhost/dashboard/phpmyadmin-theme/preview.html
+    http://virtualhost/dashboard/phpmyadmin-theme/preview.html
 
 The page shows the real phpMyAdmin components (tabs, result table, SQL editor,
 alerts, forms, database tree, console) with the theme stylesheet applied, so
@@ -335,7 +335,7 @@ rewriting phpMyAdmin, a choice made so that its updates keep working.
 The theme folder is not browsable over the web (it answers 403): it holds
 sources, not pages. Use the preview, or read the stylesheet:
 
-    http://localhost/dashboard/phpmyadmin-theme/vxost-v2/css/overrides.css
+    http://virtualhost/dashboard/phpmyadmin-theme/vxost-v2/css/overrides.css
 
 
 -------------------------------------------------------------------------------
