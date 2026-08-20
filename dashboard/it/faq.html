@@ -108,9 +108,8 @@
       <p>Digitare il seguente URL in un browser Web</p>
       <p><code>http://virtualhost</code></p>
 
-      <p>You should see the VXOST start page, as shown below.</p>
-        <img src="/dashboard/images/screenshots/vxost-macosx-start.jpg" />    
-      </dd>
+      <p>Dovresti vedere la dashboard di VXOST: il logo in alto e i collegamenti a phpMyAdmin, alle guide e alle FAQ.</p>
+</dd>
       <dt>Il prodotto VXOST e' pronto?</dt>
       <dd><p>VXOST non è inteso per la produzione ma solo per ambienti di sviluppo. Il modo in cui VXOST è configurato è quello di essere più aperto possibile per permettere allo sviluppatore lui/lei di personalizzarlo. Per ambienti di sviluppo questo è ottimo ma in un ambiente di produzione potrebbe essere pericoloso.</p>
       <p>Ecco una lista delle impostazioni di sicurezza mancanti in VXOST:</p>
@@ -236,7 +235,7 @@ LAMPP: Starting Apache with SSL...</code></p>
           Se i pacchetti sono già presenti nel sistema, il comando restituisce messaggi di questo tipo:
           <code>Ignoring installed package pear/Net_SMTP<br />Ignoring installed package pear/Mail<br />Nothing to install</code>
           </li>
-          <li>Crea nella cartella "htdocs" uno script di esempio come il seguente:
+          <li>Crea nella cartella "www" uno script di esempio come il seguente:
           <code>
           &lt;?php<br />
           require_once "Mail.php";<br /><br />
@@ -271,7 +270,7 @@ LAMPP: Starting Apache with SSL...</code></p>
         <p><code>sudo /Applications/VXOST/vxostfiles/vxost backup secret</code></p>
         <p>Dove "secret" è la password di root di MySQL. Questo comando creerà il seguente output:</p>
         <p><code>Backing up databases...</br>
-Backing up configuration, log and htdocs files...</br>
+Backing up configuration, log and www files...</br>
 Calculating checksums...</br>
 Building final backup file...</br>
 Backup finished.</br>
@@ -283,7 +282,7 @@ Take care of /Applications/VXOST/vxostfiles/backup/vxost-backup-22-01-14.sh</cod
         <p><code>sudo sh vxost-backup-22-01-14.sh</code></p>
         <p>Dovresti vedere qualcosa come questo</p>
         <p><code>Checking integrity of files...</br>
-Restoring configuration, log and htdocs files...</br>
+Restoring configuration, log and www files...</br>
 Checking versions...</br>
 Installed: VXOST 1.4.2</br>
 Backup from: VXOST 1.4.2</br>

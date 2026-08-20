@@ -110,9 +110,8 @@
       <p>ایک ویب براؤزر میں مندرجہ ذیل یو آر ایل میں ٹائپ کریں:</p>
       <p><code>http://virtualhost</code></p>
 
-      <p>You should see the VXOST start page, as shown below.</p>
-        <img src="/dashboard/images/screenshots/vxost-macosx-start.jpg" />    
-      </dd>
+      <p>آپ کو VXOST ڈیش بورڈ نظر آنا چاہیے: اوپر لوگو اور نیچے phpMyAdmin، رہنما اور عمومی سوالات کے روابط۔</p>
+</dd>
       <dt>کیا VXOST کی پیداوار تیار ہے؟</dt>
       <dd><p>VXOST صرف ترقی کے ماحول کے لئے ہی نہیں ترتیب دیا گیا ہے، لیکن . VXOST کو جس طرح وہ  چاہتا / چاہتی ہے ڈویلپر کچھ بھی اجازت دینے کے لئے ہر ممکن حد تک کھلا ہے. ترقی کے ماحول کے لئے یہ بہت اچھا ہے لیکن پیداوار کے ماحول میں یہ مہلک ہو سکتا ہے.</p>
       <p>یہاں VXOST کی لاپتہ سلامتی کی فہرست:</p>
@@ -251,7 +250,7 @@ LAMPP: Starting Apache with SSL...</code></p>
           </code>
           </li>
           <li>
-          Create the following example script in your "htdocs" directory to send an email:
+          Create the following example script in your "www" directory to send an email:
           <code>
           &lt;?php
           require_once "Mail.php";
@@ -302,7 +301,7 @@ LAMPP: Starting Apache with SSL...</code></p>
         <p><code>sudo /Applications/VXOST/vxostfiles/vxost backup secret</code></p>
         <p>آپ "خفیہ" ایس کیو ایل کی جڑ پاس کہاں ہے. یہ کمانڈ مندرجہ ذیل پیداوار پیدا کر دے گا:</p>
         <p><code>Backing up databases...</br>
-Backing up configuration, log and htdocs files...</br>
+Backing up configuration, log and www files...</br>
 Calculating checksums...</br>
 Building final backup file...</br>
 Backup finished.</br>
@@ -314,7 +313,7 @@ Take care of /Applications/VXOST/vxostfiles/backup/vxost-backup-22-01-14.sh</cod
         <p><code>sudo sh vxost-backup-22-01-14.sh</code></p>
         <p>آپ کچھ اس طرح نظر آنا چاہئے:</p>
         <p><code>Checking integrity of files...</br>
-Restoring configuration, log and htdocs files...</br>
+Restoring configuration, log and www files...</br>
 Checking versions...</br>
 Installed: VXOST 1.4.2</br>
 Backup from: VXOST 1.4.2</br>

@@ -110,9 +110,8 @@
       <p>在浏览器中输入以下链接：</p>
       <p><code>http://virtualhost</code></p>
 
-      <p>You should see the VXOST start page, as shown below.</p>
-        <img src="/dashboard/images/screenshots/vxost-macosx-start.jpg" />    
-      </dd>
+      <p>你应该会看到 VXOST 控制面板：顶部是徽标，下面是 phpMyAdmin、指南和常见问题的链接。</p>
+</dd>
       <dt>VXOST准备好了吗？</dt>
       <dd><p>VXOST是一个非常优秀而又实用的开发测试环境，VXOST的配置是开放的，允许开发者任意去修改或配置适合您的开发环境。VXOST并非商业运行环境，用于商业运作将是一个致命的环境！</p>
       <p>如下是VXOST不安全的配置：</p>
@@ -251,7 +250,7 @@ LAMPP: Starting Apache with SSL...</code></p>
           </code>
           </li>
           <li>
-          Create the following example script in your "htdocs" directory to send an email:
+          Create the following example script in your "www" directory to send an email:
           <code>
           &lt;?php
           require_once "Mail.php";
@@ -302,7 +301,7 @@ LAMPP: Starting Apache with SSL...</code></p>
         <p><code>sudo /Applications/VXOST/vxostfiles/vxost backup secret</code></p>
         <p>”secret“代表你的MySQL root密码。这行命令会产生以下输出：</p>
         <p><code>Backing up databases...</br>
-Backing up configuration, log and htdocs files...</br>
+Backing up configuration, log and www files...</br>
 Calculating checksums...</br>
 Building final backup file...</br>
 Backup finished.</br>
@@ -314,7 +313,7 @@ Take care of /Applications/VXOST/vxostfiles/backup/vxost-backup-22-01-14.sh</cod
         <p><code>sudo sh vxost-backup-22-01-14.sh</code></p>
         <p>你会看到一些类似这样的东西：</p>
         <p><code>Checking integrity of files...</br>
-Restoring configuration, log and htdocs files...</br>
+Restoring configuration, log and www files...</br>
 Checking versions...</br>
 Installed: VXOST 1.4.2</br>
 Backup from: VXOST 1.4.2</br>

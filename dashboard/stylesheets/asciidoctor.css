@@ -721,3 +721,23 @@ p { margin-bottom: 1.25rem; }
   .print-only { display: block !important; }
   .hide-for-print { display: none !important; }
   .show-for-print { display: inherit !important; } }
+
+/* Precedente / successivo in fondo a ogni guida.
+   Stessi token e stesse regole del sito (styles/site.css): le due superfici
+   condividono il design system, e una guida che cambia aspetto passando dal
+   sito alla dashboard sembrerebbe di un altro prodotto. */
+.pager { display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-top: var(--s-7); }
+@media (min-width: 700px) { .pager { grid-template-columns: 1fr 1fr; } }
+.pager a {
+  display: block; padding: var(--s-4) var(--s-5);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-md); color: var(--text);
+}
+.pager a:hover { border-color: var(--border-strong); text-decoration: none; }
+.pager span { display: block; font-size: .76rem; color: var(--text-muted);
+              text-transform: uppercase; letter-spacing: .08em; margin-bottom: 2px; }
+.pager .pager__next { text-align: right; }
+/* Una guida sola in riga: la prima non ha precedente, l'ultima non ha
+   successivo, e senza questo il pulsante rimasto occuperebbe meta' larghezza
+   lasciando un buco al posto dell'altro. */
+.pager a:only-child { grid-column: 1 / -1; }

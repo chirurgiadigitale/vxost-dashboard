@@ -113,9 +113,8 @@
       <p>Type in the following URL in a web browser:</p>
       <p><code>http://virtualhost</code></p>
 
-      <p>You should see the VXOST start page, as shown below.</p>
-        <img src="/dashboard/images/screenshots/vxost-macosx-start.jpg" />
-        <p class="muted" style="font-size:.8rem;margin-top:var(--s-3)"><span class="badge badge--lang">EN</span> 此回答僅提供英文版本。</p>
+      <p>你應該會看到 VXOST 控制面板：頂端是標誌，下方是 phpMyAdmin、指南與常見問題的連結。</p>
+<p class="muted" style="font-size:.8rem;margin-top:var(--s-3)"><span class="badge badge--lang">EN</span> 此回答僅提供英文版本。</p>
       </dd>
       <dt>VXOST 可以用於正式環境嗎？</dt>
       <dd><p>VXOST is not meant for production use but only for development environments. VXOST is configured to be open as possible to allow the developer anything he/she wants. For development environments, this is great but in a production environment, it could be fatal.</p>
@@ -260,7 +259,7 @@ LAMPP: Starting Apache with SSL...</code></p>
           </code>
           </li>
           <li>
-          Create the following example script in your "htdocs" directory to send an email:
+          Create the following example script in your "www" directory to send an email:
           <code>
           &lt;?php
           require_once "Mail.php";
@@ -311,7 +310,7 @@ LAMPP: Starting Apache with SSL...</code></p>
         <p><code>sudo /Applications/VXOST/vxostfiles/vxost backup secret</code></p>
         <p>Where "secret" is your MySQL root password. This command will create the following output:</p>
         <p><code>Backing up databases...</br>
-Backing up configuration, log and htdocs files...</br>
+Backing up configuration, log and www files...</br>
 Calculating checksums...</br>
 Building final backup file...</br>
 Backup finished.</br>
@@ -323,7 +322,7 @@ Take care of /Applications/VXOST/vxostfiles/backup/vxost-backup-22-01-14.sh</cod
         <p><code>sudo sh vxost-backup-22-01-14.sh</code></p>
         <p>You should see something like this:</p>
         <p><code>Checking integrity of files...</br>
-Restoring configuration, log and htdocs files...</br>
+Restoring configuration, log and www files...</br>
 Checking versions...</br>
 Installed: VXOST 1.4.2</br>
 Backup from: VXOST 1.4.2</br>

@@ -52,7 +52,7 @@ function vxost_env(): array
         'os'       => $os,
         'root'     => $root,
         'htdocs'   => $root . '/htdocs',
-        'projects' => $root . '/htdocs/projects',
+        'projects' => $root . '/www/projects',
         'httpd'    => $confDir . '/httpd.conf',
         'vhosts'   => $confDir . '/extra/httpd-vhosts.conf',
         'restart'  => $restart,

@@ -140,14 +140,14 @@ function process_info(int $pid): array
 function guess_project(string $cwd, string $command): string
 {
     $haystack = $cwd !== '' ? $cwd : $command;
-    $markers = ['/htdocs/projects/', '/htdocs/', '/Sites/', '/www/', '/Projects/', '/Progetti/', '/dev/'];
+    $markers = ['/www/projects/', '/htdocs/', '/Sites/', '/www/', '/Projects/', '/Progetti/', '/dev/'];
 
     foreach ($markers as $marker) {
         $pos = stripos($haystack, $marker);
         if ($pos !== false) {
             $rest = substr($haystack, $pos + strlen($marker));
             $name = strtok($rest, '/ ');
-            // "htdocs" on its own is the server root, not a project
+            // "www" on its own is the server root, not a project
             if (is_string($name) && $name !== '' && $name[0] !== '.' && $name !== 'htdocs') {
                 return $name;
             }
@@ -331,7 +331,7 @@ function listening_ports(): ?array
 
 /**
  * Projects reachable without a port of their own, served by Apache on port 80
- * as a subfolder of htdocs/projects.
+ * as a subfolder of www/projects.
  *
  * @param array<int, array{project: string}> $vh virtual host gia' letti
  * @return array<int, array{name: string, url: string, modified: int}>
