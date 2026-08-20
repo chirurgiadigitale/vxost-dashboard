@@ -14,13 +14,13 @@ declare(strict_types=1);
  * Percorsi e comandi dell'installazione VXOST, rilevati a runtime.
  *
  * The root is worked out by walking up from this file
- * (htdocs/dashboard/includes),
+ * (www/dashboard/includes),
  * quindi funziona ovunque VXOST sia installato:
  *   macOS   /Applications/VXOST/vxostfiles
  *   Linux   /opt/lampp
  *   Windows C:\vxost
  *
- * @return array{os: string, root: string, htdocs: string, projects: string,
+ * @return array{os: string, root: string, www: string, projects: string,
  *               httpd: string, vhosts: string, restart: string, security: string}
  */
 function vxost_env(): array
@@ -30,7 +30,7 @@ function vxost_env(): array
         return $env;
     }
 
-    $root = dirname(__DIR__, 3);              // .../includes -> dashboard -> htdocs -> radice
+    $root = dirname(__DIR__, 3);              // .../includes -> dashboard -> www -> radice
     $windows = DIRECTORY_SEPARATOR === '\\' || stripos(PHP_OS_FAMILY, 'win') === 0;
     $os = $windows ? 'windows' : (PHP_OS_FAMILY === 'Darwin' ? 'macos' : 'linux');
 
@@ -51,7 +51,10 @@ function vxost_env(): array
     return $env = [
         'os'       => $os,
         'root'     => $root,
-        'htdocs'   => $root . '/htdocs',
+        // La radice web si chiama www dal 14/08: la chiave si chiamava htdocs
+        // e puntava a una cartella che non esiste piu'. Nessuno la legge, per
+        // questo non si era rotto niente, ma il primo che la usa la trova giusta.
+        'www'      => $root . '/www',
         'projects' => $root . '/www/projects',
         'httpd'    => $confDir . '/httpd.conf',
         'vhosts'   => $confDir . '/extra/httpd-vhosts.conf',
@@ -184,7 +187,7 @@ function vxost_header(string $title, string $active = '', bool $full = false): v
         'ports'     => ['/dashboard/ports.php',    t('ports'),    'ports'],
         'phpinfo'   => ['/dashboard/phpinfo.php',  'PHPInfo',     'info'],
         'faq'       => [$base . 'faq.html',        t('faq'),      'faq'],
-        'howto'     => [$base . 'howto.html',      t('howto'),    'guide'],
+        'howto'     => [$base . 'how-to-guides.html',      t('howto'),    'guide'],
     ];
     ?>
 <!doctype html>
@@ -200,10 +203,7 @@ function vxost_header(string $title, string $active = '', bool $full = false): v
     <link href="/dashboard/stylesheets/all.css" rel="stylesheet" type="text/css" />
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#070B16" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <link href="/dashboard/images/favicon.png" rel="icon" type="image/png" />
+<link href="/dashboard/images/favicon.png" rel="icon" type="image/png" />
   </head>
 
   <body class="php-page<?php echo $full ? ' page-full' : ''; ?>">
@@ -257,9 +257,9 @@ function vxost_footer(): void
 
     $credits = $isIt
         ? 'VXOST 9.26.0 è la prima versione pubblica, rilasciata da %s nell\'agosto 2026: app nativa per Apple Silicon, dashboard ricostruita e quindici lingue. Software libero, sotto licenza GNU GPL v2.'
-        : 'VXOST 9.26.0 is the first public release, published by %s in August 2026: a native Apple Silicon app, a rebuilt dashboard and fifteen languages. Free software under the GNU GPL v2.';
+        : 'VXOST 9.26.0 is the public release, published by %s in August 2026: a native Apple Silicon app, a rebuilt dashboard and fifteen languages. Free software under the GNU GPL v2.';
 
-    $cd = '<a href="https://www.equipedigitale.it" target="_blank" rel="noopener">Equipe Digitale</a>';
+    $cd = '<a href="https://www.chirurgiadigitale.it" target="_blank" rel="noopener">Equipe Digitale</a>';
     ?>
     </main>
 
@@ -299,7 +299,7 @@ function vxost_footer(): void
             <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
             <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
             <li><a href="https://github.com/chirurgiadigitale/vxost-dashboard/issues" target="_blank" rel="noopener">Community forum</a></li>
-            <li><a href="/dashboard/WHATSNEW.txt" target="_blank" rel="noopener">Release notes</a></li>
+            <li><a href="https://vxost.com/assets/release-notes-9.26.0.txt" target="_blank" rel="noopener">Release notes</a></li>
           </ul>
         </div>
 
@@ -310,7 +310,7 @@ function vxost_footer(): void
             <span><?php echo $isIt ? 'Stack' : 'Stack'; ?> <?php echo VXOST_VERSION; ?></span> ·
             <strong>VXOST v<?php echo DASHBOARD_VERSION; ?></strong>
           </p>
-          <a href="/dashboard/WHATSNEW.txt" target="_blank" rel="noopener"
+          <a href="https://vxost.com/assets/release-notes-9.26.0.txt" target="_blank" rel="noopener"
              style="display:inline-block;margin-top:var(--s-2);font-size:.78rem"><?php
              echo $isIt ? 'Note di versione' : 'Release notes'; ?> ↗</a>
         </div>

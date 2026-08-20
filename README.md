@@ -1,6 +1,6 @@
-# VXOST Dashboard v2
+# VXOST Dashboard
 
-The first public release of VXOST for macOS: the app, the dashboard, the
+The public release of VXOST for macOS: the app, the dashboard, the
 documentation pages and three new tools, all sharing one dark, developer
 oriented design system built around the official VXOST orange.
 
