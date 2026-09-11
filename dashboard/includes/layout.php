@@ -241,9 +241,20 @@ function vxost_header(string $title, string $active = '', bool $full = false): v
 <?php
 }
 
-/** VXOST and redesign versions, shown in the footer. */
+/**
+ * Stack and product versions, shown in the footer.
+ *
+ * VXOST_VERSION is the stack (lib/VERSION says 8.2.4-0): Apache, MariaDB, PHP
+ * and Perl as built upstream. DASHBOARD_VERSION is the VXOST release, the same
+ * number the app and vxost.com declare. They are two different things and
+ * must not be aligned to each other.
+ *
+ * The static pages carry the same number by hand, in the footer and in the
+ * release notes link: there is no generator in this repository, so a version
+ * bump is a search across dashboard/ for the previous number.
+ */
 const VXOST_VERSION = '8.2.4';
-const DASHBOARD_VERSION = '9.26.0';
+const DASHBOARD_VERSION = '9.26.1';
 
 /** Closes <main> and prints the same footer as the static pages. */
 function vxost_footer(): void
@@ -256,8 +267,8 @@ function vxost_footer(): void
         : 'A free Apache distribution that installs a complete web server on your computer: Apache, the MariaDB database, PHP and Perl, ready to develop and test locally without touching a production server.';
 
     $credits = $isIt
-        ? 'VXOST 9.26.0 è la prima versione pubblica, rilasciata da %s nell\'agosto 2026: app nativa per Apple Silicon, dashboard ricostruita e quindici lingue. Software libero, sotto licenza GNU GPL v2.'
-        : 'VXOST 9.26.0 is the public release, published by %s in August 2026: a native Apple Silicon app, a rebuilt dashboard and fifteen languages. Free software under the GNU GPL v2.';
+        ? 'VXOST è pubblicato da %s: app nativa per Apple Silicon, dashboard ricostruita e quindici lingue. Software libero, sotto licenza GNU GPL v2.'
+        : 'VXOST is published by %s: a native Apple Silicon app, a rebuilt dashboard and fifteen languages. Free software under the GNU GPL v2.';
 
     $cd = '<a href="https://www.chirurgiadigitale.it" target="_blank" rel="noopener">Equipe Digitale</a>';
     ?>
@@ -293,8 +304,8 @@ function vxost_footer(): void
           <h4 class="footer-title"><?php echo h(t('project')); ?></h4>
           <ul class="footer_links footer_links--stack">
             <li><a href="https://www.vxost.com/" target="_blank" rel="noopener">VXOST</a></li>
-            <li><a href="https://github.com/chirurgiadigitale/vxost-dashboard" target="_blank" rel="noopener">GitHub · vxost-build</a></li>
-            <li><a href="https://github.com/chirurgiadigitale" target="_blank" rel="noopener">GitHub · VXOST</a></li>
+            <li><a href="https://github.com/chirurgiadigitale/vxost-dashboard" target="_blank" rel="noopener">GitHub · vxost-dashboard</a></li>
+            <li><a href="https://github.com/chirurgiadigitale" target="_blank" rel="noopener">GitHub · Equipe Digitale</a></li>
             <li><a href="https://github.com/topics/vxost" target="_blank" rel="noopener">GitHub · topic vxost</a></li>
             <li><a href="https://httpd.apache.org/" target="_blank" rel="noopener">Apache HTTP Server</a></li>
             <li><a href="https://www.apache.org/" target="_blank" rel="noopener">Apache Software Foundation</a></li>
@@ -309,7 +320,7 @@ function vxost_footer(): void
             <span><?php echo $isIt ? 'Stack' : 'Stack'; ?> <?php echo VXOST_VERSION; ?></span> ·
             <strong>VXOST v<?php echo DASHBOARD_VERSION; ?></strong>
           </p>
-          <a href="https://vxost.com/assets/release-notes-9.26.0.txt" target="_blank" rel="noopener"
+          <a href="https://vxost.com/assets/release-notes-<?php echo DASHBOARD_VERSION; ?>.txt" target="_blank" rel="noopener"
              style="display:inline-block;margin-top:var(--s-2);font-size:.78rem"><?php
              echo $isIt ? 'Note di versione' : 'Release notes'; ?> ↗</a>
         </div>
