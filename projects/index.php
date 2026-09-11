@@ -2,7 +2,7 @@
 /**
  * VXOST Dashboard v2, index of local projects
  *
- * Lists the folders under htdocs/projects, works out what each one is built
+ * Lists the folders under www/projects, works out what each one is built
  * with (WordPress, Laravel, Node, plain HTML and so on) and links it to the
  * VirtualHost that serves it, where there is one.
  *
@@ -25,10 +25,10 @@ function pr_t(string $key): string
     static $s = [
         'en' => [
             'title' => 'Projects', 'eyebrow' => 'Local workspace',
-            'subtitle' => 'Every site and application served from htdocs/projects',
+            'subtitle' => 'Every site and application served from www/projects',
             'search' => 'Filter projects…', 'open' => 'Open', 'count' => 'projects',
             'empty_t' => 'No project yet',
-            'empty_p' => 'Drop a folder into htdocs/projects and it will show up here automatically. Each subfolder becomes an entry with its detected technology.',
+            'empty_p' => 'Drop a folder into www/projects and it will show up here automatically. Each subfolder becomes an entry with its detected technology.',
             'files' => 'files', 'modified' => 'updated', 'vhost' => 'Dedicated port',
             'nomatch' => 'No project matches this filter.', 'all' => 'All',
             'view_grid' => 'Grid view', 'view_list' => 'List view',
@@ -37,10 +37,10 @@ function pr_t(string $key): string
         ],
         'it' => [
             'title' => 'Progetti', 'eyebrow' => 'Area di lavoro locale',
-            'subtitle' => 'Tutti i siti e le applicazioni serviti da htdocs/projects',
+            'subtitle' => 'Tutti i siti e le applicazioni serviti da www/projects',
             'search' => 'Filtra i progetti…', 'open' => 'Apri', 'count' => 'progetti',
             'empty_t' => 'Nessun progetto',
-            'empty_p' => 'Aggiungi una cartella dentro htdocs/projects e comparirà qui automaticamente, con il rilevamento della tecnologia usata.',
+            'empty_p' => 'Aggiungi una cartella dentro www/projects e comparirà qui automaticamente, con il rilevamento della tecnologia usata.',
             'files' => 'file', 'modified' => 'aggiornato', 'vhost' => 'Porta dedicata',
             'nomatch' => 'Nessun progetto corrisponde al filtro.', 'all' => 'Tutti',
             'view_grid' => 'Vista a griglia', 'view_list' => 'Vista a elenco',
@@ -138,7 +138,7 @@ function vhost_ports(): array
                 continue;
             }
             $path = trim($root[1]);
-            $marker = '/htdocs/projects/';
+            $marker = '/www/projects/';
             $pos = stripos($path, $marker);
             if ($pos !== false) {
                 $name = strtok(substr($path, $pos + strlen($marker)), '/');

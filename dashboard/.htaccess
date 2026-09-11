@@ -1,0 +1,18 @@
+# The diagnostic tools answer this Mac only, whatever the exposure selector in
+# the app says. Opening Apache to the local network is meant to show a project
+# on a phone, not to hand phpinfo() (paths, environment, every ini value), the
+# listening ports with their processes, the file listing of the projects and
+# the phpMyAdmin frame to whoever is on the same wifi. phpMyAdmin itself is
+# already "Require local" in httpd-vxost.conf: this brings the four dashboard
+# tools under the same rule. From this Mac nothing changes.
+#
+# ⚠️ Case-insensitive, (?i): the macOS filesystem is case-insensitive, so
+# PHPINFO.php and Phpinfo.php are the same file, and a rule that only knew the
+# lowercase spelling let them through. And it sits HERE, not in the root
+# .htaccess: a rule on the file name at the root also blocked
+# /projects/<site>/database.php, which is a perfectly ordinary endpoint of a
+# project. browse.php is reached as DirectoryIndex of /projects/: the
+# subrequest passes through this folder and the rule applies to it too.
+<FilesMatch "(?i)^(phpinfo|ports|browse|database)\.php$">
+    Require local
+</FilesMatch>

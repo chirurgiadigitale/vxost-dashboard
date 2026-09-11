@@ -26,16 +26,9 @@ Options -Indexes
     Require all denied
 </FilesMatch>
 
-# The diagnostic tools answer this Mac only, whatever the exposure selector in
-# the app says. Opening Apache to the local network is meant to show a project
-# on a phone, not to hand phpinfo() (paths, environment, every ini value), the
-# listening ports with their processes, the file listing of the projects and
-# the phpMyAdmin frame to whoever is on the same wifi. phpMyAdmin itself is
-# already "Require local" in httpd-vxost.conf: this brings the four dashboard
-# tools under the same rule. From this Mac nothing changes.
-<FilesMatch "^(phpinfo|ports|browse|database)\.php$">
-    Require local
-</FilesMatch>
+# The four diagnostic tools of the dashboard answer this Mac only: the rule
+# lives in dashboard/.htaccess, next to them, so that a project's own
+# database.php is not caught by a name match at the root.
 
 # La cartella con la cronologia di git non deve mai essere servita
 RedirectMatch 404 /\.git

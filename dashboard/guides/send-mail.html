@@ -197,7 +197,7 @@ logfile /Applications/VXOST/vxostfiles/logs/msmtp.log</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Remember to replace the dummy values shown with your actual Gmail address and App Password. The file holds that password, and PHP runs inside Apache as the user <em>daemon</em>: let root and that user read it, and nobody else.</p>
+<p>Remember to replace the dummy values shown with your actual Gmail address and App Password. The file holds that password, and PHP runs inside Apache as the user <em>daemon</em>: let root and that user read it, and nobody else. This works because the file is msmtp's <em>system</em> configuration, which is read as it is; a <em>personal</em> configuration (one named with <em>-C</em>, or <em>~/.msmtprc</em>) is accepted only if it belongs to the calling user with mode 600, and a file owned by root would be refused when Apache calls msmtp as <em>daemon</em>.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -210,11 +210,11 @@ sudo chmod 640 /opt/homebrew/etc/msmtprc</pre>
 <p>Tell PHP to hand <em>mail()</em> to msmtp. Without this line <em>mail()</em> calls the sendmail of macOS, which is not set up to deliver anything: the function returns true and the message sits in a local queue for ever. In the <em>php.ini</em> file in the <em>etc/</em> subdirectory of your VXOST installation directory (usually, <em>/Applications/VXOST/vxostfiles</em>) set:</p>
 <div class="literalblock">
 <div class="content">
-<pre>sendmail_path = "/opt/homebrew/bin/msmtp -C /opt/homebrew/etc/msmtprc -t"</pre>
+<pre>sendmail_path = "/opt/homebrew/bin/msmtp -t"</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>On an Intel Mac both paths start with <em>/usr/local</em> instead. The <em>-C</em> names the configuration file explicitly, so it does not matter which user PHP runs as.</p>
+<p>On an Intel Mac the path starts with <em>/usr/local</em> instead. No <em>-C</em> here: without it msmtp reads its system configuration, the file created above, whoever calls it. With <em>-C</em> that same file would count as a personal configuration and fail the ownership check.</p>
 </div>
 </li>
 <li>

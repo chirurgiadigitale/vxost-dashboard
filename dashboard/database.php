@@ -23,6 +23,8 @@ function db_t(string $key): string
             'blocked_t' => 'phpMyAdmin cannot be embedded',
             'blocked_p' => 'phpMyAdmin is answering with X-Frame-Options: DENY, so it refuses to be shown inside a frame. Add this line to phpmyadmin/config.inc.php and reload the page:',
             'open' => 'Open phpMyAdmin directly',
+            'csp_unknown' => 'phpMyAdmin sends a Content-Security-Policy with a frame-ancestors this page cannot evaluate: it may or may not allow the frame. Open it directly, or read the header with curl -I.',
+            'cert_expired' => 'The certificate in etc/ssl.crt is the right one but it is not valid today (expired, or not yet valid): the browser will refuse the https frame. Regenerate it with bin/vxost-ssl-init.',
             'offline_t' => 'phpMyAdmin is not reachable',
             'offline_p' => 'The server did not answer on /phpmyadmin/. Check that Apache is running and that phpMyAdmin is installed.',
         ],
@@ -33,6 +35,8 @@ function db_t(string $key): string
             'blocked_t' => 'phpMyAdmin non può essere incorporato',
             'blocked_p' => 'phpMyAdmin risponde con X-Frame-Options: DENY e rifiuta di essere mostrato dentro un frame. Aggiungi questa riga a phpmyadmin/config.inc.php e ricarica la pagina:',
             'open' => 'Apri phpMyAdmin direttamente',
+            'csp_unknown' => 'phpMyAdmin manda una Content-Security-Policy con un frame-ancestors che questa pagina non sa valutare: potrebbe consentire il frame o no. Aprilo direttamente, o leggi l\'header con curl -I.',
+            'cert_expired' => 'Il certificato in etc/ssl.crt è quello giusto ma oggi non è valido (scaduto, o non ancora valido): il browser rifiuterà il frame https. Rigeneralo con bin/vxost-ssl-init.',
             'offline_t' => 'phpMyAdmin non è raggiungibile',
             'offline_p' => 'Il server non ha risposto su /phpmyadmin/. Verifica che Apache sia avviato e che phpMyAdmin sia installato.',
         ],
@@ -111,15 +115,111 @@ function pma_status(): array
 
     // A Content-Security-Policy with frame-ancestors overrides X-Frame-Options
     // in every current browser: when it is there, it is the one that counts.
-    $csp = $headers['Content-Security-Policy'] ?? $headers['content-security-policy'] ?? '';
-    if (is_array($csp)) {
-        $csp = end($csp);
-    }
-    if (preg_match('/frame-ancestors\s+([^;]+)/i', (string) $csp, $m)) {
-        $framable = preg_match("/'self'|\\*/", $m[1]) === 1;
+    // Every policy header applies (a browser enforces all of them, and the
+    // frame is allowed only if each one allows it), and the sources are
+    // matched against THIS page's origin, which is where the frame lives.
+    $reason = '';
+    $csp = $headers['Content-Security-Policy'] ?? $headers['content-security-policy'] ?? [];
+    $policies = is_array($csp) ? $csp : [$csp];
+    $pageHost = strtolower((string) preg_replace('/:\d+$/', '', (string) ($_SERVER['HTTP_HOST'] ?? $host)));
+    $verdict = pma_csp_allows_frame($policies, $https ? 'https' : 'http', $pageHost, $port);
+    if ($verdict === false) {
+        $framable = false;
+    } elseif ($verdict === null) {
+        // A policy is there and cannot be read for certain: no invented
+        // diagnosis. The page says why instead of a confident "blocked".
+        $framable = false;
+        $reason = 'csp_unknown';
     }
 
-    return ['online' => true, 'framable' => $framable];
+    // The pin proves identity, not validity: a certificate that is the right
+    // one but expired is refused by the browser, and the frame stays empty.
+    if ($https && !empty($served)) {
+        $parsed = @openssl_x509_parse($served);
+        $now = time();
+        if (is_array($parsed) && (($parsed['validTo_time_t'] ?? 0) < $now
+                                  || ($parsed['validFrom_time_t'] ?? 0) > $now)) {
+            $framable = false;
+            $reason = 'cert_expired';
+        }
+    }
+
+    return ['online' => true, 'framable' => $framable, 'reason' => $reason];
+}
+
+/**
+ * Does every Content-Security-Policy allow this page to frame phpMyAdmin?
+ *
+ * true when no policy restricts it or all of them allow it, false when one
+ * forbids it, null when a policy has a frame-ancestors this code cannot
+ * evaluate. Only the source forms that matter for a local dashboard are
+ * understood: 'none', 'self', *, a scheme, a host with optional scheme, port
+ * and leading wildcard. Anything else in a directive makes that directive
+ * unevaluable rather than silently allowed.
+ *
+ * ⚠️ A wildcard is not a universal yes: https://*.example.org allows
+ * example.org's subdomains, not virtualhost. The first version matched any
+ * asterisk anywhere and said "framable" to that.
+ */
+function pma_csp_allows_frame(array $policies, string $scheme, string $host, int $port): ?bool
+{
+    $defaultPort = $scheme === 'https' ? 443 : 80;
+    $unknown = false;
+    $restricted = false;
+    foreach ($policies as $policy) {
+        foreach (explode(';', (string) $policy) as $directive) {
+            $directive = trim($directive);
+            if (stripos($directive, 'frame-ancestors') !== 0) {
+                continue;
+            }
+            $restricted = true;
+            $tokens = preg_split('/\s+/', trim(substr($directive, strlen('frame-ancestors'))), -1, PREG_SPLIT_NO_EMPTY);
+            $allowed = false;
+            $evaluable = true;
+            foreach ($tokens as $token) {
+                $t = strtolower($token);
+                if ($t === "'none'") {
+                    $allowed = false;
+                    $evaluable = true;
+                    break;
+                }
+                if ($t === "'self'" || $t === '*') {
+                    $allowed = true;
+                    continue;
+                }
+                if (preg_match('/^[a-z][a-z0-9+.-]*:$/', $t)) {          // scheme-source
+                    if (rtrim($t, ':') === $scheme) {
+                        $allowed = true;
+                    }
+                    continue;
+                }
+                if (preg_match('#^(?:([a-z][a-z0-9+.-]*)://)?(\*\.)?([a-z0-9.-]+)(?::(\d+|\*))?$#', $t, $m)) {
+                    $schemeOk = $m[1] === '' || $m[1] === $scheme;
+                    $hostOk = $m[2] === ''
+                        ? $m[3] === $host
+                        : (strlen($host) > strlen($m[3]) + 1 && substr($host, -strlen($m[3]) - 1) === '.' . $m[3]);
+                    $tokenPort = $m[4] ?? '';
+                    $portOk = $tokenPort === '' ? $port === $defaultPort : ($tokenPort === '*' || (int) $tokenPort === $port);
+                    if ($schemeOk && $hostOk && $portOk) {
+                        $allowed = true;
+                    }
+                    continue;
+                }
+                $evaluable = false;                                       // nonces, hashes, anything else
+            }
+            if (!$allowed) {
+                if (!$evaluable) {
+                    $unknown = true;
+                    continue;
+                }
+                return false;                                             // one policy forbids: the browser does too
+            }
+        }
+    }
+    if ($unknown) {
+        return null;
+    }
+    return true;
 }
 
 $status = pma_status();
@@ -176,8 +276,12 @@ vxost_header('VXOST, ' . db_t('title'), 'database', $status['online'] && $status
             <?php else: ?>
             <div class="admonitionblock warning">
               <h3 style="font-size:1.05rem"><?php echo h(db_t('blocked_t')); ?></h3>
+              <?php if (!empty($status['reason'])): ?>
+              <p style="margin-bottom:0"><?php echo h(db_t($status['reason'])); ?></p>
+              <?php else: ?>
               <p><?php echo h(db_t('blocked_p')); ?></p>
               <pre dir="ltr">$cfg['AllowThirdPartyFraming'] = 'sameorigin';</pre>
+              <?php endif; ?>
             </div>
             <?php endif; ?>
 
