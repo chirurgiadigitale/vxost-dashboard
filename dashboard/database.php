@@ -48,12 +48,57 @@ function db_t(string $key): string
  */
 function pma_status(): array
 {
-    $context = stream_context_create([
-        'http' => ['method' => 'HEAD', 'timeout' => 2, 'ignore_errors' => true],
-    ]);
-    $headers = @get_headers('http://127.0.0.1' . ($_SERVER['SERVER_PORT'] != 80 ? ':' . $_SERVER['SERVER_PORT'] : '') . '/phpmyadmin/', true, $context);
+    // ⚠️ The scheme comes from the request. On the SSL virtual host
+    // SERVER_PORT is 443, and "http://127.0.0.1:443/" talks plain HTTP to a
+    // TLS listener: the probe failed and the page said phpMyAdmin was down
+    // while it was answering.
+    //
+    // Over https the probe accepts one certificate only: the one Apache is
+    // configured to serve, etc/ssl.crt/server.crt, pinned by its SHA-256
+    // fingerprint read from the file at request time. Not a CA check: the
+    // stack's certificate is self-signed on a fresh install, or signed by a
+    // local CA (mkcert) PHP has never heard of, and cafile pointing at the
+    // leaf fails on the second case. The fingerprint is checked whatever
+    // verify_peer says, tried both ways: the wrong one is refused.
+    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+          || (int) ($_SERVER['SERVER_PORT'] ?? 80) === 443;
+    $port = (int) ($_SERVER['SERVER_PORT'] ?? ($https ? 443 : 80));
+    $default = $https ? 443 : 80;
+    $host = $https ? 'virtualhost' : '127.0.0.1';
+    $url = ($https ? 'https' : 'http') . '://' . $host
+         . ($port !== $default ? ':' . $port : '') . '/phpmyadmin/';
+
+    $options = ['http' => ['method' => 'HEAD', 'timeout' => 2, 'ignore_errors' => true]];
+    if ($https) {
+        $served = @file_get_contents(dirname(__DIR__, 2) . '/etc/ssl.crt/server.crt');
+        $fingerprint = $served ? @openssl_x509_fingerprint($served, 'sha256') : false;
+        if (!$fingerprint) {
+            // No certificate to pin against: nothing to trust, so no probe.
+            return ['online' => false, 'framable' => false];
+        }
+        $options['ssl'] = [
+            'verify_peer'      => false,
+            'verify_peer_name' => false,
+            'peer_fingerprint' => ['sha256' => $fingerprint],
+        ];
+    }
+    $headers = @get_headers($url, true, stream_context_create($options));
 
     if (!$headers) {
+        return ['online' => false, 'framable' => false];
+    }
+
+    // ⚠️ Any reply used to count as online, a 500 included. The status lines
+    // sit under numeric keys, one per hop when there is a redirect: the last
+    // one is the answer. 2xx and 3xx mean phpMyAdmin answers; 401 is its own
+    // login prompt, so it answers too. Anything else is not "online".
+    $status = 0;
+    foreach ($headers as $key => $value) {
+        if (is_int($key) && preg_match('/\s(\d{3})\s/', (string) $value, $m)) {
+            $status = (int) $m[1];
+        }
+    }
+    if (!(($status >= 200 && $status < 400) || $status === 401)) {
         return ['online' => false, 'framable' => false];
     }
 
@@ -62,11 +107,19 @@ function pma_status(): array
         $xfo = end($xfo);
     }
     $xfo = strtoupper(trim((string) $xfo));
+    $framable = $xfo === '' || $xfo === 'SAMEORIGIN';
 
-    return [
-        'online'   => true,
-        'framable' => $xfo === '' || $xfo === 'SAMEORIGIN',
-    ];
+    // A Content-Security-Policy with frame-ancestors overrides X-Frame-Options
+    // in every current browser: when it is there, it is the one that counts.
+    $csp = $headers['Content-Security-Policy'] ?? $headers['content-security-policy'] ?? '';
+    if (is_array($csp)) {
+        $csp = end($csp);
+    }
+    if (preg_match('/frame-ancestors\s+([^;]+)/i', (string) $csp, $m)) {
+        $framable = preg_match("/'self'|\\*/", $m[1]) === 1;
+    }
+
+    return ['online' => true, 'framable' => $framable];
 }
 
 $status = pma_status();
