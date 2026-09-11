@@ -88,7 +88,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This guide assumes that you have an existing Gmail account, and that you will use Gmail&#8217;s SMTP server to transmit email. You can also use your organization or ISP&#8217;s mail server, although you&#8217;ll need to replace key details, such as the SMTP server name and port, with appropriate values for your environment. Your network administrator or ISP support desk will typically be able to provide this information. The example code provided in this tutorial is illustrative only and should not be used in production environments.
+This guide assumes that you have an existing Gmail account, and that you will use Gmail&#8217;s SMTP server to transmit email. You can also use your organization or ISP&#8217;s mail server, although you&#8217;ll need to replace key details, such as the SMTP server name and port, with appropriate values for your environment. Your network administrator or ISP support desk will typically be able to provide this information. Gmail does not accept your account password from a program any more: turn on 2-step verification, create an <a href="https://support.google.com/accounts/answer/185833">App Password</a>, a 16-character password meant for one application, and use it wherever the examples say <em>your-app-password</em>. The example code provided in this tutorial is illustrative only and should not be used in production environments.
 </td>
 </tr>
 </table>
@@ -132,7 +132,7 @@ $to = 'recipients@email-address.com';
 $host = "ssl://smtp.gmail.com";
 $port = "465";
 $username = 'your-gmail-username@gmail.com';
-$password = 'your-gmail-password';
+$password = 'your-app-password';
 $subject = "test";
 $body = "test";
 $headers = array ('From' =&gt; $from, 'To' =&gt; $to,'Subject' =&gt; $subject);
@@ -152,7 +152,7 @@ if (PEAR::isError($mail)) {
 </div>
 </div>
 <div class="paragraph">
-<p>Remember to replace the dummy values shown with your actual Gmail address, password and recipient email address. For this simple test, use your own email address as the recipient address.</p>
+<p>Remember to replace the dummy values shown with your actual Gmail address, App Password and recipient email address. For this simple test, use your own email address as the recipient address.</p>
 </div>
 </li>
 </ol>
@@ -179,25 +179,42 @@ if (PEAR::isError($mail)) {
 </div>
 </li>
 <li>
-<p>Create a new file at <em>/etc/msmtprc</em> and fill it with the following configuration directives:</p>
+<p>Create the file <em>/opt/homebrew/etc/msmtprc</em> (<em>/usr/local/etc/msmtprc</em> on an Intel Mac): that is where the Homebrew build of msmtp looks for its system-wide configuration, not <em>/etc</em>. Fill it with the following directives:</p>
 <div class="literalblock">
 <div class="content">
 <pre>defaults
 tls on
 tls_starttls on
-tls_trust_file /etc/ssl/certs/ca-certificates.crt
+tls_trust_file /etc/ssl/cert.pem
 account default
 host smtp.gmail.com
 port 587
 auth on
 user your-gmail-username@gmail.com
-password your-gmail-password
+password your-app-password
 from your-gmail-username@gmail.com
-logfile /var/log/msmtp.log</pre>
+logfile /Applications/VXOST/vxostfiles/logs/msmtp.log</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Remember to replace the dummy values shown with your actual Gmail address and account password.</p>
+<p>Remember to replace the dummy values shown with your actual Gmail address and App Password. The file holds that password, and PHP runs inside Apache as the user <em>daemon</em>: let root and that user read it, and nobody else.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo chown root:daemon /opt/homebrew/etc/msmtprc
+sudo chmod 640 /opt/homebrew/etc/msmtprc</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Tell PHP to hand <em>mail()</em> to msmtp. Without this line <em>mail()</em> calls the sendmail of macOS, which is not set up to deliver anything: the function returns true and the message sits in a local queue for ever. In the <em>php.ini</em> file in the <em>etc/</em> subdirectory of your VXOST installation directory (usually, <em>/Applications/VXOST/vxostfiles</em>) set:</p>
+<div class="literalblock">
+<div class="content">
+<pre>sendmail_path = "/opt/homebrew/bin/msmtp -C /opt/homebrew/etc/msmtprc -t"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On an Intel Mac both paths start with <em>/usr/local</em> instead. The <em>-C</em> names the configuration file explicitly, so it does not matter which user PHP runs as.</p>
 </div>
 </li>
 <li>
@@ -251,7 +268,7 @@ if (mail($to, $subject, $message, $headers)) {
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Download PHPMailer from its Github repository using the "Download Zip" button.</p>
+<p>Download PHPMailer 6 from <a href="https://github.com/PHPMailer/PHPMailer">its GitHub repository</a> using the "Download ZIP" button. The class lives under <em>src/</em> and in the <em>PHPMailer\PHPMailer</em> namespace: <em>PHPMailerAutoload.php</em> and the global <em>PHPMailer</em> class belong to the 5.x series, which is no longer maintained.</p>
 </li>
 <li>
 <p>Create a directory for your new application within the <em>www/</em> subdirectory of your VXOST installation directory. In this tutorial, the application directory is named <em>example/</em>.</p>
@@ -267,15 +284,17 @@ if (mail($to, $subject, $message, $headers)) {
 <div class="literalblock">
 <div class="content">
 <pre>&lt;?php
-require 'PHPMailer-master/PHPMailerAutoload.php';
-$mail = new PHPMailer;
+require 'PHPMailer-master/src/Exception.php';
+require 'PHPMailer-master/src/PHPMailer.php';
+require 'PHPMailer-master/src/SMTP.php';
+$mail = new PHPMailer\PHPMailer\PHPMailer();
 $mail-&gt;isSMTP();
-$mail-&gt;SMTPSecure = 'ssl';
+$mail-&gt;SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
 $mail-&gt;SMTPAuth = true;
 $mail-&gt;Host = 'smtp.gmail.com';
 $mail-&gt;Port = 465;
 $mail-&gt;Username = 'your-gmail-username@gmail.com';
-$mail-&gt;Password = 'your-gmail-password';
+$mail-&gt;Password = 'your-app-password';
 $mail-&gt;setFrom('your@email-address.com');
 $mail-&gt;addAddress('recipients@email-address.com');
 $mail-&gt;Subject = 'Hello from PHPMailer!';
@@ -289,7 +308,7 @@ if (!$mail-&gt;send()) {
 </div>
 </div>
 <div class="paragraph">
-<p>Remember to replace the dummy values shown with your actual Gmail address and account password. You should also use a valid sender and recipient address. For this simple test, use your own email address as the recipient address.</p>
+<p>Remember to replace the dummy values shown with your actual Gmail address and App Password. You should also use a valid sender and recipient address. For this simple test, use your own email address as the recipient address.</p>
 </div>
 <div class="paragraph">
 <p>Now, browse to the URL <a href="http://virtualhost/example/phpmailer.php" class="bare">http://virtualhost/example/phpmailer.php</a>. This should execute the script and send the email message. If all goes well, you should see a success notification in your browser. If you used your own email address for the recipient address, you should also receive the email message.</p>

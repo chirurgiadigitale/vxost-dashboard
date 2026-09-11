@@ -69,45 +69,51 @@
 <article class="asciidoctor">
       <h1>Enable Remote Access to phpMyAdmin</h1>
 <div class="paragraph">
-<p>VXOST includes <a href="http://www.phpmyadmin.net/">phpMyAdmin</a>, an open-source, browser-based tool for managing MySQL/MariaDB database servers. By default, for security reasons, phpMyAdmin is configured to only accept connections from the host on which VXOST is installed. Attempting to access phpMyAdmin from any other host will produce the error below:</p>
+<p>VXOST includes <a href="http://www.phpmyadmin.net/">phpMyAdmin</a>, an open-source, browser-based tool for managing MySQL/MariaDB database servers. By default, for security reasons, it answers only on the Mac VXOST is installed on, and that is enforced twice: Apache listens on <em>127.0.0.1</em> only, and the phpMyAdmin folder carries <em>Require local</em>. Opening it from another machine gives a <em>403 Forbidden</em> page, or nothing at all.</p>
 </div>
 <div class="paragraph">
-<p>To enable remote access to phpMyAdmin from other hosts, follow these steps:</p>
+<p>To reach phpMyAdmin from another device on your network, both gates have to open, in this order:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Edit the <em>etc/extra/httpd-vxost.conf</em> file in your VXOST installation directory (usually, <em>/Applications/VXOST</em>).</p>
+<p>Change the MySQL/MariaDB root password first. A fresh installation uses <em>root</em>, and that must not be the password of a database other machines can reach: see <a href="./reset-mysql-password.html">Reset the MySQL/MariaDB Root Password</a>.</p>
 </li>
 <li>
-<p>Within this file, find the block below:</p>
+<p>In the VXOST app, in the network step, choose <em>This Mac and the local network</em>. This rewrites the <em>Listen</em> lines of Apache so that it accepts connections on your network address and not only on <em>127.0.0.1</em>. Without this step no change to the phpMyAdmin configuration can be reached from outside, whatever it says.</p>
+</li>
+<li>
+<p>Edit the <em>etc/extra/httpd-vxost.conf</em> file in your VXOST installation directory (usually, <em>/Applications/VXOST/vxostfiles</em>) and find the block below:</p>
 <div class="literalblock">
 <div class="content">
-<pre>&lt;Directory "/Applications/VXOST/phpmyadmin"&gt;
-  AllowOverride AuthConfig
+<pre>&lt;Directory "/Applications/VXOST/vxostfiles/phpmyadmin"&gt;
+  AllowOverride AuthConfig Limit
   Require local
   ...</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Update this block and replace <em>Require local</em> with <em>Require all granted</em>, so that it looks like this:</p>
+<p>Replace <em>Require local</em> with the private address ranges of a home or office network, so that it looks like this:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>&lt;Directory "/Applications/VXOST/phpmyadmin"&gt;
-  AllowOverride AuthConfig
-  Require all granted
+<pre>&lt;Directory "/Applications/VXOST/vxostfiles/phpmyadmin"&gt;
+  AllowOverride AuthConfig Limit
+  Require ip 127.0.0.1 ::1 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
   ...</pre>
 </div>
 </div>
+<div class="paragraph">
+<p><em>Require all granted</em> would work too, but it lets in anyone who can reach the port, and a laptop that moves between networks is not always among the people you think.</p>
+</div>
 </li>
 <li>
-<p>Save the file and restart the Apache server using the VXOST control panel.</p>
+<p>Save the file and restart the Apache server from the VXOST app.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>You should now be able to access phpMyAdmin from other hosts.</p>
+<p>phpMyAdmin now answers at <em>http://&lt;the address of this Mac&gt;/phpmyadmin/</em> from the other device. MariaDB itself keeps listening on <em>127.0.0.1</em> only: phpMyAdmin runs on this Mac and talks to it locally, so nothing else needs to open.</p>
 </div>
     </article>
     <nav class="pager" aria-label="Page">

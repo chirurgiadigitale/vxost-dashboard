@@ -69,7 +69,7 @@
 <article class="asciidoctor">
       <h1>Activate and Use Xdebug</h1>
 <div class="paragraph">
-<p><a href="http://xdebug.org/">Xdebug</a> is a powerful open source debugger and profiler for PHP. It is included with VXOST and can be used to display stack traces, analyze code coverage and profile your PHP code.</p>
+<p><a href="http://xdebug.org/">Xdebug</a> is a powerful open source debugger and profiler for PHP. It is not bundled with VXOST: it is built with one command against the PHP in the stack, and can then be used to display stack traces, analyze code coverage and profile your PHP code.</p>
 </div>
 <div class="paragraph">
 <p>To activate Xdebug, follow these steps:</p>
@@ -77,10 +77,21 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Edit the <em>php.ini</em> file in the <em>etc/</em> subdirectory of your VXOST installation directory (usually, <em>/Applications/VXOST</em>). Within this file, activate the Xdebug extension by adding the following line to it:</p>
+<p>Build the extension with the <em>pecl</em> that ships in the stack, so that it is compiled against the same PHP Apache loads. It needs the Xcode command line tools (<code>xcode-select --install</code> if you do not have them yet):</p>
 <div class="literalblock">
 <div class="content">
-<pre>extension = xdebug.so</pre>
+<pre>sudo /Applications/VXOST/vxostfiles/bin/pecl install xdebug</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At the end it prints where <em>xdebug.so</em> went: the extensions folder of the stack, <em>lib/php/extensions/no-debug-non-zts-20220829/</em>, the one PHP already looks in.</p>
+</div>
+</li>
+<li>
+<p>Edit the <em>php.ini</em> file in the <em>etc/</em> subdirectory of your VXOST installation directory (usually, <em>/Applications/VXOST/vxostfiles</em>) and load Xdebug with the following line. It is <em>zend_extension</em>, not <em>extension</em>: Xdebug hooks into the engine itself, and loaded as a plain extension it fails.</p>
+<div class="literalblock">
+<div class="content">
+<pre>zend_extension = xdebug.so</pre>
 </div>
 </div>
 </li>
@@ -90,7 +101,7 @@
 </ol>
 </div>
 <div class="paragraph">
-<p>Xdebug should now be active. To verify this, browse to the URL <a href="http://virtualhost/vxost/phpinfo.php" class="bare">http://virtualhost/vxost/phpinfo.php</a>, which displays the output of the <em>phpinfo()</em> command. Look through the script and verify that the Xdebug extension is now active.</p>
+<p>Xdebug should now be active. To verify this, browse to the URL <a href="http://virtualhost/dashboard/phpinfo.php" class="bare">http://virtualhost/dashboard/phpinfo.php</a>, which displays the output of the <em>phpinfo()</em> command. Look through the script and verify that the Xdebug extension is now active.</p>
 </div>
 <div class="paragraph">
 <p>Xdebug overloads the default <em>var_dump()</em> function with its own version that includes (among other things) color coding for different PHP types, so you can see it in action immediately by using the <em>var_dump()</em> function in a PHP script. For example, create a simple PHP script in the <em>www/</em> subdirectory of your VXOST installation directory with the following content:</p>
@@ -124,13 +135,15 @@ Call Stack
 <p>Edit the <em>php.ini</em> file in the <em>etc/</em> subdirectory of your VXOST installation directory. Within this file, add the following section:</p>
 <div class="literalblock">
 <div class="content">
-<pre>[XDebug]
-xdebug.profiler_append = 0
-xdebug.profiler_enable = 1
-xdebug.profiler_enable_trigger = 0
-xdebug.profiler_output_dir = "/tmp"
+<pre>[xdebug]
+xdebug.mode = profile
+xdebug.start_with_request = yes
+xdebug.output_dir = "/tmp"
 xdebug.profiler_output_name = "cachegrind.out.%t-%s"</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This is the Xdebug 3 syntax. The <em>xdebug.profiler_enable</em> family of settings belongs to Xdebug 2 and is ignored, with a warning in the log, by the version pecl installs today.</p>
 </div>
 </li>
 <li>

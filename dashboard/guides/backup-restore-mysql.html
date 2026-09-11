@@ -191,7 +191,7 @@ By default, PHP (and therefore phpMyAdmin) is configured to only accept uploads 
 <p>Use the command below to export the contents of the selected database. In this example, we&#8217;re backing up the WordPress database, which is named <em>my_wordpress</em>, to a file named <em>my_wordpress.sql</em>. This text file is your backup, so store it safely!</p>
 <div class="literalblock">
 <div class="content">
-<pre>/Applications/VXOST/bin/mysqldump --user=root --password="" my_wordpress &gt; my_wordpress.sql</pre>
+<pre>/Applications/VXOST/vxostfiles/bin/mysqldump --user=root --password=root my_wordpress &gt; my_wordpress.sql</pre>
 </div>
 </div>
 </li>
@@ -212,18 +212,18 @@ By default, PHP (and therefore phpMyAdmin) is configured to only accept uploads 
 <p>Use the <em>mysql</em> client to create a new, empty database to hold your data. In this example, the new database is named <em>myblog</em>.</p>
 <div class="literalblock">
 <div class="content">
-<pre>/Applications/VXOST/bin/mysql --user=root --password="" -e "CREATE DATABASE myblog"</pre>
+<pre>/Applications/VXOST/vxostfiles/bin/mysql --user=root --password=root -e "CREATE DATABASE myblog"</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Remember to use the correct database access credentials in the command. On a fresh VXOST installation without any changes, you can usually log in as root with a blank password.</p>
+<p>Remember to use the correct database access credentials in the command. On a fresh VXOST installation without any changes, the root password is <em>root</em>; if you changed it, as <a href="./reset-mysql-password.html">you should</a>, use yours.</p>
 </div>
 </li>
 <li>
 <p>Use the <em>mysql</em> client to import the contents of the backup file into the new database.</p>
 <div class="literalblock">
 <div class="content">
-<pre>/Applications/VXOST/mysql --user=root --password="" --database=myblog &lt; my_wordpress.sql</pre>
+<pre>/Applications/VXOST/vxostfiles/bin/mysql --user=root --password=root --database=myblog &lt; my_wordpress.sql</pre>
 </div>
 </div>
 <div class="paragraph">
