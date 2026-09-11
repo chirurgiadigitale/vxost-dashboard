@@ -11,7 +11,7 @@ Every icon is inline SVG or a CSS mask.
 
 | Path | What it does |
 |------|--------------|
-| `dashboard/WHATSNEW.txt` | Full release notes: what changed, install steps, permissions, platforms |
+| `dashboard/403.html`, `404.html` | Error pages in the dashboard style, without server versions |
 | `dashboard/` | The dashboard itself, in 15 languages |
 | `dashboard/stylesheets/all.css` | The whole design system: tokens, grid, components |
 | `dashboard/javascripts/all.js` | Theme, mobile menu, language switcher, accordion, reveal |
@@ -19,7 +19,8 @@ Every icon is inline SVG or a CSS mask.
 | `dashboard/ports.php` | Listening TCP ports, the process behind each one, local addresses |
 | `dashboard/database.php` | phpMyAdmin framed inside the dashboard shell |
 | `dashboard/phpinfo.php` | `phpinfo()` output, split into collapsible sections |
-| `progetti/index.php` | Index of the projects served from this web root |
+| `projects/index.php` | Index of the projects served from this web root |
+| `dashboard/browse.php` | Listing of a project folder without its own index, dumps and secrets left out |
 
 ## Design system
 
@@ -51,15 +52,20 @@ honoured throughout.
 Romanian, Hungarian, Polish, Russian, Turkish, Japanese, Simplified Chinese,
 Traditional Chinese and Urdu, the last one rendered right to left.
 
-The homepages and the HOW-TO indexes are generated from one template plus a
-string table, so a wording fix touches a single line. The guides under
-`dashboard/docs/` are only available in English, as upstream, and each card
+The homepages and the HOW-TO indexes share one structure across the fifteen
+locales, but they are static HTML: there is no generator in this repository,
+so a wording fix in the shared footer has to be applied to every locale, and
+a version bump is a search across `dashboard/` for the previous number. The
+guides under `dashboard/guides/` are only available in English, and each card
 says so with an `EN` badge.
+
+Release notes live on the site, at `https://vxost.com/assets/release-notes-<version>.txt`,
+linked from every footer.
 
 ## Installing
 
-Copy the contents of this repository over `vxostfiles/htdocs`, keeping your own
-`progetti/` folder. The pages are served as they are, no build step.
+Copy the contents of this repository over `vxostfiles/www`, keeping your own
+`projects/` folder. The pages are served as they are, no build step.
 
 To let `database.php` embed phpMyAdmin, allow same origin framing:
 

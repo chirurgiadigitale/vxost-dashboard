@@ -18,8 +18,13 @@ The full text of every licence below ships inside the package, in
 | Perl | Artistic License / GNU GPL v1 or later |
 | ProFTPD | GNU GPL v2 |
 | phpMyAdmin | GNU GPL v2 |
-| OpenSSL | Apache License 2.0 |
+| OpenSSL 1.1.1 | OpenSSL License and SSLeay License (dual) |
 | cURL | curl licence (MIT/X derivative) |
+
+OpenSSL changed licence with 3.0, to the Apache License 2.0. The stack ships
+1.1.1, which predates that change: `vxostfiles/licenses/openssl.txt` carries
+both the OpenSSL and the SSLeay texts, and both apply. If the stack ever moves
+to OpenSSL 3, this row changes with it.
 
 A further 50 or so libraries — zlib, libpng, freetype, PCRE, ICU, expat and the
 rest of the stack — each keep their own licence file in `vxostfiles/licenses/`.
