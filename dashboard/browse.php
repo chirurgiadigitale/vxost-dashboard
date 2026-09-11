@@ -87,7 +87,9 @@ function br_size(int $bytes): string
  */
 function br_entries(string $dir): array
 {
-    $hidden = '/\.(env|sql|sqlite|sqlite3|db|dump|pem|key|bak)$/i';
+    // Same rule as the .htaccess files: dump and database extensions, an
+    // optional compression suffix (a .sql.gz is still a dump), case-insensitive.
+    $hidden = '/(\.(env|sql|sqlite|sqlite3|sq3|db|db3|s3db|dump|pem|key|log|bak)(\.(gz|bz2|xz|zst|zip|7z|tar|tgz))?|composer\.(json|lock))$/i';
     $out = [];
     foreach (scandir($dir) ?: [] as $entry) {
         if ($entry === '.' || $entry === '..' || str_starts_with($entry, '.')) {

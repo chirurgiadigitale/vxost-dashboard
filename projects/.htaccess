@@ -10,7 +10,9 @@
 Options -Indexes
 DirectoryIndex index.php index.html index.htm /dashboard/browse.php
 
-# The files that must never be served stay protected here too.
-<FilesMatch "(^\.|\.(env|sql|sqlite|sqlite3|db|dump|pem|key|bak)$)">
+# The files that must never be served stay protected here too. Same rule as
+# the root .htaccess and dashboard/browse.php: a compressed dump is still a
+# dump, and the match ignores case.
+<FilesMatch "(?i)(^\.|\.(env|sql|sqlite|sqlite3|sq3|db|db3|s3db|dump|pem|key|log|bak)(\.(gz|bz2|xz|zst|zip|7z|tar|tgz))?$|composer\.(json|lock)$)">
     Require all denied
 </FilesMatch>
