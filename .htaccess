@@ -5,6 +5,10 @@
 
 # Pagina di errore della dashboard al posto di quella predefinita di Apache
 ErrorDocument 404 /dashboard/404.html
+# Stessa cosa per il divieto. Quella predefinita era il file multilingua
+# ereditato da XAMPP, con la parola sostituita dentro il testo ceco e i
+# caratteri già rotti: una cicatrice da find-and-replace, non una pagina.
+ErrorDocument 403 /dashboard/403.html
 
 # Non esporre l'elenco dei file delle cartelle senza indice: su una macchina di
 # sviluppo il listing rivela i nomi di tutti i progetti in lavorazione.
