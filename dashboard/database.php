@@ -21,10 +21,11 @@ function db_t(string $key): string
             'subtitle' => 'phpMyAdmin running inside the dashboard',
             'fullscreen' => 'Open full screen', 'reload' => 'Reload',
             'blocked_t' => 'phpMyAdmin cannot be embedded',
-            'blocked_p' => 'phpMyAdmin is answering with X-Frame-Options: DENY, so it refuses to be shown inside a frame. Add this line to phpmyadmin/config.inc.php and reload the page:',
+            'blocked_xfo' => 'phpMyAdmin is answering with X-Frame-Options, so it refuses to be shown inside a frame. Add this line to phpmyadmin/config.inc.php and reload the page:',
             'open' => 'Open phpMyAdmin directly',
+            'csp_blocked' => 'phpMyAdmin is answering with a Content-Security-Policy whose frame-ancestors does not list this page, so the browser refuses to show it inside a frame. Add this line to phpmyadmin/config.inc.php and reload the page:',
             'csp_unknown' => 'phpMyAdmin sends a Content-Security-Policy with a frame-ancestors this page cannot evaluate: it may or may not allow the frame. Open it directly, or read the header with curl -I.',
-            'cert_expired' => 'The certificate in etc/ssl.crt is the right one but it is not valid today (expired, or not yet valid): the browser will refuse the https frame. Regenerate it with bin/vxost-ssl-init.',
+            'cert_expired' => 'The certificate in etc/ssl.crt is the right one but it is not valid today (expired, or not yet valid): the browser will refuse the https frame. Regenerate it, as an administrator, with sudo /Applications/VXOST/vxostfiles/bin/vxost-ssl-init, then restart Apache.',
             'offline_t' => 'phpMyAdmin is not reachable',
             'offline_p' => 'The server did not answer on /phpmyadmin/. Check that Apache is running and that phpMyAdmin is installed.',
         ],
@@ -33,10 +34,11 @@ function db_t(string $key): string
             'subtitle' => 'phpMyAdmin all\'interno della dashboard',
             'fullscreen' => 'Apri a schermo intero', 'reload' => 'Ricarica',
             'blocked_t' => 'phpMyAdmin non può essere incorporato',
-            'blocked_p' => 'phpMyAdmin risponde con X-Frame-Options: DENY e rifiuta di essere mostrato dentro un frame. Aggiungi questa riga a phpmyadmin/config.inc.php e ricarica la pagina:',
+            'blocked_xfo' => 'phpMyAdmin risponde con X-Frame-Options e rifiuta di essere mostrato dentro un frame. Aggiungi questa riga a phpmyadmin/config.inc.php e ricarica la pagina:',
             'open' => 'Apri phpMyAdmin direttamente',
+            'csp_blocked' => 'phpMyAdmin risponde con una Content-Security-Policy il cui frame-ancestors non comprende questa pagina, quindi il browser rifiuta di mostrarlo dentro un frame. Aggiungi questa riga a phpmyadmin/config.inc.php e ricarica la pagina:',
             'csp_unknown' => 'phpMyAdmin manda una Content-Security-Policy con un frame-ancestors che questa pagina non sa valutare: potrebbe consentire il frame o no. Aprilo direttamente, o leggi l\'header con curl -I.',
-            'cert_expired' => 'Il certificato in etc/ssl.crt è quello giusto ma oggi non è valido (scaduto, o non ancora valido): il browser rifiuterà il frame https. Rigeneralo con bin/vxost-ssl-init.',
+            'cert_expired' => 'Il certificato in etc/ssl.crt è quello giusto ma oggi non è valido (scaduto, o non ancora valido): il browser rifiuterà il frame https. Rigeneralo da amministratore con sudo /Applications/VXOST/vxostfiles/bin/vxost-ssl-init, poi riavvia Apache.',
             'offline_t' => 'phpMyAdmin non è raggiungibile',
             'offline_p' => 'Il server non ha risposto su /phpmyadmin/. Verifica che Apache sia avviato e che phpMyAdmin sia installato.',
         ],
@@ -106,30 +108,56 @@ function pma_status(): array
         return ['online' => false, 'framable' => false];
     }
 
-    $xfo = $headers['X-Frame-Options'] ?? $headers['x-frame-options'] ?? '';
-    if (is_array($xfo)) {
-        $xfo = end($xfo);
+    // ⚠️ I nomi degli header non hanno una grafia sola. Cercarne due
+    // (X-Frame-Options e x-frame-options) lasciava passare qualunque altra
+    // capitalizzazione: con "CoNtEnT-SeCuRiTy-PoLiCy" la policy spariva e la
+    // pagina dichiarava il frame consentito. Il confronto va fatto su tutte
+    // le chiavi, senza distinzione fra maiuscole e minuscole.
+    $xfoValues = pma_header_values($headers, 'X-Frame-Options');
+    $xfoBlocks = false;
+    foreach ($xfoValues as $value) {
+        if (strtoupper(trim($value)) !== 'SAMEORIGIN') {
+            $xfoBlocks = true;
+        }
     }
-    $xfo = strtoupper(trim((string) $xfo));
-    $framable = $xfo === '' || $xfo === 'SAMEORIGIN';
 
-    // A Content-Security-Policy with frame-ancestors overrides X-Frame-Options
-    // in every current browser: when it is there, it is the one that counts.
-    // Every policy header applies (a browser enforces all of them, and the
-    // frame is allowed only if each one allows it), and the sources are
-    // matched against THIS page's origin, which is where the frame lives.
+    // Una Content-Security-Policy con frame-ancestors SOSTITUISCE
+    // X-Frame-Options in ogni browser attuale: quando c'e', decide lei, e il
+    // verdetto di XFO non deve sopravviverle in nessuno dei due sensi.
+    // Ogni header di policy vale (il browser li applica tutti, e il frame
+    // passa solo se ognuno lo consente); le sorgenti si confrontano con
+    // l'origine di QUESTA pagina, che e' dove il frame vive.
     $reason = '';
-    $csp = $headers['Content-Security-Policy'] ?? $headers['content-security-policy'] ?? [];
-    $policies = is_array($csp) ? $csp : [$csp];
     $pageHost = strtolower((string) preg_replace('/:\d+$/', '', (string) ($_SERVER['HTTP_HOST'] ?? $host)));
-    $verdict = pma_csp_allows_frame($policies, $https ? 'https' : 'http', $pageHost, $port);
-    if ($verdict === false) {
-        $framable = false;
-    } elseif ($verdict === null) {
-        // A policy is there and cannot be read for certain: no invented
-        // diagnosis. The page says why instead of a confident "blocked".
-        $framable = false;
-        $reason = 'csp_unknown';
+    $verdict = pma_csp_frame_verdict(
+        pma_header_values($headers, 'Content-Security-Policy'),
+        $https ? 'https' : 'http',
+        $pageHost,
+        $port
+    );
+
+    switch ($verdict) {
+        case 'absent':                       // nessun frame-ancestors: decide XFO
+            $framable = !$xfoBlocks;
+            if ($xfoBlocks) {
+                $reason = 'blocked_xfo';
+            }
+            break;
+        case 'allow':
+            $framable = true;
+            break;
+        case 'block':
+            // ⚠️ Qui il motivo va detto. Finche' restava vuoto, la pagina
+            // ripiegava sul testo di XFO e affermava che phpMyAdmin aveva
+            // mandato "X-Frame-Options: DENY" anche quando l'header ricevuto
+            // era soltanto una CSP: una falsita' visibile in pagina.
+            $framable = false;
+            $reason = 'csp_blocked';
+            break;
+        default:                             // 'unknown'
+            $framable = false;
+            $reason = 'csp_unknown';
+            break;
     }
 
     // The pin proves identity, not validity: a certificate that is the right
@@ -148,78 +176,131 @@ function pma_status(): array
 }
 
 /**
- * Does every Content-Security-Policy allow this page to frame phpMyAdmin?
+ * Tutti i valori di un header, qualunque sia la grafia del nome.
  *
- * true when no policy restricts it or all of them allow it, false when one
- * forbids it, null when a policy has a frame-ancestors this code cannot
- * evaluate. Only the source forms that matter for a local dashboard are
- * understood: 'none', 'self', *, a scheme, a host with optional scheme, port
- * and leading wildcard. Anything else in a directive makes that directive
- * unevaluable rather than silently allowed.
- *
- * ⚠️ A wildcard is not a universal yes: https://*.example.org allows
- * example.org's subdomains, not virtualhost. The first version matched any
- * asterisk anywhere and said "framable" to that.
+ * @return list<string>
  */
-function pma_csp_allows_frame(array $policies, string $scheme, string $host, int $port): ?bool
+function pma_header_values(array $headers, string $name): array
 {
-    $defaultPort = $scheme === 'https' ? 443 : 80;
-    $unknown = false;
-    $restricted = false;
-    foreach ($policies as $policy) {
-        foreach (explode(';', (string) $policy) as $directive) {
-            $directive = trim($directive);
-            if (stripos($directive, 'frame-ancestors') !== 0) {
-                continue;
-            }
-            $restricted = true;
-            $tokens = preg_split('/\s+/', trim(substr($directive, strlen('frame-ancestors'))), -1, PREG_SPLIT_NO_EMPTY);
-            $allowed = false;
-            $evaluable = true;
-            foreach ($tokens as $token) {
-                $t = strtolower($token);
-                if ($t === "'none'") {
-                    $allowed = false;
-                    $evaluable = true;
-                    break;
-                }
-                if ($t === "'self'" || $t === '*') {
-                    $allowed = true;
-                    continue;
-                }
-                if (preg_match('/^[a-z][a-z0-9+.-]*:$/', $t)) {          // scheme-source
-                    if (rtrim($t, ':') === $scheme) {
-                        $allowed = true;
-                    }
-                    continue;
-                }
-                if (preg_match('#^(?:([a-z][a-z0-9+.-]*)://)?(\*\.)?([a-z0-9.-]+)(?::(\d+|\*))?$#', $t, $m)) {
-                    $schemeOk = $m[1] === '' || $m[1] === $scheme;
-                    $hostOk = $m[2] === ''
-                        ? $m[3] === $host
-                        : (strlen($host) > strlen($m[3]) + 1 && substr($host, -strlen($m[3]) - 1) === '.' . $m[3]);
-                    $tokenPort = $m[4] ?? '';
-                    $portOk = $tokenPort === '' ? $port === $defaultPort : ($tokenPort === '*' || (int) $tokenPort === $port);
-                    if ($schemeOk && $hostOk && $portOk) {
-                        $allowed = true;
-                    }
-                    continue;
-                }
-                $evaluable = false;                                       // nonces, hashes, anything else
-            }
-            if (!$allowed) {
-                if (!$evaluable) {
-                    $unknown = true;
-                    continue;
-                }
-                return false;                                             // one policy forbids: the browser does too
-            }
+    $out = [];
+    $cercato = strtolower($name);
+    foreach ($headers as $key => $value) {
+        if (!is_string($key) || strtolower($key) !== $cercato) {
+            continue;
+        }
+        foreach ((array) $value as $v) {
+            $out[] = (string) $v;
         }
     }
-    if ($unknown) {
-        return null;
+    return $out;
+}
+
+/**
+ * Il verdetto di frame-ancestors, letto come lo legge un browser.
+ *
+ * 'absent'   nessuna policy contiene la direttiva: decide X-Frame-Options;
+ * 'allow'    ogni policy consente a questa pagina di incorniciare;
+ * 'block'    almeno una la vieta;
+ * 'unknown'  una policy ha sorgenti che qui non si sanno valutare.
+ *
+ * Distinguere 'absent' da 'allow' non e' pedanteria: nel primo caso XFO
+ * conta ancora, nel secondo no. Confonderli e' il motivo per cui una CSP
+ * permissiva non riusciva a scavalcare un X-Frame-Options: DENY.
+ *
+ * Sono comprese solo le forme di sorgente che contano per una dashboard
+ * locale: 'none', 'self', *, uno schema, un host con schema, porta e
+ * asterisco iniziale facoltativi. Tutto il resto rende la direttiva non
+ * valutabile invece che silenziosamente permissiva.
+ *
+ * ⚠️ Un asterisco non e' un si' universale: https://*.example.org ammette i
+ * sottodomini di example.org, non virtualhost.
+ */
+function pma_csp_frame_verdict(array $policies, string $scheme, string $host, int $port): string
+{
+    $defaultPort = $scheme === 'https' ? 443 : 80;
+    $present = false;
+    $unknown = false;
+
+    foreach ($policies as $policy) {
+        // ⚠️ Dentro UNA policy vale la PRIMA occorrenza della direttiva: il
+        // browser ignora i duplicati successivi. Scorrendole tutte,
+        // "frame-ancestors 'self'; frame-ancestors 'none'" veniva letto come
+        // un blocco, mentre il browser incornicia.
+        $tokens = null;
+        foreach (explode(';', (string) $policy) as $directive) {
+            $parti = preg_split('/\s+/', trim($directive), -1, PREG_SPLIT_NO_EMPTY);
+            // Confronto sul nome intero: con un prefisso, una direttiva
+            // inventata che cominci per frame-ancestors verrebbe applicata.
+            if (!$parti || strtolower($parti[0]) !== 'frame-ancestors') {
+                continue;
+            }
+            $tokens = array_slice($parti, 1);
+            break;
+        }
+        if ($tokens === null) {
+            continue;
+        }
+        $present = true;
+
+        // 'none' vale solo da sola: la grammatica della CSP non ammette di
+        // affiancarla ad altre sorgenti, e il browser la scarta come token
+        // sconosciuto. "frame-ancestors 'none' 'self'" consente, non vieta.
+        // Una lista vuota non ammette nessuno.
+        if ($tokens === []) {
+            return 'block';
+        }
+        if (count($tokens) === 1 && strtolower($tokens[0]) === "'none'") {
+            return 'block';
+        }
+
+        $allowed = false;
+        $evaluable = true;
+        foreach ($tokens as $token) {
+            $t = strtolower($token);
+            if ($t === "'none'") {
+                continue;                                            // scartata
+            }
+            // 'self' e' l'origine di phpMyAdmin, che e' la stessa di questa
+            // pagina: stesso Apache, stesso host, stessa porta.
+            if ($t === "'self'" || $t === '*') {
+                $allowed = true;
+                continue;
+            }
+            if (preg_match('/^[a-z][a-z0-9+.-]*:$/', $t)) {          // scheme-source
+                if (rtrim($t, ':') === $scheme) {
+                    $allowed = true;
+                }
+                continue;
+            }
+            if (preg_match('#^(?:([a-z][a-z0-9+.-]*)://)?(\*\.)?([a-z0-9.-]+)(?::(\d+|\*))?$#', $t, $m)) {
+                $schemeOk = $m[1] === '' || $m[1] === $scheme;
+                $hostOk = $m[2] === ''
+                    ? $m[3] === $host
+                    : (strlen($host) > strlen($m[3]) + 1 && substr($host, -strlen($m[3]) - 1) === '.' . $m[3]);
+                $tokenPort = $m[4] ?? '';
+                $portOk = $tokenPort === '' ? $port === $defaultPort : ($tokenPort === '*' || (int) $tokenPort === $port);
+                if ($schemeOk && $hostOk && $portOk) {
+                    $allowed = true;
+                }
+                continue;
+            }
+            $evaluable = false;                                      // nonce, hash, altro
+        }
+
+        if ($allowed) {
+            continue;                                                // questa policy consente
+        }
+        if (!$evaluable) {
+            $unknown = true;
+            continue;
+        }
+        return 'block';                                              // una vieta: il browser vieta
     }
-    return true;
+
+    if (!$present) {
+        return 'absent';
+    }
+    return $unknown ? 'unknown' : 'allow';
 }
 
 $status = pma_status();
@@ -276,10 +357,16 @@ vxost_header('VXOST, ' . db_t('title'), 'database', $status['online'] && $status
             <?php else: ?>
             <div class="admonitionblock warning">
               <h3 style="font-size:1.05rem"><?php echo h(db_t('blocked_t')); ?></h3>
-              <?php if (!empty($status['reason'])): ?>
-              <p style="margin-bottom:0"><?php echo h(db_t($status['reason'])); ?></p>
-              <?php else: ?>
-              <p><?php echo h(db_t('blocked_p')); ?></p>
+              <?php
+              // ⚠️ Nessun ripiego. Prima, un motivo vuoto faceva stampare il
+              // testo di X-Frame-Options: la pagina affermava un header che
+              // poteva non essere mai arrivato. Ora il motivo c'e' sempre, e
+              // la riga di configurazione compare solo dove e' davvero il
+              // rimedio, cioe' quando e' phpMyAdmin a rifiutare il frame.
+              $motivo = $status['reason'] !== '' ? $status['reason'] : 'blocked_xfo';
+              ?>
+              <p<?php echo in_array($motivo, ['blocked_xfo', 'csp_blocked'], true) ? '' : ' style="margin-bottom:0"'; ?>><?php echo h(db_t($motivo)); ?></p>
+              <?php if (in_array($motivo, ['blocked_xfo', 'csp_blocked'], true)): ?>
               <pre dir="ltr">$cfg['AllowThirdPartyFraming'] = 'sameorigin';</pre>
               <?php endif; ?>
             </div>
