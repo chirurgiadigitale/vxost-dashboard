@@ -209,7 +209,16 @@ function pma_schema_combacia(string $sorgente, string $pagina): bool
     if ($sorgente === $pagina) {
         return true;
     }
-    return $sorgente === 'http' && $pagina === 'https';
+    // Gli abbinamenti della specifica, tutti e quattro. ⚠️ Ne mancavano tre:
+    // una policy con ws: o wss: faceva dire "bloccato" a una pagina che il
+    // browser incornicia, e la dashboard mandava a cercare un guasto
+    // inesistente.
+    $sale = [
+        'http' => ['https'],
+        'ws'   => ['wss', 'http', 'https'],
+        'wss'  => ['https'],
+    ];
+    return in_array($pagina, $sale[$sorgente] ?? [], true);
 }
 
 /**
