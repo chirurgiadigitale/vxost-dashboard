@@ -196,6 +196,23 @@ function pma_header_values(array $headers, string $name): array
 }
 
 /**
+ * Lo schema scritto nella policy copre quello della pagina?
+ *
+ * ⚠️ Non e' un confronto di uguaglianza. La specifica ammette l'upgrade: una
+ * sorgente "http:" vale anche per una pagina https, perche' salire di
+ * sicurezza non e' un permesso in piu'. Il contrario no. Confrontando le due
+ * stringhe, "frame-ancestors http:" su una pagina https risultava bloccato e
+ * la dashboard mandava a cercare un guasto che non c'era.
+ */
+function pma_schema_combacia(string $sorgente, string $pagina): bool
+{
+    if ($sorgente === $pagina) {
+        return true;
+    }
+    return $sorgente === 'http' && $pagina === 'https';
+}
+
+/**
  * Il verdetto di frame-ancestors, letto come lo legge un browser.
  *
  * 'absent'   nessuna policy contiene la direttiva: decide X-Frame-Options;
@@ -221,7 +238,24 @@ function pma_csp_frame_verdict(array $policies, string $scheme, string $host, in
     $present = false;
     $unknown = false;
 
+    // ⚠️ Un solo header puo' contenere PIU' policy, separate da virgola: e' la
+    // forma in cui due header identici si uniscono lungo la strada. Dividendo
+    // solo sui punti e virgola,
+    //
+    //   frame-ancestors *; default-src 'self', frame-ancestors 'none'
+    //
+    // veniva letto come una policy sola e la pagina diceva "si incornicia"
+    // dove il browser blocca. Prima si separano le policy, poi le direttive.
+    $singole = [];
     foreach ($policies as $policy) {
+        foreach (explode(',', (string) $policy) as $pezzo) {
+            if (trim($pezzo) !== '') {
+                $singole[] = $pezzo;
+            }
+        }
+    }
+
+    foreach ($singole as $policy) {
         // ⚠️ Dentro UNA policy vale la PRIMA occorrenza della direttiva: il
         // browser ignora i duplicati successivi. Scorrendole tutte,
         // "frame-ancestors 'self'; frame-ancestors 'none'" veniva letto come
@@ -267,13 +301,13 @@ function pma_csp_frame_verdict(array $policies, string $scheme, string $host, in
                 continue;
             }
             if (preg_match('/^[a-z][a-z0-9+.-]*:$/', $t)) {          // scheme-source
-                if (rtrim($t, ':') === $scheme) {
+                if (pma_schema_combacia(rtrim($t, ':'), $scheme)) {
                     $allowed = true;
                 }
                 continue;
             }
             if (preg_match('#^(?:([a-z][a-z0-9+.-]*)://)?(\*\.)?([a-z0-9.-]+)(?::(\d+|\*))?$#', $t, $m)) {
-                $schemeOk = $m[1] === '' || $m[1] === $scheme;
+                $schemeOk = $m[1] === '' || pma_schema_combacia($m[1], $scheme);
                 $hostOk = $m[2] === ''
                     ? $m[3] === $host
                     : (strlen($host) > strlen($m[3]) + 1 && substr($host, -strlen($m[3]) - 1) === '.' . $m[3]);
