@@ -22,7 +22,7 @@ Options -Indexes
 # compressione è quindi opzionale in coda, e il confronto ignora le maiuscole
 # (`BACKUP.SQL` è lo stesso file). Il filtro di dashboard/browse.php e la
 # .htaccess di projects/ devono dire la stessa cosa: se cambia qui, cambia là.
-<FilesMatch "(?i)(^\.|\.(env|sql|sqlite|sqlite3|sq3|db|db3|s3db|dump|pem|key|log|bak)(\.(gz|bz2|xz|zst|zip|7z|tar|tgz))?$|composer\.(json|lock)$)">
+<FilesMatch "(?i)(^\.|\.(env|sql|sqlite|sqlite3|sq3|db|db3|s3db|dump|pem|key|log|bak|md|markdown)(\.(gz|bz2|xz|zst|zip|7z|tar|tgz))?$|composer\.(json|lock)$)">
     Require all denied
 </FilesMatch>
 

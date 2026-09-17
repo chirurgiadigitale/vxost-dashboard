@@ -89,7 +89,7 @@ function br_entries(string $dir): array
 {
     // Same rule as the .htaccess files: dump and database extensions, an
     // optional compression suffix (a .sql.gz is still a dump), case-insensitive.
-    $hidden = '/(\.(env|sql|sqlite|sqlite3|sq3|db|db3|s3db|dump|pem|key|log|bak)(\.(gz|bz2|xz|zst|zip|7z|tar|tgz))?|composer\.(json|lock))$/i';
+    $hidden = '/(\.(env|sql|sqlite|sqlite3|sq3|db|db3|s3db|dump|pem|key|log|bak|md|markdown)(\.(gz|bz2|xz|zst|zip|7z|tar|tgz))?|composer\.(json|lock))$/i';
     $out = [];
     foreach (scandir($dir) ?: [] as $entry) {
         if ($entry === '.' || $entry === '..' || str_starts_with($entry, '.')) {
