@@ -38,13 +38,12 @@
 .claude*
 CLAUDE.md
 
-# Markdown notes: none, except the README that presents the project on GitHub
-# and the list of bundled licences, which has to ship with the distribution.
-# These exceptions must stay AFTER the *.md rule: with git the last matching
-# rule wins, so listing them earlier would have no effect.
+# Markdown notes: none, except the README that presents the project on GitHub.
+# The bundled licences ship as THIRD-PARTY-LICENSES.txt, not as Markdown.
+# The exception must stay AFTER the *.md rule: with git the last matching
+# rule wins, so listing it earlier would have no effect.
 *.md
 !/README.md
-!/THIRD-PARTY-LICENSES.md
 
 # Secrets and environment
 .env
