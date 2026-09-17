@@ -254,7 +254,7 @@ function vxost_header(string $title, string $active = '', bool $full = false): v
  * bump is a search across dashboard/ for the previous number.
  */
 const VXOST_VERSION = '8.2.4';
-const DASHBOARD_VERSION = '9.26.1';
+const DASHBOARD_VERSION = '9.26.2';
 
 /** Closes <main> and prints the same footer as the static pages. */
 function vxost_footer(): void
