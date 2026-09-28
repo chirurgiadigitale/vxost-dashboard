@@ -12,6 +12,24 @@
 
 declare(strict_types=1);
 
+// The list of project folders is for this Mac only (28/09/2026). It names
+// clients, stacks and ports; the file browser already answered 403 to the
+// network, this index did not. The check lives here and not in .htaccess:
+// every project has its own index.php, and a rule on that name would hit them
+// all.
+$vxRemote = $_SERVER['REMOTE_ADDR'] ?? '';
+$vxLocal = $vxRemote === '::1'
+    || str_starts_with($vxRemote, '127.')
+    || str_starts_with($vxRemote, '::ffff:127.');
+if (!$vxLocal) {
+    http_response_code(403);
+    $vxPage = dirname(__DIR__) . '/dashboard/403.html';
+    if (is_readable($vxPage)) {
+        readfile($vxPage);
+    }
+    exit;
+}
+
 $layout = dirname(__DIR__) . '/dashboard/includes/layout.php';
 if (!is_readable($layout)) {
     http_response_code(500);

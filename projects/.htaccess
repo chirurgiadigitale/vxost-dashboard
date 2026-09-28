@@ -16,3 +16,20 @@ DirectoryIndex index.php index.html index.htm /dashboard/browse.php
 <FilesMatch "(?i)(^\.|\.(env|sql|sqlite|sqlite3|sq3|db|db3|s3db|dump|pem|key|log|bak|md|markdown)(\.(gz|bz2|xz|zst|zip|7z|tar|tgz))?$|composer\.(json|lock)$)">
     Require all denied
 </FilesMatch>
+
+# Archives stay reachable from this Mac, never from the network (28/09/2026).
+#
+# A backup zip of a site is a dump by another name: the review found real ones
+# under projects/ holding a .sql and a wp-config.php, served to anyone on the
+# same wifi as soon as Apache is opened to the network. The rule above cannot
+# see inside an archive, and matching names like "backup" would miss the next
+# one.
+#
+# ⚠️ Only DENY, and only to non-local clients. A Require that grants, here,
+# would replace the Require a project set for itself (lesson of 15/09): for
+# requests from this Mac nothing is added, so a project's own rules stand.
+<FilesMatch "(?i)\.(zip|tar|tgz|gz|bz2|xz|7z|rar|wpress)$">
+    <If "! -R '127.0.0.0/8' && ! -R '::1'">
+        Require all denied
+    </If>
+</FilesMatch>
